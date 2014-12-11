@@ -1,9 +1,10 @@
 var map;
 function initialize() {
     // Create a simple map.
-    map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 10,
-        center: {lat: 51.5, lng: -3}
+    map = new google.maps.Map(document.getElementById('map-layer'), {
+        zoom: 15,
+        center: {lat: 51.45, lng: -2.6},
+        disableDefaultUI: true
     });
 
     $.getJSON( "test.geojson", function( data ) {
