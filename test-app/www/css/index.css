@@ -1,2 +1,102 @@
 /* COPYRIGHT INFO HERE */
-*{padding:0;margin:0}html,body{width:100%;height:100%}#ui-layer,#map-layer{width:100%;height:100%;position:absolute}.clearfix{clear:both}#ui-layer #search-bar{z-index:100;position:absolute;margin:50px 15px 0;width:calc(100% - 30px);box-shadow:0 0 10px rgba(0,0,0,.2);box-sizing:border-box;padding:20px 30px;background:#fff url("../img/search/search-icon.png") no-repeat 25px 25px}#ui-layer #search-bar input{float:left;font-family:"Open Sans",sans-serif;font-weight:400;font-size:35px;width:calc(100% - 180px);border:0;background:0;margin-left:50px;outline:0}#ui-layer #search-bar #search-bar-options{list-style-type:none;float:right}#ui-layer #search-bar #search-bar-options li{display:inline-block}#ui-layer #search-bar #search-bar-options li img{margin-top:4px;vertical-align:top}#ui-layer #search-bar #search-bar-options #search-bar-favourite{margin-left:20px}#map-layer{z-index:50}
+/* COPYRIGHT INFO HERE */
+/* GENERAL STYLES */
+* {
+  padding: 0;
+  margin: 0;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+#ui-layer,
+#map-layer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+.clearfix {
+  clear: both;
+}
+/* UI LAYER STYLES */
+#ui-layer #search-bar,
+#ui-layer #search-bar-expanded {
+  position: absolute;
+  width: calc(100% - 30px);
+  box-sizing: border-box;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+#ui-layer #search-bar {
+  margin: 50px 15px 0px;
+  z-index: 100;
+  padding: 20px 30px;
+  background: #fff;
+}
+#ui-layer #search-bar #search-icon {
+  position: absolute;
+}
+#ui-layer #search-bar #search-icon img {
+  vertical-align: top;
+  margin-top: 6px;
+  margin-left: -5px;
+}
+#ui-layer #search-bar input {
+  float: left;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 35px;
+  width: calc(100% - 180px);
+  /* 50px left margin, 130px for icons on right */
+
+  border: none;
+  background: none;
+  margin-left: 50px;
+  outline: none;
+}
+#ui-layer #search-bar #search-bar-options {
+  list-style-type: none;
+  float: right;
+}
+#ui-layer #search-bar #search-bar-options li {
+  display: inline-block;
+}
+#ui-layer #search-bar #search-bar-options li img {
+  margin-top: 4px;
+  vertical-align: top;
+}
+#ui-layer #search-bar #search-bar-options #search-bar-favourite {
+  margin-left: 20px;
+}
+#ui-layer #search-bar-expanded {
+  z-index: 99;
+  display: none;
+  margin: 0 15px;
+  background: #fff;
+  top: 136px;
+  color: #333;
+  font-family: "Open Sans", sans-serif;
+}
+#ui-layer #search-bar-expanded #favourite-title {
+  font-weight: 300;
+  font-size: 30px;
+  padding: 20px 30px;
+}
+#ui-layer #search-bar-expanded #favourite-locations {
+  list-style-type: none;
+  font-weight: 400;
+  font-size: 30px;
+}
+#ui-layer #search-bar-expanded #favourite-locations li {
+  padding: 20px 30px;
+  border-bottom: 1px solid #ddd;
+}
+#ui-layer #search-bar-expanded #favourite-locations li .favourite-delete {
+  float: right;
+  margin-top: 10px;
+  vertical-align: top;
+}
+/* MAP LAYER STYLES */
+#map-layer {
+  z-index: 50;
+}

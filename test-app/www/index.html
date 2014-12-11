@@ -15,12 +15,20 @@
     <body>
         <div id="ui-layer">
             <div id="search-bar">
+                <div id="search-icon"><img src="img/search/search-icon.png" alt="Search icon" /></div>
                 <input type="text" placeholder="Postcode" />
                 <ul id="search-bar-options">
                     <li id="search-bar-location"><img src="img/search/location-icon.png" alt="Location icon" /></li>
                     <li id="search-bar-favourite"><img src="img/search/favourite-empty-icon.png" alt="Favourite icon" /></li>
                 </ul>
-                <div class="clearfix"></div>
+                <div class="clearfix"></div>               
+            </div>
+            <div id="search-bar-expanded">
+                <div id="favourite-title">Saved locations</div>
+                <ul id="favourite-locations">
+                    <li>BS6 6NB<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>
+                    <li>BS8 1BU<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>
+                </ul>
             </div>
         </div>
         <div id="map-layer"></div>

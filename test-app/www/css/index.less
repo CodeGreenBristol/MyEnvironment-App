@@ -25,15 +25,25 @@ html, body {
 /* UI LAYER STYLES */
 
 #ui-layer {   
-    #search-bar {
-        z-index:100;
-        position:absolute;
-        margin:50px 15px 0px;
+    #search-bar, #search-bar-expanded {
+        position:absolute;        
         width:~"calc(100% - 30px)";
-        box-shadow:0px 0px 10px rgba(0, 0, 0, .2);
         box-sizing:border-box;
+        box-shadow:0px 0px 10px rgba(0, 0, 0, .2);
+    }
+    #search-bar {
+        margin:50px 15px 0px;
+        z-index:100;
         padding:20px 30px;
-        background:#fff url("../img/search/search-icon.png") no-repeat 25px 25px;
+        background:#fff;
+        #search-icon {
+            position:absolute;
+            img {
+                vertical-align:top;
+                margin-top:6px;
+                margin-left:-5px;
+            }
+        }
         input {
             float:left;
             font-family:"Open Sans", sans-serif;
@@ -57,6 +67,34 @@ html, body {
             }
             #search-bar-favourite {
                 margin-left:20px;
+            }
+        }
+    }
+    #search-bar-expanded {
+        z-index:99;
+        display:none;
+        margin:0 15px;
+        background:#fff;
+        top:136px;
+        color:#333;
+        font-family:"Open Sans", sans-serif;
+        #favourite-title {
+            font-weight:300;
+            font-size:30px;
+            padding:20px 30px;
+        }
+        #favourite-locations {
+            list-style-type:none;
+            font-weight:400;
+            font-size:30px;
+            li {
+                padding:20px 30px;
+                border-bottom:1px solid #ddd;
+                .favourite-delete {
+                    float:right;
+                    margin-top:10px;
+                    vertical-align:top;
+                }
             }
         }
     }
