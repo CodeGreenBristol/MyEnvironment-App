@@ -12,7 +12,7 @@ html, body {
   height: 100%;
 }
 
-#ui-layer, #map-layer, #map-select-layer {
+#ui-layer, #map-layer, #map-select-layer, #slider-layer {
     width: 100%;
     height: 100%;
     position:absolute;
@@ -20,6 +20,28 @@ html, body {
 
 .clearfix {
     clear:both;
+}
+
+/* SLIDER LAYER STYLES */
+#slider-layer {
+    z-index: 75;
+    width: 59px;
+    left: 320px;
+    #slider-bar {
+        z-index: 75;
+        position: absolute;
+        width: 59px;
+        height: 100%;
+        background-image: url(../img/slider/slider-bar.png);
+        background-repeat: repeat-y;
+        #slider-middle {
+            position: absolute;
+            z-index: 80;
+            height: 173px;
+            top: 50%;
+            margin-top: -86px;
+        }
+    }
 }
 
 /* MAP SELECT LAYER STYLES */
