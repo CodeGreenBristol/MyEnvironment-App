@@ -25,6 +25,9 @@ html, body {
 /* UI LAYER STYLES */
 
 #ui-layer {   
+
+    /* SEARCH BAR STYLES */
+    
     #search-bar, #search-bar-expanded {
         position:absolute;        
         width:~"calc(100% - 30px)";
@@ -97,6 +100,20 @@ html, body {
                 }
             }
         }
+    }
+    
+    /* BUTTON STYLES */
+    
+    #left-button, #right-button {
+        position:absolute;
+        z-index:100;
+        bottom:25px;
+    }
+    #left-button {
+        left:25px;
+    }
+    #right-button {
+        right:25px;
     }
 }
 

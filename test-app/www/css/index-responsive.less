@@ -1,0 +1,58 @@
+/* UI LAYER STYLES */
+
+@media (max-width:640px) and (orientation:portrait){
+    #ui-layer {
+    
+        /* SEARCH BAR STYLES */
+    
+        #search-bar, #search-bar-expanded { 
+            width:~"calc(100% - 30px)";
+        }
+        #search-bar {
+            margin-top:30px;
+            padding:20px 30px;
+            background:#fff;
+            #search-icon {
+                img {
+                    width:25px;
+                    vertical-align:top;
+                    margin-top:6px;
+                    margin-left:-5px;
+                }
+            }
+            input {
+                font-size:20px;
+                width:~"calc(100% - 180px)"; /* 50px left margin, 130px for icons on right */
+                margin-left:50px;
+            }
+            #search-bar-options {
+                li {        
+                    img {
+                        width:25px;
+                        margin-top:4px;
+                    }
+                }
+                #search-bar-favourite {
+                    margin-left:20px;
+                }
+            }
+        }
+        #search-bar-expanded {
+            margin:0 15px;
+            top:136px;
+            #favourite-title {
+                font-size:30px;
+                padding:20px 30px;
+            }
+            #favourite-locations {
+                font-size:30px;
+                li {
+                    padding:20px 30px;
+                    .favourite-delete {
+                        margin-top:10px;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -20,6 +20,12 @@ body {
   clear: both;
 }
 /* UI LAYER STYLES */
+#ui-layer {
+  /* SEARCH BAR STYLES */
+
+  /* BUTTON STYLES */
+
+}
 #ui-layer #search-bar,
 #ui-layer #search-bar-expanded {
   position: absolute;
@@ -95,6 +101,18 @@ body {
   float: right;
   margin-top: 10px;
   vertical-align: top;
+}
+#ui-layer #left-button,
+#ui-layer #right-button {
+  position: absolute;
+  z-index: 100;
+  bottom: 25px;
+}
+#ui-layer #left-button {
+  left: 25px;
+}
+#ui-layer #right-button {
+  right: 25px;
 }
 /* MAP LAYER STYLES */
 #map-layer {
