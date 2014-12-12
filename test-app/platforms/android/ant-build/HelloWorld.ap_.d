@@ -36,7 +36,6 @@
 /Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/res \
 /Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/spec \
 /Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/spec.html \
-/Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/test.geojson \
 /Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/css/fonts.css \
 /Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/css/index.css \
 /Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/css/index.less \
@@ -72,7 +71,6 @@
 /Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/img/slider/slider-bar.png \
 /Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/img/slider/slider-middle.png \
 /Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/js/index.js \
-/Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/js/index2.js \
 /Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/res/icon \
 /Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/res/screen \
 /Users/samcordingley/development/licencetocode/test-app/platforms/android/assets/www/res/icon/android \

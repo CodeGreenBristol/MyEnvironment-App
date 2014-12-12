@@ -13,6 +13,22 @@
         <link rel="stylesheet" type="text/css" href="css/index.css">
     </head>
     <body>
+        <div id = "map-select-layer">
+            <div id = "menu-header">
+                <img id = "menu-icon" src = "img/back-white-icon.png" alt = "Back icon" />
+                <div id = "menu-title">Choose a topic</div>
+                <div class = "clearfix"></div>
+            </div>
+            <div id = "menu-options">
+                <ul>
+                    <li>Flood risk <img class = "tick-icon" src = "img/tick-icon.png" alt = "Selected topic" /></li>
+                    <li>Air pollution</li>
+                    <li>Ground water</li>
+                    <li>Landfill</li>
+                    <li class = "last">River and sea levels</li>
+                </ul>
+            </div>
+        </div>
         <div id="ui-layer">
             <div id="search-bar">
                 <div id="search-icon"><img src="img/search/search-icon.png" alt="Search icon" /></div>
@@ -29,6 +45,11 @@
                     <li>BS6 6NB<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>
                     <li>BS8 1BU<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>
                 </ul>
+            </div>
+        </div>
+        <div id = "slider-layer">
+            <div id = "slider-bar">
+                <img id = "slider-middle" src = "img/slider/slider-middle.png" alt = "Slider" />
             </div>
         </div>
         <div id="map-layer"></div>
