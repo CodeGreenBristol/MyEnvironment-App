@@ -1,6 +1,6 @@
 /* UI LAYER STYLES */
 
-@media (max-width:640px) and (orientation:portrait){
+@media (max-width:639px){
     #ui-layer {
     
         /* SEARCH BAR STYLES */
@@ -10,48 +10,123 @@
         }
         #search-bar {
             margin-top:30px;
-            padding:20px 30px;
+            padding:10px 15px;
             background:#fff;
             #search-icon {
                 img {
-                    width:25px;
+                    width:15px;
                     vertical-align:top;
-                    margin-top:6px;
-                    margin-left:-5px;
+                    margin-top:3px;
+                    margin-left:-2px;
                 }
             }
             input {
-                font-size:20px;
-                width:~"calc(100% - 180px)"; /* 50px left margin, 130px for icons on right */
-                margin-left:50px;
+                font-size:15px;
+                width:~"calc(100% - 120px)"; /* 50px left margin, 130px for icons on right */
+                margin-left:25px;
             }
             #search-bar-options {
                 li {        
                     img {
-                        width:25px;
-                        margin-top:4px;
+                        width:18px;
+                        margin-top:2px;
                     }
                 }
                 #search-bar-favourite {
-                    margin-left:20px;
+                    margin-left:10px;
                 }
             }
         }
         #search-bar-expanded {
             margin:0 15px;
-            top:136px;
+            top:70px;
             #favourite-title {
-                font-size:30px;
-                padding:20px 30px;
+                font-size:15px;
+                padding:10px 15px;
             }
             #favourite-locations {
-                font-size:30px;
+                font-size:15px;
                 li {
-                    padding:20px 30px;
+                    padding:10px 15px;
                     .favourite-delete {
-                        margin-top:10px;
+                        margin-top:5px;
+                        width: 12px;
                     }
                 }
+            }
+        }
+        /* BUTTON STYLES */
+        
+        #left-button, #right-button, #left-legend-button, #right-legend-button, #left-topic-button, #right-topic-button {
+            img {
+                width: 50px;
+            }
+        }
+        #left-button, #right-button {
+            bottom:12px;
+        }
+        #left-legend-button, #right-legend-button {
+           bottom: 74px;
+        }
+        #left-topic-button, #right-topic-button {
+            bottom: 136px;
+        }
+        #left-button, #left-legend-button, #left-topic-button {
+            left:12px;
+        }
+        #right-button, #right-legend-button, #right-topic-button {
+            right:12px;
+        }
+    }
+    /* SLIDER LAYER STYLES */
+    #slider-layer {
+        left: 160px;
+        #slider-bar {
+            width: 29px;
+            #slider-middle {
+                height: 86px;
+                top: 50%;
+                margin-top: -43px;
+                margin-left: 11px;
+            }
+        }
+    }
+    /* MAP SELECT LAYER STYLES */
+    #map-select-layer {
+        #menu-header {
+            height: 75px;
+            box-sizing:border-box;
+            #menu-icon {
+                width: 19px;
+                height: 19px;
+                top: 35px;
+                left: 15px;
+            }
+            #menu-title {
+                padding-top: 31px;
+                font-size: 18px;
+            }
+        }
+        #menu-options {
+            margin: 8px;
+            box-shadow:0px 0px 5px rgba(0, 0, 0, .2);
+            ul {
+                list-style-type: none;
+                display: default;
+                li {
+                    padding: 15px;
+                    font-size: 15px;
+                    .tick-icon {
+                        float: right;
+                        width: 16px;
+                        height: 13px;
+                        margin-top: 2px;
+                    }
+                }
+                .option-last {
+                    border-bottom: 0px;
+                }
+
             }
         }
     }

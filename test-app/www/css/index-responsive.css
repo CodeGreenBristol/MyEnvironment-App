@@ -1,8 +1,10 @@
 /* UI LAYER STYLES */
 /* UI LAYER STYLES */
-@media (max-width: 640px) and (orientation: portrait) {
+@media (max-width: 639px) {
   #ui-layer {
     /* SEARCH BAR STYLES */
+  
+    /* BUTTON STYLES */
   
   }
   #ui-layer #search-bar,
@@ -11,44 +13,126 @@
   }
   #ui-layer #search-bar {
     margin-top: 30px;
-    padding: 20px 30px;
+    padding: 10px 15px;
     background: #fff;
   }
   #ui-layer #search-bar #search-icon img {
-    width: 25px;
+    width: 15px;
     vertical-align: top;
-    margin-top: 6px;
-    margin-left: -5px;
+    margin-top: 3px;
+    margin-left: -2px;
   }
   #ui-layer #search-bar input {
-    font-size: 20px;
-    width: calc(100% - 180px);
+    font-size: 15px;
+    width: calc(100% - 120px);
     /* 50px left margin, 130px for icons on right */
   
-    margin-left: 50px;
+    margin-left: 25px;
   }
   #ui-layer #search-bar #search-bar-options li img {
-    width: 25px;
-    margin-top: 4px;
+    width: 18px;
+    margin-top: 2px;
   }
   #ui-layer #search-bar #search-bar-options #search-bar-favourite {
-    margin-left: 20px;
+    margin-left: 10px;
   }
   #ui-layer #search-bar-expanded {
     margin: 0 15px;
-    top: 136px;
+    top: 70px;
   }
   #ui-layer #search-bar-expanded #favourite-title {
-    font-size: 30px;
-    padding: 20px 30px;
+    font-size: 15px;
+    padding: 10px 15px;
   }
   #ui-layer #search-bar-expanded #favourite-locations {
-    font-size: 30px;
+    font-size: 15px;
   }
   #ui-layer #search-bar-expanded #favourite-locations li {
-    padding: 20px 30px;
+    padding: 10px 15px;
   }
   #ui-layer #search-bar-expanded #favourite-locations li .favourite-delete {
-    margin-top: 10px;
+    margin-top: 5px;
+    width: 12px;
+  }
+  #ui-layer #left-button img,
+  #ui-layer #right-button img,
+  #ui-layer #left-legend-button img,
+  #ui-layer #right-legend-button img,
+  #ui-layer #left-topic-button img,
+  #ui-layer #right-topic-button img {
+    width: 50px;
+  }
+  #ui-layer #left-button,
+  #ui-layer #right-button {
+    bottom: 12px;
+  }
+  #ui-layer #left-legend-button,
+  #ui-layer #right-legend-button {
+    bottom: 74px;
+  }
+  #ui-layer #left-topic-button,
+  #ui-layer #right-topic-button {
+    bottom: 136px;
+  }
+  #ui-layer #left-button,
+  #ui-layer #left-legend-button,
+  #ui-layer #left-topic-button {
+    left: 12px;
+  }
+  #ui-layer #right-button,
+  #ui-layer #right-legend-button,
+  #ui-layer #right-topic-button {
+    right: 12px;
+  }
+  /* SLIDER LAYER STYLES */
+  #slider-layer {
+    left: 160px;
+  }
+  #slider-layer #slider-bar {
+    width: 29px;
+  }
+  #slider-layer #slider-bar #slider-middle {
+    height: 86px;
+    top: 50%;
+    margin-top: -43px;
+    margin-left: 11px;
+  }
+  /* MAP SELECT LAYER STYLES */
+  #map-select-layer #menu-header {
+    height: 75px;
+    box-sizing: border-box;
+  }
+  #map-select-layer #menu-header #menu-icon {
+    width: 19px;
+    height: 19px;
+    top: 35px;
+    left: 15px;
+  }
+  #map-select-layer #menu-header #menu-title {
+    padding-top: 31px;
+    font-size: 18px;
+  }
+  #map-select-layer #menu-options {
+    margin: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  }
+  #map-select-layer #menu-options ul {
+    list-style-type: none;
+    display: default;
+  }
+  #map-select-layer #menu-options ul li {
+    padding: 15px;
+    font-size: 15px;
+  }
+  #map-select-layer #menu-options ul li .tick-icon {
+    float: right;
+    width: 16px;
+    height: 13px;
+    margin-top: 2px;
+  }
+  #map-select-layer #menu-options ul .option-last {
+    border-bottom: 0px;
   }
 }
+
+/* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */

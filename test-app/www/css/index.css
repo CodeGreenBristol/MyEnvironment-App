@@ -55,15 +55,14 @@ body {
   box-sizing: border-box;
 }
 #map-select-layer #menu-header #menu-icon {
-  float: left;
+  position: absolute;
   width: 37px;
   height: 38px;
-  margin: 70px 0px 20px 30px;
+  top: 70px;
+  left: 30px;
 }
 #map-select-layer #menu-header #menu-title {
-  float: left;
   padding-top: 63px;
-  margin-left: calc(50% - 175px);
   text-align: center;
   font-family: "Open Sans", sans-serif;
   font-weight: 300;
@@ -81,7 +80,7 @@ body {
 }
 #map-select-layer #menu-options ul li {
   padding: 30px;
-  border-bottom: 1px solid #919090;
+  border-bottom: 1px solid #ddd;
   color: #000;
   font-family: "Open Sans", sans-serif;
   font-weight: 300;
@@ -185,13 +184,43 @@ body {
   z-index: 100;
   bottom: 25px;
 }
-#ui-layer #left-button {
+#ui-layer #left-button,
+#ui-layer #left-legend-button,
+#ui-layer #left-topic-button {
   left: 25px;
 }
-#ui-layer #right-button {
+#ui-layer #right-button,
+#ui-layer #right-legend-button,
+#ui-layer #right-topic-button {
   right: 25px;
+}
+#ui-layer #left-legend-button,
+#ui-layer #right-legend-button,
+#ui-layer #left-topic-button,
+#ui-layer #right-topic-button {
+  position: absolute;
+  z-index: 100;
+  display: none;
+}
+#ui-layer #left-legend-button,
+#ui-layer #right-legend-button {
+  bottom: 150px;
+}
+#ui-layer #left-topic-button,
+#ui-layer #right-topic-button {
+  bottom: 275px;
 }
 /* MAP LAYER STYLES */
 #map-layer {
   z-index: 50;
+  /*#div [margin-left = 5px; margin-right = 5px; z-index = 1000000; position = absolute; left = 0px; bottom = 0px;] {
+        display: none;
+    }*/
+
+}
+#map-layer .gmnoprint {
+  display: none;
+}
+#map-layer a [href="http://maps.google.com/maps?ll=51.45,-2.6&z=15&t=m&hl=en-US&gl=US&mapclient=apiv3"] {
+  display: none;
 }
