@@ -124,11 +124,9 @@
     padding: 15px;
     font-size: 15px;
   }
-  #map-select-layer #menu-options ul li .tick-icon {
-    float: right;
-    width: 16px;
-    height: 13px;
-    margin-top: 2px;
+  #map-select-layer #menu-options ul .topic-selected {
+    background-size: 16px 13px;
+    background-position: calc(100% - 15px) 50%;
   }
   #map-select-layer #menu-options ul .option-last {
     border-bottom: 0px;

@@ -136,3 +136,12 @@ $('#left-topic-button').click(function() {
     });
 
 // SELECT TOPIC FROM MENU
+$('#menu-options li').click(function() {
+    if(!$(this).hasClass('topic-selected')) {
+        $('.topic-selected').removeClass('topic-selected');
+        $(this).addClass('topic-selected');
+    }
+});
+
+// DRAG SLIDER
+$( "#slider-layer" ).draggable({containment: "parent"});
