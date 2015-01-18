@@ -1,9 +1,0 @@
-Cheetah==2.4.4
-FeatureServer==1.12
-Markdown==2.5.2
-Paste==1.7.5.1
-dxfwrite==1.2.0
-lxml==3.4.1
-psycopg2==2.5.4
-simplejson==3.6.5
-wsgiref==0.1.2
