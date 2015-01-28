@@ -170,20 +170,27 @@ body {
   font-size: 30px;
   padding: 20px 30px;
 }
-#ui-layer #search-bar-expanded #favourite-locations {
+#ui-layer #search-bar-expanded .favourite-locations {
   list-style-type: none;
   font-weight: 400;
   font-size: 30px;
 }
-#ui-layer #search-bar-expanded #favourite-locations li {
+#ui-layer #search-bar-expanded .favourite-locations li {
   padding: 20px 30px;
   border-bottom: 1px solid #ddd;
 }
+
+#ui-layer #search-bar-expanded .favourite-locations li a {
+  white-space:nowrap;
+  color: #000000;
+  text-decoration: none;
+}
+/*
 #ui-layer #search-bar-expanded #favourite-locations li .favourite-delete {
   float: right;
   margin-top: 10px;
   vertical-align: top;
-}
+} */
 #ui-layer #left-button-block {
   display: none;
 }

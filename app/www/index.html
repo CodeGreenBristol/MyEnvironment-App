@@ -2,13 +2,15 @@
 <html>
     <head>
         <title>Environment Agency | What's in Your Backyard</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<meta name="author" content="Julian Laval" /> 
-		<meta name="description" content="" /> 
-		<meta name="keywords" content="" />
-		<link rel="shortcut icon" type="image/png" href="" />
-		<!-- PAGE CSS -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta name="author" content="Julian Laval" /> 
+        <meta name="description" content="" /> 
+        <meta name="keywords" content="" />
+        <link rel="shortcut icon" type="image/png" href="" />
+        <!--LEAFLET CSS-->
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+        <!-- PAGE CSS -->
         <link rel="stylesheet" type="text/css" href="css/fonts.css">
         <link rel="stylesheet" type="text/css" href="css/index.css">
         <link rel="stylesheet" type="text/css" href="css/index-responsive.css">
@@ -32,7 +34,7 @@
         <div id="ui-layer">
             <div id="search-bar">
                 <div id="search-icon"><img src="img/search/search-icon.png" alt="Search icon" /></div>
-                <input type="text" placeholder="Postcode" />
+                <input id="search-input" type="text" placeholder="Postcode" />
                 <ul id="search-bar-options">
                     <li id="search-bar-location"><img src="img/search/location-icon.png" alt="Location icon" /></li>
                     <li id="search-bar-favourite"><img src="img/search/favourite-empty-icon.png" alt="Favourite icon" /></li>
@@ -40,11 +42,7 @@
                 <div class="clearfix"></div>               
             </div>
             <div id="search-bar-expanded">
-                <div id="favourite-title">Saved locations</div>
-                <ul id="favourite-locations">
-                    <li>BS6 6NB<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>
-                    <li>BS8 1BU<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>
-                </ul>
+              <!--search result divs runtime generated here-->
             </div>
             
             <div id="right-button-block">
@@ -66,8 +64,8 @@
         <div id="map-layer"></div>
         <!-- JQUERY -->
         <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <!-- GOOGLE MAPS JS -->
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_RwWyPpAisEvXWlXd7dDx--nl2OrMj9g"></script>
+        <!-- LEAFLET JS -->
+         <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
         <!-- PAGE JS -->
         <script type="text/javascript" src="js/index.js"></script>
     </body>
