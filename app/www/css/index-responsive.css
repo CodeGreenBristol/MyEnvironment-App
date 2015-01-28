@@ -1,5 +1,124 @@
 /* UI LAYER STYLES */
 /* UI LAYER STYLES */
+@media (max-width: 1024px) and (min-width: 768px) {
+  #ui-layer {
+    /* SEARCH BAR STYLES */
+  
+    /* BUTTON STYLES */
+  
+  }
+  #ui-layer #search-bar,
+  #ui-layer #search-bar-expanded {
+    width: calc(100% - 30px);
+  }
+  #ui-layer #search-bar {
+    margin-top: 30px;
+    padding: 15px 22px;
+  }
+  #ui-layer #search-bar #search-icon img {
+    width: 26px;
+    margin-top: 6px;
+    margin-left: -4px;
+  }
+  #ui-layer #search-bar input {
+    font-size: 26px;
+  }
+  #ui-layer #search-bar #search-bar-options li img {
+    width: 30px;
+    margin-top: 3px;
+  }
+  #ui-layer #search-bar #search-bar-options #search-bar-favourite {
+    margin-left: 15px;
+  }
+  #ui-layer #search-bar-expanded {
+    margin: 0 15px;
+    top: 96px;
+  }
+  #ui-layer #search-bar-expanded #favourite-title {
+    font-size: 26px;
+    padding: 15px 22px;
+  }
+  #ui-layer #search-bar-expanded #favourite-locations {
+    font-size: 26px;
+  }
+  #ui-layer #search-bar-expanded #favourite-locations li {
+    padding: 15px 22px;
+  }
+  #ui-layer #search-bar-expanded #favourite-locations li .favourite-delete {
+    margin-top: 9px;
+    width: 17px;
+  }
+  #ui-layer #left-button img,
+  #ui-layer #right-button img,
+  #ui-layer #left-legend-button img,
+  #ui-layer #right-legend-button img,
+  #ui-layer #left-topic-button img,
+  #ui-layer #right-topic-button img {
+    width: 74px;
+  }
+  #ui-layer #left-button,
+  #ui-layer #right-button {
+    bottom: 19px;
+  }
+  #ui-layer #left-legend-button,
+  #ui-layer #right-legend-button {
+    bottom: 111px;
+  }
+  #ui-layer #left-topic-button,
+  #ui-layer #right-topic-button {
+    bottom: 204px;
+  }
+  #ui-layer #left-button,
+  #ui-layer #left-legend-button,
+  #ui-layer #left-topic-button {
+    left: 19px;
+  }
+  #ui-layer #right-button,
+  #ui-layer #right-legend-button,
+  #ui-layer #right-topic-button {
+    right: 19px;
+  }
+  /* SLIDER LAYER STYLES */
+  #slider-layer {
+    left: 160px;
+  }
+  #slider-layer #slider-bar {
+    width: 44px;
+  }
+  #slider-layer #slider-bar #slider-middle {
+    height: 173px;
+    margin-top: -86px;
+  }
+  /* MAP SELECT LAYER STYLES */
+  #map-select-layer #menu-header {
+    height: 107px;
+  }
+  #map-select-layer #menu-header #menu-icon {
+    width: 27px;
+    height: 27px;
+    top: 47px;
+    left: 22px;
+  }
+  #map-select-layer #menu-header #menu-title {
+    padding-top: 47px;
+    font-size: 26px;
+  }
+  #map-select-layer #menu-options {
+    max-height: calc(100% - 107px - 16px);
+    margin: 12px;
+  }
+  #map-select-layer #menu-options ul li {
+    padding: 22px;
+    font-size: 26px;
+  }
+  #map-select-layer #menu-options ul .topic-selected {
+    background-size: 24px 20px;
+    background-position: calc(100% - 22px) 50%;
+  }
+  #map-select-layer #menu-options ul .option-last {
+    border-bottom: 0px;
+  }
+}
 @media (max-width: 639px) {
   #ui-layer {
     /* SEARCH BAR STYLES */
@@ -113,6 +232,8 @@
     font-size: 18px;
   }
   #map-select-layer #menu-options {
+    height: calc(100% - 75px - 16px);
+    overflow-y: auto;
     margin: 8px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   }
@@ -124,15 +245,11 @@
     padding: 15px;
     font-size: 15px;
   }
-  #map-select-layer #menu-options ul li .tick-icon {
-    float: right;
-    width: 16px;
-    height: 13px;
-    margin-top: 2px;
+  #map-select-layer #menu-options ul .topic-selected {
+    background-size: 16px 13px;
+    background-position: calc(100% - 15px) 50%;
   }
   #map-select-layer #menu-options ul .option-last {
     border-bottom: 0px;
   }
 }
-
-/* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */
