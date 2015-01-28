@@ -9,11 +9,11 @@ html,
 body {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 #ui-layer,
 #map-layer,
-#map-select-layer,
-#slider-layer {
+#map-select-layer {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -22,31 +22,36 @@ body {
   clear: both;
 }
 /* SLIDER LAYER STYLES */
-#slider-layer {
+#slider-bar {
   z-index: 75;
-  width: 59px;
-  left: 320px;
-}
-#slider-layer #slider-bar {
-  z-index: 75;
+  width: 50px;
+  left: -25px;
   position: absolute;
-  width: 59px;
   height: 100%;
-  background-image: url(../img/slider/slider-bar.png);
-  background-repeat: repeat-y;
+  background-image: url('../img/slider/slider-middle.png'), url('../img/slider/slider-bar.png');
+  background-repeat: no-repeat, repeat-y;
+  background-position: center, center;
 }
-#slider-layer #slider-bar #slider-middle {
+#slider-bar #drag-right,
+#slider-bar #drag-left {
   position: absolute;
-  z-index: 80;
-  height: 173px;
   top: 50%;
-  margin-top: -86px;
+  margin-top: -30px;
+}
+#slider-bar #drag-left {
+  display: none;
+  margin-left: -55px;
+}
+#slider-bar #drag-right {
+  margin-left: 45px;
 }
 /* MAP SELECT LAYER STYLES */
 #map-select-layer {
   z-index: 200;
   background-color: #eeeeee;
+  height: 0px;
   display: none;
+  margin-top: 100%;
 }
 #map-select-layer #menu-header {
   width: 100%;
@@ -178,20 +183,19 @@ body {
   margin-top: 10px;
   vertical-align: top;
 }
-#ui-layer #left-button,
-#ui-layer #right-button {
+#ui-layer #left-button-block {
+  display: none;
+}
+#ui-layer #left-button-block,
+#ui-layer #right-button-block {
   position: absolute;
   z-index: 100;
   bottom: 25px;
 }
-#ui-layer #left-button,
-#ui-layer #left-legend-button,
-#ui-layer #left-topic-button {
+#ui-layer #left-button-block {
   left: 25px;
 }
-#ui-layer #right-button,
-#ui-layer #right-legend-button,
-#ui-layer #right-topic-button {
+#ui-layer #right-button-block {
   right: 25px;
 }
 #ui-layer #left-legend-button,
@@ -199,16 +203,38 @@ body {
 #ui-layer #left-topic-button,
 #ui-layer #right-topic-button {
   position: absolute;
-  z-index: 100;
+  transform: scale(0.01);
   display: none;
+}
+#ui-layer #left-legend-button.btn-expanded,
+#ui-layer #right-legend-button.btn-expanded,
+#ui-layer #left-topic-button.btn-expanded,
+#ui-layer #right-topic-button.btn-expanded {
+  transform: scale(1);
 }
 #ui-layer #left-legend-button,
 #ui-layer #right-legend-button {
-  bottom: 150px;
+  bottom: 120px;
+}
+#ui-layer #left-legend-button:not(.btn-expanded),
+#ui-layer #right-legend-button:not(.btn-expanded) {
+  transition: all .5s ease;
+}
+#ui-layer #left-legend-button.btn-expanded,
+#ui-layer #right-legend-button.btn-expanded {
+  transition: all .25s ease;
 }
 #ui-layer #left-topic-button,
 #ui-layer #right-topic-button {
-  bottom: 275px;
+  bottom: 240px;
+}
+#ui-layer #left-topic-button:not(.btn-expanded),
+#ui-layer #right-topic-button:not(.btn-expanded) {
+  transition: all .25s ease;
+}
+#ui-layer #left-topic-button.btn-expanded,
+#ui-layer #right-topic-button.btn-expanded {
+  transition: all .5s ease;
 }
 /* MAP LAYER STYLES */
 #map-layer {

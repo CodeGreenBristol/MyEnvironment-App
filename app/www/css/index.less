@@ -10,9 +10,10 @@
 html, body {
   width: 100%;
   height: 100%;
+  overflow:hidden;
 }
 
-#ui-layer, #map-layer, #map-select-layer, #slider-layer {
+#ui-layer, #map-layer, #map-select-layer {
     width: 100%;
     height: 100%;
     position:absolute;
@@ -23,32 +24,37 @@ html, body {
 }
 
 /* SLIDER LAYER STYLES */
-#slider-layer {
-    z-index: 75;
-    width: 59px;
-    left: 320px;
-    #slider-bar {
-        z-index: 75;
-        position: absolute;
-        width: 59px;
-        height: 100%;
-        background-image: url(../img/slider/slider-bar.png);
-        background-repeat: repeat-y;
-        #slider-middle {
-            position: absolute;
-            z-index: 80;
-            height: 173px;
-            top: 50%;
-            margin-top: -86px;
-        }
+#slider-bar {
+    z-index: 75;   
+    width: 50px;
+    left:-25px;
+    position: absolute;
+    height: 100%;
+    background-image: url('../img/slider/slider-middle.png'), url('../img/slider/slider-bar.png');
+    background-repeat: no-repeat, repeat-y;
+    background-position:center, center;
+    #drag-right, #drag-left {
+        position:absolute;
+        top:50%;
+        margin-top:-30px;
+    }
+    #drag-left {
+        display:none;
+        margin-left:-55px;
+    }
+    #drag-right {
+        margin-left:45px;
     }
 }
 
 /* MAP SELECT LAYER STYLES */
+
 #map-select-layer {
     z-index: 200;
     background-color: #eeeeee;
-    display: none;
+    height:0px;
+    display:none;
+    margin-top:100%;
     #menu-header {
         width: 100%;
         background-color: #64b551;
@@ -181,27 +187,45 @@ html, body {
     
     /* BUTTON STYLES */
     
-    #left-button, #right-button {
+    #left-button-block {
+        display:none;
+    }
+    #left-button-block, #right-button-block {
         position:absolute;
         z-index:100;
         bottom:25px;
     }
-    #left-button, #left-legend-button, #left-topic-button {
+    #left-button-block {
         left:25px;
     }
-    #right-button, #right-legend-button, #right-topic-button {
+    #right-button-block {
         right:25px;
     }
     #left-legend-button, #right-legend-button, #left-topic-button, #right-topic-button {
         position: absolute;
-        z-index: 100;
-        display: none;
+        transform: scale(0.01);
+        display:none;       
+        &.btn-expanded {            
+            transform: scale(1);
+        }
     }
     #left-legend-button, #right-legend-button {
-        bottom: 150px;
+        bottom: 120px;
+        &:not(.btn-expanded) {
+            transition:all .5s ease;
+        }
+        &.btn-expanded {
+            transition:all .25s ease;
+        }
     }
     #left-topic-button, #right-topic-button {
-        bottom: 275px;
+        bottom: 240px;
+        &:not(.btn-expanded) {
+            transition:all .25s ease;
+        }
+        &.btn-expanded {
+            transition:all .5s ease;
+        }
     }
 }
 
