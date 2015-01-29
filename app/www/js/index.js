@@ -252,8 +252,9 @@ $('#search-results').on('click', 'li', function(){
     map.panTo(location);
     var type = $(this).attr('data-type');
     $('#search-input').val($(this).text());
-
+    console.log(type);
     //set zoom level based on type of location
+    //known outliers: tadley = administrative?
     if(type == "administrative") {  //country
       map.setZoom(8);
     } else if(type == "city") {
