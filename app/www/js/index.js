@@ -2,40 +2,46 @@
 
 var map;
 function initialize() {
-  //https://www.mapbox.com/developers/api/
-  var accToken = '?access_token=pk.eyJ1IjoibWMxMzgxOCIsImEiOiI4Tlp2cFlBIn0.reMspV4lEYawDlSZ6U1fqQ';
-  map = L.map('map-layer').setView([51.45, -2.6], 13);
-  L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.concat(accToken), {
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery Â© <a href="http://mapbox.com">Mapbox</a>',
-      maxZoom: 18
-  }).addTo(map);
+    //https://www.mapbox.com/developers/api/
+    var accToken = '?access_token=pk.eyJ1IjoibWMxMzgxOCIsImEiOiI4Tlp2cFlBIn0.reMspV4lEYawDlSZ6U1fqQ';
+    map = L.map('map-layer', {
+        attributionControl: false,
+        zoomControl:false,
+        center: [51.45, -2.6],
+        zoom: 13
+    });
+    
+    L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.concat(accToken), {
+        maxZoom: 18
+    }).addTo(map);
   
-  var bounds = map.getBounds();
+    var bounds = map.getBounds();
   
-  featureStyle = {
-      fillColor: 'green',
-      visible: true,
-      strokeWeight: 1
-  };
-  var rootUrl = "http://54.154.15.47/geoserver/ea/ows";
-  var defaultParameters = {
-      service: 'WFS',
-      version: '2.0.0',
-      request: 'GetFeature',
-      typeName: 'ea:Flood_Warning_Areas',
-      outputFormat : 'text/javascript',
-      format_options : 'callback:getJson',
-      maxfeatures: 5,
-      BBOX: bounds._southWest.lat+","+bounds._southWest.lng+","+bounds._northEast.lat+","+bounds._northEast.lng,
-      SrsName : 'EPSG:41001'
-  };
-  var parameters = L.Util.extend(defaultParameters);
+    featureStyle = {
+        fillColor: 'green',
+        visible: true,
+        strokeWeight: 1
+    };
+    var rootUrl = "http://54.154.15.47/geoserver/ea/ows";
+    var defaultParameters = {
+        service: 'WFS',
+        version: '2.0.0',
+        request: 'GetFeature',
+        typeName: 'ea:Flood_Warning_Areas',
+        outputFormat : 'text/javascript',
+        format_options : 'callback:getJson',
+        maxfeatures: 5,
+        bbox: bounds._southWest.lat+","+bounds._southWest.lng+","+bounds._northEast.lat+","+bounds._northEast.lng,
+        SrsName : 'EPSG:41001'
+    };
+    
+    var parameters = L.Util.extend(defaultParameters);
   //_url = rootUrl + L.Util.getParamString(parameters);
   //FROM SAM:
-  _url = "http://54.154.15.47/geoserver/ea/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=ea%3Aflood_warning_areas&srsName=EPSG%3A3857&maxFeatures=1&outputFormat=application%2Fjson&bbox=-280065.271637%2C6665193.142305%2C-270281.332016%2C6687726.302866";
+    _url = "http://54.154.15.47/geoserver/ea/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=ea%3Aflood_warning_areas&srsName=EPSG%3A3857&maxFeatures=1&outputFormat=application%2Fjson&bbox=-280065.271637%2C6665193.142305%2C-270281.332016%2C6687726.302866";
   //_url = "http://54.154.15.47:80/geoserver/wfs?request=GetFeature&version=1.1.0&typeName=ea:Flood_Warning_Areas&BBOX=-75.102613,40.212597,-72.361859,41.512517,EPSG:4326&outputFormat=application/json";
-  console.log("using url: " + _url);
-  console.log(map);
+    console.log("using url: " + _url);
+    console.log(map);
   /*
   var WFSLayer = null;
   var ajax = $.ajax({
@@ -68,19 +74,21 @@ $('#search-bar input').click(function(){
 
     // IF HIDDEN, SHOW
     if(!$('#search-bar-expanded').is(':visible')){
+        
+        $('#search-mask').fadeIn();
+        
         // SLIDE DOWN
         $('#search-bar-expanded').slideDown();
 
         // EXCHANGE ICON TO GO BACK
         $('#search-icon img').fadeOut(100, function(){
             $(this).attr('src', 'img/search/left-arrow-icon.png').fadeIn();
-        });
+        });      
     }
 
 });
 
 // CLOSE SEARCH BAR
-
 $('#search-icon').click(function(){
     hideSearchBar();
 });
@@ -91,6 +99,7 @@ $('html').click(function() {
 function hideSearchBar() {
     // IF VISIBLE, HIDE
     if($('#search-bar-expanded').is(':visible')){
+        $('#search-mask').fadeOut();
         $('#search-bar-expanded').slideUp();
         $('#search-icon img').fadeOut(100, function(){
             $(this).attr('src', 'img/search/search-icon.png').fadeIn();
@@ -205,52 +214,43 @@ $('body').on('mousemove', function(e){
 
 // ADDRESS SEARCH
 // TODO: proper styling, (responsiveness etc)
+var searchTimer;
 $('#search-input').on('input', function() { 
-    addr_search();
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function(){ addrSearch(); }, 250);
 });
 
-function addr_search() {
-  var inp = document.getElementById("search-input");
-  var num_results = 5;
+function addrSearch() {
+  var inp = $("#search-input");
   
   //http://nominatim.openstreetmap.org/
-  $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit='+num_results+'&countrycodes=gb&q=' + inp.value, function(data) {
+  $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=gb&q=' + inp.val(), function(data) {
     var items = [];
     $.each(data, function(key, val) {
-      //limit result lengths
-      maxLen = 60;
-      if(val.display_name.length > maxLen) {
-        locationText = val.display_name.substring(0,40) + " ...";
-      } else {
-        locationText = val.display_name;
-      }
-      items.push(
-        "<li><a href='#' onclick='chooseAddr(" +
-        val.lat + ", " + val.lon + ");return false;'>" + locationText +
-        '</a></li>'
-      );
+        items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lon+"'>" + val.display_name +'</li>');
     });
-    $('#search-bar-expanded').empty();
+    
+    $('#search-results .expanded-locations').empty();
     if (items.length != 0) {
-      $('<ul/>', {
-        'class': 'favourite-locations',
-        html: items.join('')
-      }).appendTo('#search-bar-expanded');
+        $(items.join('')).appendTo('#search-results .expanded-locations');
+        $('#search-results .expanded-title').text("Search results");
     } else {
-      $('<p>', { html: "No results found" }).appendTo('#search-bar-expanded');
+        $('#search-results .expanded-title').text("No results found");
     }
   });
 }
 
-function chooseAddr(lat, lng, type) {
-  var location = new L.LatLng(lat, lng);
-  console.log(map);
-  map.panTo(location);
+$('#search-results').on('click', 'li', function(){
+    
+    var location = new L.LatLng($(this).attr('data-lat'), $(this).attr('data-lon'));
+    map.panTo(location);
 
-  if (type == 'city' || type == 'administrative') {
-    map.setZoom(11);
-  } else {
+    $('#search-input').val($(this).text());
+    
     map.setZoom(13);
-  }
-  hideSearchBar();
-}
+    
+    hideSearchBar();
+});
+    
+  
+
