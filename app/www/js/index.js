@@ -220,39 +220,56 @@ $('body').on('mousemove', function(e){
 // TODO: proper styling, (responsiveness etc)
 var searchTimer;
 $('#search-input').on('input', function() { 
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(function(){ addrSearch(); }, 250);
+    var inp = $("#search-input");
+    $.ajax({
+      //fetch from http://nominatim.openstreetmap.org/
+      url: 'http://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=gb&q=' + inp.val(),
+      dataType: 'json',
+      success: addrSearch,
+      timeout: 1000 //1 second timeout
+    });
 });
 
-function addrSearch() {
+function addrSearch(data) {
+    console.log("call");
   var inp = $("#search-input");
-  
-  //http://nominatim.openstreetmap.org/
-  $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=gb&q=' + inp.val(), function(data) {
-    var items = [];
-    $.each(data, function(key, val) {
-        items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lon+"'>" + val.display_name +'</li>');
-    });
-    
-    $('#search-results .expanded-locations').empty();
-    if (items.length != 0) {
-        $(items.join('')).appendTo('#search-results .expanded-locations');
-        $('#search-results .expanded-title').text("Search results");
-    } else {
-        $('#search-results .expanded-title').text("No results found");
-    }
+  if(typeof data === "undefined") {
+    return;
+  }
+  var items = [];
+  $.each(data, function(key, val) {
+      items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lon+"' data-type='"+val.type+"'>" + val.display_name +'</li>');
   });
+
+  $('#search-results .expanded-locations').empty();
+  if (items.length != 0) {
+      $(items.join('')).appendTo('#search-results .expanded-locations');
+      $('#search-results .expanded-title').text("Search results");
+  } else {
+      $('#search-results .expanded-title').text("No results found");
+  }
 }
 
 $('#search-results').on('click', 'li', function(){
     
     var location = new L.LatLng($(this).attr('data-lat'), $(this).attr('data-lon'));
     map.panTo(location);
-
+    var type = $(this).attr('data-type');
     $('#search-input').val($(this).text());
-    
-    map.setZoom(13);
-    
+    console.log(type);
+    //set zoom level based on type of location
+    //known outliers: tadley = administrative?
+    if(type == "administrative") {  //country
+      map.setZoom(8);
+    } else if(type == "city") {
+      map.setZoom(12);
+    } else if(type == "town") {
+      map.setZoom(13);
+    } else if(type == "village") {
+      map.setZoom(14);
+    } else {
+      map.setZoom(13);
+    }
     hideSearchBar();
 });
     
