@@ -1,74 +1,74 @@
 // MAP FUNCTIONS
-
 var map;
-function initialize() {
-    //https://www.mapbox.com/developers/api/
-    var accToken = '?access_token=pk.eyJ1IjoibWMxMzgxOCIsImEiOiI4Tlp2cFlBIn0.reMspV4lEYawDlSZ6U1fqQ';
-    map = L.map('map-layer', {
-        attributionControl: false,
-        zoomControl:false,
-        center: [51.45, -2.6],
-        zoom: 13
-    });
-    
-    L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.concat(accToken), {
-        maxZoom: 18
-    }).addTo(map);
   
-    var bounds = map.getBounds();
-  
-    featureStyle = {
-        fillColor: 'green',
-        visible: true,
-        strokeWeight: 1
-    };
-    var rootUrl = "http://54.154.15.47/geoserver/ea/ows";
-    var defaultParameters = {
-        service: 'WFS',
-        version: '2.0.0',
-        request: 'GetFeature',
-        typeName: 'ea:Flood_Warning_Areas',
-        outputFormat : 'text/javascript',
-        format_options : 'callback:getJson',
-        maxfeatures: 5,
-        bbox: bounds._southWest.lat+","+bounds._southWest.lng+","+bounds._northEast.lat+","+bounds._northEast.lng,
-        SrsName : 'EPSG:41001'
-    };
-    
-    var parameters = L.Util.extend(defaultParameters);
-  //_url = rootUrl + L.Util.getParamString(parameters);
-  //FROM SAM:
-    _url = "http://54.154.15.47/geoserver/ea/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=ea%3Aflood_warning_areas&srsName=EPSG%3A3857&maxFeatures=1&outputFormat=application%2Fjson&bbox=-280065.271637%2C6665193.142305%2C-270281.332016%2C6687726.302866";
-  //_url = "http://54.154.15.47:80/geoserver/wfs?request=GetFeature&version=1.1.0&typeName=ea:Flood_Warning_Areas&BBOX=-75.102613,40.212597,-72.361859,41.512517,EPSG:4326&outputFormat=application/json";
-    console.log("using url: " + _url);
-    console.log(map);
-  /*
-  var WFSLayer = null;
-  var ajax = $.ajax({
-    url : _url,
-    dataType : 'jsonp',
-    jsonpCallback : 'getJson',
-    success : function (response) {
-        console.log("success");
-        WFSLayer = L.geoJson(response, {
-            style: function (feature) {
-                return {
-                    stroke: false,
-                    fillColor: 'FFFFFF',
-                    fillOpacity: 0
-                };
-            }
-        }).addTo(map);
-        
-    },
-    error: function(response) {
-      console.log("Error: " + response);
-    }
-  });
-  */
-}
-window.onload = initialize;
+//https://www.mapbox.com/developers/api/
+var accToken = '?access_token=pk.eyJ1IjoibWMxMzgxOCIsImEiOiI4Tlp2cFlBIn0.reMspV4lEYawDlSZ6U1fqQ';
+map = L.map('map-layer', {
+    attributionControl: false,
+    zoomControl:false,
+    center: [51.45, -2.6],
+    zoom: 15,
+    minZoom: 8
+});
 
+L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.concat(accToken), {
+    maxZoom: 18
+}).addTo(map);
+
+
+
+  var featureLayerRight = new L.GeoJSON();
+ var featureLayerLeft = new L.GeoJSON();
+
+  getData();
+
+  window.loadGeoJson = function(data)
+  {
+    map.removeLayer(featureLayerLeft).removeLayer(featureLayerRight);
+    featureLayerRight = L.geoJson(data, {
+        style: { color: "#ff0000", fillColor: "#ff0000"}}
+    );
+    featureLayerLeft = L.geoJson(data, { style: {}});
+    map.addLayer(featureLayerRight);
+    // map.addLayer(featureLayerLeft);
+  };
+	
+function getData(){
+    
+    var geoJsonUrl ='http://54.154.15.47/geoserver/postgis/ows';
+    var defaultParameters = {
+      service: 'WFS',
+      version: '1.0.0',
+      request: 'getFeature',
+      srsName: 'urn:x-ogc:def:crs:EPSG:4326',
+      //srsName: 'urn:x-ogc:def:crs:EPSG:4277',
+      typeName: 'postgis:flood_warning_areas',
+      maxFeatures: 100,
+      outputFormat: 'text/javascript',
+      format_options: 'callback:loadGeoJson'
+    };
+
+    var customParams = {
+      bbox: map.getBounds().toBBoxString()
+    };
+
+    var parameters = L.Util.extend(defaultParameters, customParams);
+    // console.log(geoJsonUrl + L.Util.getParamString(parameters));
+
+    var url = geoJsonUrl + L.Util.getParamString(parameters);
+
+    $.ajax({
+        url: url,
+        jsonp: "loadGeoJson",
+        dataType: "jsonp"
+    });
+};
+
+map.on('moveend', function(){
+    if(map.getZoom() > 11){ getData(); }
+    else { map.removeLayer(featureLayerLeft).removeLayer(featureLayerRight); };
+});
+      
 // SEARCH BAR EXPAND
 $('#search-bar input').click(function(){
 
@@ -159,6 +159,10 @@ $('#menu-icon').click(function() {
 
 function sliderOffset(offset){
 
+    var newWidth = $(window).width() - offset;
+    $('svg.leaflet-zoom-animated').attr("width", newWidth);
+   // document.getElementsByTagName("svg")[0].getAttribute("viewBox").replace(document.getElementsByTagName("svg")[0].getAttribute("viewBox").split(" ")[2], newWidth)
+    
     // SHOW BUTTON IF SIDE IS VISIBLE
     if(offset >= 135 && !$('#left-button-block').is(':visible')){
         $('#left-button-block').fadeIn();

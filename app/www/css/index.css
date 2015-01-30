@@ -1,5 +1,8 @@
 /* COPYRIGHT INFO HERE */
 /* COPYRIGHT INFO HERE */
+.test {
+  clip-path: circle(60px at center);
+}
 /* GENERAL STYLES */
 * {
   padding: 0;
