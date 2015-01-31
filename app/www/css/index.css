@@ -201,8 +201,9 @@ body {
   float: right;
   margin-top: 10px;
   vertical-align: top;
+  z-index:110;
 }
-#ui-layer #search-bar-expanded .expanded-section#search-results {
+#ui-layer #search-bar-expanded .expanded-section #search-results {
   margin-top: 0px;
 }
 #ui-layer #left-button-block {

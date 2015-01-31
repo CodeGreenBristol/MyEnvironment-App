@@ -36,36 +36,9 @@ function initialize() {
     };
     
     var parameters = L.Util.extend(defaultParameters);
-  //_url = rootUrl + L.Util.getParamString(parameters);
   //FROM SAM:
     _url = "http://54.154.15.47/geoserver/ea/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=ea%3Aflood_warning_areas&srsName=EPSG%3A3857&maxFeatures=1&outputFormat=application%2Fjson&bbox=-280065.271637%2C6665193.142305%2C-270281.332016%2C6687726.302866";
-  //_url = "http://54.154.15.47:80/geoserver/wfs?request=GetFeature&version=1.1.0&typeName=ea:Flood_Warning_Areas&BBOX=-75.102613,40.212597,-72.361859,41.512517,EPSG:4326&outputFormat=application/json";
     console.log("using url: " + _url);
-    console.log(map);
-  /*
-  var WFSLayer = null;
-  var ajax = $.ajax({
-    url : _url,
-    dataType : 'jsonp',
-    jsonpCallback : 'getJson',
-    success : function (response) {
-        console.log("success");
-        WFSLayer = L.geoJson(response, {
-            style: function (feature) {
-                return {
-                    stroke: false,
-                    fillColor: 'FFFFFF',
-                    fillOpacity: 0
-                };
-            }
-        }).addTo(map);
-        
-    },
-    error: function(response) {
-      console.log("Error: " + response);
-    }
-  });
-  */
 }
 window.onload = initialize;
 
@@ -213,28 +186,39 @@ $('body').on('mousemove', function(e){
 
 
 // ADDRESS SEARCH
-// TODO: proper styling, (responsiveness etc)
+var curLocData;	//object for the current location data
 var searchTimer;
-$('#search-input').on('input', function() { 
-    var inp = $("#search-input");
-    $.ajax({
-      //fetch from http://nominatim.openstreetmap.org/
-      url: 'http://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=gb&q=' + inp.val(),
-      dataType: 'json',
-      success: addrSearch,
-      timeout: 1000 //1 second timeout
-    });
+$('#search-input').on('click', function() {
+  displaySavedLocations();
 });
 
+//search bar text changed
+$('#search-input').on('input', function() {
+    //reset fav icon & curloc
+    $('#search-bar-favourite img').attr("src","img/search/favourite-empty-icon.png");
+    curLocData = undefined;
+    //timer used so fast-typing doesnt trigger rapid requests
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function() {
+      var inp = $("#search-input");
+      var req = $.ajax({
+        //fetch from http://nominatim.openstreetmap.org/
+        url: 'http://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=gb&q=' + inp.val(),
+        dataType: 'json',
+        success: addrSearch
+      });
+    }, 250);
+});
+
+//Update the dropdown box with the search results (given by 'data')
 function addrSearch(data) {
-    console.log("call");
   var inp = $("#search-input");
   if(typeof data === "undefined") {
     return;
   }
   var items = [];
   $.each(data, function(key, val) {
-      items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lon+"' data-type='"+val.type+"'>" + val.display_name +'</li>');
+      items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lon+"' data-dispname='"+val.display_name+"' data-type='"+val.type+"'>" + val.display_name +'</li>');
   });
 
   $('#search-results .expanded-locations').empty();
@@ -246,28 +230,127 @@ function addrSearch(data) {
   }
 }
 
-$('#search-results').on('click', 'li', function(){
-    
-    var location = new L.LatLng($(this).attr('data-lat'), $(this).attr('data-lon'));
-    map.panTo(location);
-    var type = $(this).attr('data-type');
-    $('#search-input').val($(this).text());
-    console.log(type);
-    //set zoom level based on type of location
-    //known outliers: tadley = administrative?
-    if(type == "administrative") {  //country
-      map.setZoom(8);
-    } else if(type == "city") {
-      map.setZoom(12);
-    } else if(type == "town") {
-      map.setZoom(13);
-    } else if(type == "village") {
-      map.setZoom(14);
-    } else {
-      map.setZoom(13);
-    }
-    hideSearchBar();
-});
-    
-  
+//updates saved location ui with contents of 'savedLocations'
+function displaySavedLocations() {
+	var inp = $("#search-input");
+  var items = [];
+  $.each(savedLocations, function(key, val) {
+      items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lng+"' data-dispname='"+val.dispname+"' data-type='"+val.type+"'>" + val.dispname + 
+                  '<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>');
+  });
+  $('#saved-locations .expanded-locations').empty();
+  if (items.length != 0) {
+      $(items.join('')).appendTo('#saved-locations .expanded-locations');
+      $('#saved-locations .expanded-title').text("Saved locations");
+  } else {
+      $('#saved-locations .expanded-title').text("No saved locations");
+  }
+}
 
+//search result item is clicked
+$('#search-results').on('click', 'li', function(){
+	goToLocation(this);
+});
+
+//click on saved location item
+$('#saved-locations').on('click', 'li', function() {
+	goToLocation(this);
+});
+
+//click on delete saved location item
+//TODO: clicking this still triggers the above event to fire..
+$('#saved-locations').on('click', 'li .favourite-delete', function() {
+  var index = savedLocIndex({	
+    lat: $(this).attr('data-lat'),
+    lng: $(this).attr('data-lon'),
+    dispname: $(this).attr('data-dispname'),
+    type: $(this).attr('data-type')
+  });
+  savedLocations.splice(index, 1);
+  displaySavedLocations();
+});
+
+//pans map to location given by 'data'
+function goToLocation(data) {
+	//update current location
+ 	curLocData = {lat: $(data).attr('data-lat'),
+								lng: $(data).attr('data-lon'),
+								dispname: $(data).attr('data-dispname'),
+								type: $(data).attr('data-type') };
+  var location = new L.LatLng(curLocData.lat, curLocData.lng);
+  map.panTo(location);
+  $('#search-input').val($(data).text());
+  
+	//set zoom level based on type of location
+  //known outliers: tadley = administrative?
+  if(curLocData.type == "administrative") {  //country
+    map.setZoom(8);
+  } else if(curLocData.type == "city") {
+    map.setZoom(12);
+  } else if(curLocData.type == "town") {
+    map.setZoom(13);
+  } else if(curLocData.type == "village") {
+    map.setZoom(14);
+  } else {
+    map.setZoom(13);
+  }
+  hideSearchBar();
+  updateFavIcon();
+}
+
+//	FAVOURITE LOCATION
+var savedLocations = [];	//holds loc data for all saved locs
+localStorage.setItem("savedLocations", JSON.stringify(savedLocations));
+
+//location is favourited
+$('#search-bar-favourite').on('click', function() {
+  toggleFavourite();
+});
+
+//adds/removes from savedLocations, updates icon and the ui
+function toggleFavourite() {
+  if(typeof curLocData === "undefined") {
+		return;
+	}
+  if(savedLocations.length == 0) {
+		savedLocations.push(curLocData);
+	} else {  
+    var index = savedLocIndex(curLocData);
+    if(index != -1) {
+      savedLocations.splice(index, 1);
+    } else {
+      savedLocations.push(curLocData);
+    }
+  }
+  toggleFavIcon();
+  localStorage["savedLocations"] = JSON.stringify(savedLocations);
+	displaySavedLocations();
+}
+
+//finds the index of the input loc data in savedLocations
+function savedLocIndex(data) {
+  var ind = -1;
+  $.each(savedLocations, function(index, value) {
+    if(data.dispname == value.dispname) {
+      ind = index;
+    }
+  });
+  return ind;
+}
+
+//sets the fav icon according to whether curLocData is in savedLocations
+function updateFavIcon() {
+  if(savedLocIndex(curLocData) == -1) {
+    $('#search-bar-favourite img').attr("src","img/search/favourite-empty-icon.png");
+  } else {
+    $('#search-bar-favourite img').attr("src","img/search/favourite-icon.png");
+  }
+}
+
+function toggleFavIcon() {
+  if($('#search-bar-favourite img').attr("src") == "img/search/favourite-icon.png") {
+    $('#search-bar-favourite img').attr("src","img/search/favourite-empty-icon.png");
+  } else {
+    $('#search-bar-favourite img').attr("src","img/search/favourite-icon.png");
+  }
+}
