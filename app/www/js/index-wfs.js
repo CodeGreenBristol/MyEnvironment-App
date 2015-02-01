@@ -6,10 +6,8 @@ var accToken = '?access_token=pk.eyJ1IjoibWMxMzgxOCIsImEiOiI4Tlp2cFlBIn0.reMspV4
 map = L.map('map-layer', {
     attributionControl: false,
     zoomControl:false,
-    //center: [51.45, -2.6],
-    //zoom: 15,
-    center: [51.396, -2.298],
-    zoom: 14,
+    center: [51.45, -2.6],
+    zoom: 15,
     minZoom: 8
 });
 
@@ -17,28 +15,88 @@ L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.co
     maxZoom: 18
 }).addTo(map);
 
-var rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
-    layers: 'ea:flood_warning_areas',
-    format: 'image/png8',
-    transparent: true,
-    tiled: true,
-    srs: 'EPSG:4326',
-    version: '1.1.0',
-    reuseTiles: true
-}).addTo(map);
+var featureLayerRight = new L.GeoJSON();
+var featureLayerLeft = new L.GeoJSON();
 
-var leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
-    layers: 'ea:areasoutstgnaturalbeauty_eng',
-    format: 'image/png8',
-    transparent: true,
-    tiled: true,
-    srs: 'EPSG:4326',
-    version: '1.1.0'
-}).addTo(map);
+getData();
 
-$(rightLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("rightData").width($(window).width()).height($(window).height()).css("overflow", "hidden");
-$(leftLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("leftData").width(0).height($(window).height()).css("overflow", "hidden");
+window.loadGeoJson = function(data){
+    map.removeLayer(featureLayerLeft).removeLayer(featureLayerRight);
+    featureLayerRight = L.geoJson(data, {
+        style: { color: "#ff0000", fillColor: "#ff0000"}}
+    );
+    featureLayerLeft = L.geoJson(data, { style: {}});
+    
+    map.addLayer(featureLayerRight);
+    $.each($('path'), function(i, val){ val.setAttributeNS(null, "clip-path", "url('#hideRight')"); val.classList.add('rightSec'); })   
+    map.addLayer(featureLayerLeft);
+    $.each($('path:not(.rightSec)'), function(i, val){ val.setAttributeNS(null, "clip-path", "url('#hideLeft')"); val.classList.add('leftSec'); })
+};
+	
+function getData(){
+    
+    var geoJsonUrl ='http://54.154.15.47/geoserver/ea/ows';
+    var defaultParameters = {
+      service: 'WFS',
+      version: '1.0.0',
+      request: 'getFeature',
+      srsName: 'urn:x-ogc:def:crs:EPSG:4326',
+      //srsName: 'urn:x-ogc:def:crs:EPSG:4277',
+      typeName: 'ea:flood_warning_areas',
+      maxFeatures: 100,
+      outputFormat: 'text/javascript',
+      format_options: 'callback:loadGeoJson'
+    };
 
+    var customParams = {
+      bbox: map.getBounds().toBBoxString()
+    };
+
+    var parameters = L.Util.extend(defaultParameters, customParams);
+    
+
+    var url = geoJsonUrl + L.Util.getParamString(parameters);
+    $.ajax({
+        url: 'http://julianlaval.com/test.jsonp',
+        jsonp: "loadGeoJson",
+        dataType: "jsonp"
+    });
+};
+
+var clipDefs = document.createElementNS("http://www.w3.org/2000/svg", 'defs');
+var clipPathLeft = document.createElementNS("http://www.w3.org/2000/svg", "clipPath");
+var clipPathRight = document.createElementNS("http://www.w3.org/2000/svg", "clipPath");
+var clipRectLeft = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+var clipRectRight = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+
+clipRectRight.setAttributeNS(null, "x", "-40");
+clipRectRight.setAttributeNS(null, "y", "-20");
+clipRectRight.setAttributeNS(null, "width", 500);
+clipRectRight.setAttributeNS(null, 'height', 986);
+
+clipRectLeft.setAttributeNS(null, "x", "460");
+clipRectLeft.setAttributeNS(null, "y", "-20");
+clipRectLeft.setAttributeNS(null, "width", 1640);
+clipRectLeft.setAttributeNS(null, 'height', 986);
+
+clipPathRight.id="hideRight";
+clipPathRight.appendChild(clipRectRight);
+
+clipPathLeft.id="hideLeft";
+clipPathLeft.appendChild(clipRectLeft);
+
+clipDefs.appendChild(clipPathLeft);
+clipDefs.appendChild(clipPathRight);
+
+window.onload = function(){
+    document.getElementsByTagName("svg")[0].appendChild(clipDefs);
+};
+
+map.on('moveend', function(){
+    if(map.getZoom() > 11){ getData(); }
+    else { map.removeLayer(featureLayerLeft).removeLayer(featureLayerRight); };
+});
+      
 // SEARCH BAR EXPAND
 $('#search-bar input').click(function(){
 
@@ -127,49 +185,11 @@ $('#menu-icon').click(function() {
     });
 });
 
-var sliderOffset = 0;
 
-function getTransform(el) {
-    var results = $('.leaflet-map-pane').css('transform').match(/matrix\((-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+)\)/);
-
-    if(!results) return [0, 0];
-    
-    return results.slice(5, 7);
-}
-
-function adjustDataContainer(){
-    $('.rightData').width($(window).width() - sliderOffset).css('left', sliderOffset).children().css('margin-left', -sliderOffset);
-    $('.leftData').width(sliderOffset);
-}
-
-function adjustDataTiles(){
-    var panCoords = getTransform($('.leaflet-map-pane'));
-    var translateOuter = "translate3d(" + (-panCoords[0]) + "px, " + (-panCoords[1]) + "px, 0px)";
-    var translateInner = "translate3d(" + panCoords[0] + "px, " + panCoords[1] + "px, 0px)";
-    $('.rightData').css("transform", translateOuter).children().css({"transform": translateInner, "margin-left": -sliderOffset});
-    $('.leftData').css("transform",  translateOuter).children().css({"transform": translateInner});
-}
-   
-map.on('move', function(){
-    adjustDataTiles();
-});
-
-map.on('zoomstart', function(){
-    $('.rightData:last, .leftData:last').hide();
-});
-
-map.on('zoomend', function(){
-    adjustDataContainer();
-    adjustDataTiles();
-    $('.rightData:last, .leftData:last').hide();
-    $('.rightData:first, .leftData:first').show();
-    
-});
+var sliderOffset = -25;
 
 function offsetFunc(){
-    
-    adjustDataContainer();
-    
+
     // SHOW BUTTON IF SIDE IS VISIBLE
     if(sliderOffset >= 135 && !$('#left-button-block').is(':visible')){
         $('#left-button-block').fadeIn();
@@ -211,11 +231,11 @@ $('#slider-bar').on('mouseup', function(){
 
 $('body').on('mousemove', function(e){
     if($('#slider-bar').hasClass('dragging')){       
-        if(sliderOffset != e.pageX);{
-            sliderOffset = e.pageX;
+        if(sliderOffset != e.pageX - 25);{
+            sliderOffset = e.pageX - 25;
             offsetFunc();
             $('#slider-bar').offset({
-                left: sliderOffset - 25
+                left: sliderOffset
             });
         }
     }
