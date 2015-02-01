@@ -23,7 +23,7 @@
             </div>
             <div id="menu-options">
                 <ul>
-                    <li class="topic-selected">Flood risk</li>
+                    <li class="topic-selected">Flood risk </li>
                     <li>Air pollution</li>
                     <li>Ground water</li>
                     <li>Landfill</li>
@@ -35,9 +35,8 @@
             <div id="search-mask"></div>
             <div id="search-bar">
                 <div id="search-icon"><img src="img/search/search-icon.png" alt="Search icon" /></div>
-                <input id="search-input" type="text" placeholder="Explore" />
+                <input id="search-input" type="text" placeholder="Search" />
                 <ul id="search-bar-options">
-                    <li id="search-bar-empty"><img src="img/search/empty-search-icon.png" alt="Empty search icon" /></li>
                     <li id="search-bar-location"><img src="img/search/location-icon.png" alt="Location icon" /></li>
                     <li id="search-bar-favourite"><img src="img/search/favourite-empty-icon.png" alt="Favourite icon" /></li>
                 </ul>
@@ -45,12 +44,20 @@
             </div>
             <div id="search-bar-expanded">
                 <div class="expanded-section" id="search-results">
-                    <div class="expanded-title">Search results</div>
-                    <ul class="expanded-locations"></ul>
+                    <div class="expanded-title">Search to begin</div>
+                    <ul class="expanded-locations">		
+                    <!--<li>2 Chertsey Road, Bristol BS6 6NB</li>		
+                    <li>BS8 1BU</li>	-->	
+                    </ul>
                 </div>
                 <div class="expanded-section" id="saved-locations">
                     <div class="expanded-title">Saved locations</div>
-                    <ul class="expanded-locations"></ul>
+                    <ul class="expanded-locations">
+												<!--
+                        <li>BS6 6NB<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>		
+                        <li>BS8 1BU<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>		
+												-->
+                    </ul>
                 </div>
             </div>
             

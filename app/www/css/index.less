@@ -146,7 +146,7 @@ html, body {
             font-family:"Open Sans", sans-serif;
             font-weight:400;
             font-size:35px;
-            width:~"calc(100% - 180px)"; /* 50px left margin, 130px for icons on right */
+            width:~"calc(100% - 240px)"; /* 50px left margin, 190px for icons on right */
             border:none;
             background:none;
             margin-left:50px;
@@ -162,8 +162,11 @@ html, body {
                     vertical-align:top;
                 }
             }
-            #search-bar-favourite {
+            #search-bar-favourite, #search-bar-location {
                 margin-left:20px;
+            }
+            #search-bar-empty {
+                display:none;
             }
         }
     }
@@ -200,11 +203,13 @@ html, body {
                         float:right;
                         margin-top:10px;
                         vertical-align:top;
+                        z-index:110;
                     }
                 }
             }
             &#search-results {
                 margin-top:0px;
+                display:none;
             }
         }
     }
