@@ -34,49 +34,45 @@
     margin: 0 15px;
     top: 96px;
   }
-  #ui-layer #search-bar-expanded #favourite-title {
+  #ui-layer #search-bar-expanded .expanded-section .expanded-title {
     font-size: 26px;
     padding: 15px 22px;
   }
-  #ui-layer #search-bar-expanded #favourite-locations {
+  #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
     font-size: 26px;
   }
-  #ui-layer #search-bar-expanded #favourite-locations li {
+  #ui-layer #search-bar-expanded .expanded-section .expanded-locations li {
     padding: 15px 22px;
   }
-  #ui-layer #search-bar-expanded #favourite-locations li .favourite-delete {
+  #ui-layer #search-bar-expanded .expanded-section .expanded-locations li .favourite-delete {
     margin-top: 9px;
     width: 17px;
   }
-  #ui-layer #left-button img,
-  #ui-layer #right-button img,
-  #ui-layer #left-legend-button img,
-  #ui-layer #right-legend-button img,
-  #ui-layer #left-topic-button img,
-  #ui-layer #right-topic-button img {
-    width: 74px;
-  }
-  #ui-layer #left-button,
-  #ui-layer #right-button {
+  #ui-layer #left-button-block,
+  #ui-layer #right-button-block {
     bottom: 19px;
   }
-  #ui-layer #left-legend-button,
-  #ui-layer #right-legend-button {
-    bottom: 111px;
+  #ui-layer #left-button-block img,
+  #ui-layer #right-button-block img {
+    width: 74px;
   }
-  #ui-layer #left-topic-button,
-  #ui-layer #right-topic-button {
-    bottom: 204px;
-  }
-  #ui-layer #left-button,
-  #ui-layer #left-legend-button,
-  #ui-layer #left-topic-button {
+  #ui-layer #left-button-block {
     left: 19px;
   }
-  #ui-layer #right-button,
-  #ui-layer #right-legend-button,
-  #ui-layer #right-topic-button {
+  #ui-layer #right-button-block {
     right: 19px;
+  }
+  #ui-layer #left-button-block #left-legend-button,
+  #ui-layer #right-button-block #left-legend-button,
+  #ui-layer #left-button-block #right-legend-button,
+  #ui-layer #right-button-block #right-legend-button {
+    bottom: 112px;
+  }
+  #ui-layer #left-button-block #left-topic-button,
+  #ui-layer #right-button-block #left-topic-button,
+  #ui-layer #left-button-block #right-topic-button,
+  #ui-layer #right-button-block #right-topic-button {
+    bottom: 205px;
   }
   /* SLIDER LAYER STYLES */
   #slider-layer {
@@ -91,12 +87,13 @@
   }
   /* MAP SELECT LAYER STYLES */
   #map-select-layer #menu-header {
-    height: 107px;
+    height: 11%;
+    overflow-y: auto;
   }
   #map-select-layer #menu-header #menu-icon {
     width: 27px;
     height: 27px;
-    top: 47px;
+    top: 49px;
     left: 22px;
   }
   #map-select-layer #menu-header #menu-title {
@@ -117,6 +114,12 @@
   }
   #map-select-layer #menu-options ul .option-last {
     border-bottom: 0px;
+  }
+}
+/* MAP SELECT LAYER FOR iPAD LANDSCAPE */
+@media (max-width: 1024px) and (min-width: 768px) and (orientation: landscape) {
+  #map-select-layer #menu-header {
+    height: 14%;
   }
 }
 @media (max-width: 639px) {
@@ -258,5 +261,11 @@
   }
   #map-select-layer #menu-options ul .option-last {
     border-bottom: 0px;
+  }
+}
+/* MAP SELECT MENU FROM LANDSCAPE */
+@media (max-width: 639px) and (orientation: landscape) {
+  #map-select-layer #menu-header {
+    height: 23%;
   }
 }

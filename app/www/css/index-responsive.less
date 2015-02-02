@@ -35,44 +35,46 @@
 		#search-bar-expanded {
             margin:0 15px;
             top:96px;
-            #favourite-title {
+			.expanded-section {
+				.expanded-title {
                 font-size:26px;
                 padding:15px 22px;
-            }
-            #favourite-locations {
-                font-size:26px;
-                li {
-                    padding:15px 22px;
-                    .favourite-delete {
-                        margin-top:9px;
-                        width: 17px;
-                    }
-                }
-            }
+				}
+				.expanded-locations {
+					font-size:26px;
+					li {
+						padding:15px 22px;
+						.favourite-delete {
+							margin-top:9px;
+							width: 17px;
+						}
+					}
+				}
+			}
         }
 		
 		/* BUTTON STYLES */
-        
-        #left-button, #right-button, #left-legend-button, #right-legend-button, #left-topic-button, #right-topic-button {
+		
+		#left-button-block, #right-button-block {
             img {
                 width: 74px;
             }
+			bottom: 19px;
         }
-		#left-button, #right-button {
-            bottom:19px;
-        }
-        #left-legend-button, #right-legend-button {
-           bottom: 111px;
-        }
-        #left-topic-button, #right-topic-button {
-            bottom: 204px;
-        }
-        #left-button, #left-legend-button, #left-topic-button {
-            left:19px;
-        }
-        #right-button, #right-legend-button, #right-topic-button {
-            right:19px;
-        }
+		#left-button-block {
+			left: 19px;
+		}
+		#right-button-block {
+			right: 19px;
+		}
+		#left-button-block, #right-button-block {
+			#left-legend-button, #right-legend-button {
+				bottom: 112px;
+			}
+			#left-topic-button, #right-topic-button {
+				bottom: 205px;
+			}
+		}
     }
 	/* SLIDER LAYER STYLES */
     #slider-layer {
@@ -88,11 +90,12 @@
     /* MAP SELECT LAYER STYLES */
     #map-select-layer {
         #menu-header {
-            height: 107px;
+            height: 11%;
+			overflow-y: auto;
             #menu-icon {
                 width: 27px;
                 height: 27px;
-                top: 47px;
+                top: 49px;
                 left: 22px;
             }
             #menu-title {
@@ -119,6 +122,15 @@
             }
         }
     }
+}
+
+/* MAP SELECT LAYER FOR iPAD LANDSCAPE */
+@media (max-width:1024px) and (min-width: 768px) and (orientation: landscape) {
+	#map-select-layer {
+		#menu-header {
+			height: 14%;
+		}
+	}
 }
 
 @media (max-width:639px){
@@ -262,4 +274,13 @@
             }
         }
     }
+}
+
+/* MAP SELECT MENU FROM LANDSCAPE */
+@media (max-width:639px) and (orientation: landscape) {
+	#map-select-layer {
+		#menu-header {
+			height: 23%;
+		}
+	}
 }
