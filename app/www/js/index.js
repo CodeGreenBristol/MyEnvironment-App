@@ -37,8 +37,8 @@ var leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
     reuseTiles: true
 }).addTo(map);
 
-$(rightLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("rightData").width($(window).width()).height($(window).height()).css("overflow", "hidden");
-$(leftLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("leftData").width(0).height($(window).height()).css("overflow", "hidden");
+$(rightLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("rightData");
+$(leftLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
 
 // SEARCH BAR EXPAND
 $('#search-bar input').click(function(){
@@ -132,7 +132,7 @@ $('#menu-icon').click(function() {
 
 var sliderOffset = 0;
 
-function getTransform(el) {
+function getTransform() {
     var results = $('.leaflet-map-pane').css('transform').match(/matrix\((-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+)\)/);
 
     if(!results) return [0, 0];
@@ -141,32 +141,14 @@ function getTransform(el) {
 }
 
 function adjustDataContainer(){
-    $('.rightData').width($(window).width() - sliderOffset).css('left', sliderOffset).children().css('margin-left', -sliderOffset);
-    $('.leftData').width(sliderOffset);
+    var panCoords = getTransform();
+    $('.rightData').css("clip","rect("+(-parseInt(panCoords[1]))+"px, "+($(window).width() - parseInt(panCoords[0]))+"px, "+($(window).height() - parseInt(panCoords[1]))+"px, "+(sliderOffset - parseInt(panCoords[0]))+"px)");
+    $('.leftData').css("clip", "rect("+(-parseInt(panCoords[1]))+"px, "+(sliderOffset - parseInt(panCoords[0]))+"px, "+($(window).height() - parseInt(panCoords[1]))+"px, "+(-parseInt(panCoords[0]))+"px)");
 }
 
-function adjustDataTiles(){
-    var panCoords = getTransform($('.leaflet-map-pane'));
-    var translateOuter = "translate3d(" + (-panCoords[0]) + "px, " + (-panCoords[1]) + "px, 0px)";
-    var translateInner = "translate3d(" + panCoords[0] + "px, " + panCoords[1] + "px, 0px)";
-    $('.rightData').css("transform", translateOuter).children().css({"transform": translateInner, "margin-left": -sliderOffset});
-    $('.leftData').css("transform",  translateOuter).children().css({"transform": translateInner});
-}
    
 map.on('move', function(){
-    adjustDataTiles();
-});
-
-map.on('zoomstart', function(){
-    $('.rightData:last, .leftData:last').hide();
-});
-
-map.on('zoomend', function(){
     adjustDataContainer();
-    adjustDataTiles();
-    $('.rightData:last, .leftData:last').hide();
-    $('.rightData:first, .leftData:first').show();
-    
 });
 
 function offsetFunc(){
@@ -205,17 +187,21 @@ function offsetFunc(){
 }
     
 // DRAGGABLE SLIDER
-$('#slider-bar').on('mousedown', function(){
+$('#slider-bar').on('mousedown touchstart', function(){
     $(this).addClass('dragging');
 });
-$('#slider-bar').on('mouseup', function(){
+$('#slider-bar').on('mouseup touchend', function(){
     $(this).removeClass('dragging');
 });
 
-$('body').on('mousemove', function(e){
+$('body').on('mousemove touchmove', function(e){
+    
+    if(e.type == "touchmove") var out = e.originalEvent.touches[0];
+    else var out = e;
+        
     if($('#slider-bar').hasClass('dragging')){       
-        if(sliderOffset != e.pageX);{
-            sliderOffset = e.pageX;
+        if(sliderOffset != out.pageX);{
+            sliderOffset = out.pageX;
             offsetFunc();
             $('#slider-bar').offset({
                 left: sliderOffset - 25
@@ -272,8 +258,13 @@ function updateSearchResults(data){
         return;
     }
     var items = [];
+    var displayedResults = [];
+    
     $.each(data, function(key, val) {
-        items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lon+"' data-type='"+val.type+"'>" + val.display_name +'</li>');
+        if($.inArray(val.display_name, displayedResults) == -1){
+            items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lon+"' data-type='"+val.type+"'>" + val.display_name +'</li>');
+            displayedResults.push(val.display_name);
+        }
     });
 
     $('#search-results .expanded-locations').empty();
