@@ -118,16 +118,14 @@ $('#right-button').click(function() {
 
 // TOGGLE MAP TOPIC MENU
 $('#right-topic-button, #left-topic-button').click(function() {
-    $('#map-select-layer').show().animate({marginTop: "0px"}, {queue: false, duration: 750});
-    $('#map-select-layer').animate({height: "100%"}, {queue: false, duration: 750});
+    $('#map-select-layer').show().animate({height: "100%"}, {duration: 750});
 });
 
-// SLIDE UP TOPIC MENU
+// SLIDE DOWN TOPIC MENU
 $('#menu-icon').click(function() {
-    $('#map-select-layer').animate({marginTop: "100%"}, {queue: false, duration: 750});
-    $('#map-select-layer').animate({height: "0px"}, {queue: false, duration: 750}, function(){
+    $('#map-select-layer').animate({height: "0px"}, {duration: 750, complete: function(){
         $(this).hide();
-    });
+    }});
 });
 
 var sliderOffset = 0;
@@ -151,22 +149,29 @@ map.on('move', function(){
     adjustDataContainer();
 });
 
+function generateButtonRules(){
+    if($(window).width() <= 768) return {buttonLimit: 80};
+    else if($(window).width() <= 1024) return {buttonLimit: 120}; 
+    else return {buttonLimit: 150};
+}
+var sliderLimits = generateButtonRules();
+    
 function offsetFunc(){
     
     adjustDataContainer();
     
     // SHOW BUTTON IF SIDE IS VISIBLE
-    if(sliderOffset >= 135 && !$('#left-button-block').is(':visible')){
+    if(sliderOffset >= sliderLimits.buttonLimit && !$('#left-button-block').is(':visible')){
         $('#left-button-block').fadeIn();
     }
-    else if(sliderOffset < 135 && $('#left-button-block').is(':visible')){
+    else if(sliderOffset < sliderLimits.buttonLimit && $('#left-button-block').is(':visible')){
         buttonExpand("left", true);
         $('#left-button-block').fadeOut();        
     }
-    else if(sliderOffset <= $(window).width() - 185 && !$('#right-button-block').is(':visible')){
+    else if(sliderOffset <= $(window).width() - sliderLimits.buttonLimit && !$('#right-button-block').is(':visible')){
         $('#right-button-block').fadeIn();
     }
-    else if(sliderOffset > $(window).width() - 185 && $('#right-button-block').is(':visible')){
+    else if(sliderOffset > $(window).width() - sliderLimits.buttonLimit && $('#right-button-block').is(':visible')){
         buttonExpand("right", true);
         $('#right-button-block').fadeOut();    
     }
@@ -192,6 +197,8 @@ $('#slider-bar').on('mousedown touchstart', function(){
 });
 $('#slider-bar').on('mouseup touchend', function(){
     $(this).removeClass('dragging');
+    if($(this).offset().left < -25) $(this).offset({ left: -25 });
+    else if($(this).offset().left > $(window).width() - 25) $(this).offset({ left: $(window).width() - 25 });
 });
 
 $('body').on('mousemove touchmove', function(e){
@@ -199,9 +206,14 @@ $('body').on('mousemove touchmove', function(e){
     if(e.type == "touchmove") var out = e.originalEvent.touches[0];
     else var out = e;
         
-    if($('#slider-bar').hasClass('dragging')){       
+    if($('#slider-bar').hasClass('dragging')){      
+  
         if(sliderOffset != out.pageX);{
-            sliderOffset = out.pageX;
+        
+            if(sliderOffset < 0) sliderOffset = 0;
+            else if(sliderOffset > $(window).width()) sliderOffset = $(window).width();
+            else sliderOffset = out.pageX;
+            
             offsetFunc();
             $('#slider-bar').offset({
                 left: sliderOffset - 25
@@ -261,9 +273,9 @@ function updateSearchResults(data){
     var displayedResults = [];
     
     $.each(data, function(key, val) {
-        if($.inArray(val.display_name, displayedResults) == -1){
+        if($.inArray(val.display_name.toLowerCase(), displayedResults) == -1){
             items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lon+"' data-type='"+val.type+"'>" + val.display_name +'</li>');
-            displayedResults.push(val.display_name);
+            displayedResults.push(val.display_name.toLowerCase());
         }
     });
 
@@ -284,8 +296,8 @@ localStorage.setItem("savedLocations", JSON.stringify(savedLocations));
 // add saved location
 function addSavedLocation(){
     var val = savedLocations[savedLocations.length - 1];
-    $('#saved-locations .expanded-locations').append("<li data-lat='"+val.lat+"' data-lon='"+val.lng+"' data-type='"+val.type+"'>" + val.dispname + 
-        '<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>');
+    $('#saved-locations .expanded-locations').append("<li data-lat='"+val.lat+"' data-lon='"+val.lng+"' data-type='"+val.type+"'><div>" + val.dispname + 
+        '</div><img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>');
         
     if(savedLocations.length == 1){
         $('#saved-locations .expanded-title').text("Saved locations");
@@ -305,8 +317,8 @@ function renderSavedLocations() {
       
     var items = [];
     $.each(savedLocations, function(key, val) {
-        items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lng+"' data-type='"+val.type+"'>" + val.dispname + 
-            '<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>');
+        items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lng+"' data-type='"+val.type+"'><div>" + val.dispname + 
+            '</div><img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>');
     });
     
     $('#saved-locations .expanded-locations').empty();
@@ -420,8 +432,9 @@ function toggleFavIcon() {
 
 // empty search string
 $("#search-bar-empty").click(function(){
-    $('#search-input').val("");
+    $('#search-input').val("").focus();
     $('#search-results').hide();
+    $("#search-bar-empty").hide();
 });
 
 var datasetsArray = {   

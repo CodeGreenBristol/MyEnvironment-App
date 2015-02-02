@@ -1,8 +1,5 @@
 /* COPYRIGHT INFO HERE */
 /* COPYRIGHT INFO HERE */
-.test {
-  clip-path: circle(60px at center);
-}
 /* GENERAL STYLES */
 * {
   padding: 0;
@@ -54,12 +51,12 @@ body {
   background-color: #eee;
   height: 0px;
   display: none;
-  margin-top: 100%;
+  bottom: 0px;
 }
 #map-select-layer #menu-header {
   width: 100%;
   background-color: #64b551;
-  height: 144px;
+  padding-bottom: 20px;
   box-sizing: border-box;
 }
 #map-select-layer #menu-header #menu-icon {
@@ -78,15 +75,15 @@ body {
   color: #fff;
 }
 #map-select-layer #menu-options {
-  height: calc(100% - 144px -30px);
+  max-height: calc(100% - 130px - 30px);
   overflow-y: auto;
-  margin: 15px;
-  background-color: #fff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  padding: 15px 0px;
 }
 #map-select-layer #menu-options ul {
+  margin: 0px 15px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   list-style-type: none;
-  display: default;
 }
 #map-select-layer #menu-options ul li {
   padding: 30px;
@@ -97,12 +94,9 @@ body {
   font-size: 30px;
 }
 #map-select-layer #menu-options ul .topic-selected {
-  background: url(../img/tick-icon.png) no-repeat;
+  background: url('../img/tick-icon.png') no-repeat;
   background-position: calc(100% - 30px) 50%;
   background-size: 32px 26px;
-}
-#map-select-layer #menu-options ul .option-last {
-  border-bottom: 0px;
 }
 /* UI LAYER STYLES */
 #ui-layer {
@@ -195,24 +189,35 @@ body {
   font-size: 30px;
 }
 #ui-layer #search-bar-expanded .expanded-section .expanded-locations li {
-  padding: 20px 30px;
-  text-overflow: ellipsis;
   width: 100%;
+  padding: 20px 30px;
   cursor: pointer;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ddd;
+}
+#ui-layer #search-bar-expanded .expanded-section#search-results .expanded-locations li,
+#ui-layer #search-bar-expanded .expanded-section#saved-locations .expanded-locations li div {
+  text-overflow: ellipsis;
   box-sizing: border-box;
   white-space: nowrap;
   overflow: hidden;
-  border-bottom: 1px solid #ddd;
-}
-#ui-layer #search-bar-expanded .expanded-section .expanded-locations li .favourite-delete {
-  float: right;
-  margin-top: 10px;
-  vertical-align: top;
-  z-index: 110;
 }
 #ui-layer #search-bar-expanded .expanded-section#search-results {
   margin-top: 0px;
   display: none;
+}
+#ui-layer #search-bar-expanded .expanded-section#saved-locations .expanded-locations li {
+  overflow: hidden;
+}
+#ui-layer #search-bar-expanded .expanded-section#saved-locations .expanded-locations li div {
+  float: left;
+  width: calc(100% - 30px);
+}
+#ui-layer #search-bar-expanded .expanded-section#saved-locations .expanded-locations li .favourite-delete {
+  float: right;
+  margin-top: 10px;
+  vertical-align: top;
+  z-index: 110;
 }
 #ui-layer #left-button-block {
   display: none;
@@ -266,18 +271,4 @@ body {
 #ui-layer #left-topic-button.btn-expanded,
 #ui-layer #right-topic-button.btn-expanded {
   transition: all .5s ease;
-}
-/* MAP LAYER STYLES */
-#map-layer {
-  z-index: 50;
-  /*#div [margin-left = 5px; margin-right = 5px; z-index = 1000000; position = absolute; left = 0px; bottom = 0px;] {
-        display: none;
-    }*/
-
-}
-#map-layer .gmnoprint {
-  display: none;
-}
-#map-layer a [href="http://maps.google.com/maps?ll=51.45,-2.6&z=15&t=m&hl=en-US&gl=US&mapclient=apiv3"] {
-  display: none;
 }
