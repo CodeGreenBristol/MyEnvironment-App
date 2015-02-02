@@ -220,9 +220,12 @@
   /* MAP SELECT LAYER STYLES */
   #map-select-layer {
     height: 0px;
+    margin-top: 50%;
+    display: none;
   }
   #map-select-layer #menu-header {
-    height: 75px;
+    height: 13%;
+    overflow-y: auto;
     box-sizing: border-box;
   }
   #map-select-layer #menu-header #menu-icon {
@@ -236,7 +239,7 @@
     font-size: 18px;
   }
   #map-select-layer #menu-options {
-    height: calc(100% - 75px - 16px);
+    max-height: calc(100% - 75px - 16px);
     overflow-y: auto;
     margin: 8px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
