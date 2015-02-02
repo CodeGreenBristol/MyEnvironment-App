@@ -6,8 +6,10 @@ var accToken = '?access_token=pk.eyJ1IjoibWMxMzgxOCIsImEiOiI4Tlp2cFlBIn0.reMspV4
 map = L.map('map-layer', {
     attributionControl: false,
     zoomControl:false,
-    center: [51.45, -2.6],
-    zoom: 15,
+    //center: [51.45, -2.6],
+    //zoom: 15,
+    center: [51.396, -2.298],
+    zoom: 14,
     minZoom: 8
 });
 
@@ -15,65 +17,36 @@ L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.co
     maxZoom: 18
 }).addTo(map);
 
+var rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
+    layers: 'ea:flood_warning_areas',
+    format: 'image/png8',
+    transparent: true,
+    tiled: true,
+    srs: 'EPSG:4326',
+    version: '1.1.0',
+    reuseTiles: true
+}).addTo(map);
 
+var leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
+    layers: 'ea:areasoutstgnaturalbeauty_eng',
+    format: 'image/png8',
+    transparent: true,
+    tiled: true,
+    srs: 'EPSG:4326',
+    version: '1.1.0',
+    reuseTiles: true
+}).addTo(map);
 
-  var featureLayerRight = new L.GeoJSON();
- var featureLayerLeft = new L.GeoJSON();
+$(rightLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("rightData").width($(window).width()).height($(window).height()).css("overflow", "hidden");
+$(leftLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("leftData").width(0).height($(window).height()).css("overflow", "hidden");
 
-  getData();
-
-  window.loadGeoJson = function(data)
-  {
-    map.removeLayer(featureLayerLeft).removeLayer(featureLayerRight);
-    featureLayerRight = L.geoJson(data, {
-        style: { color: "#ff0000", fillColor: "#ff0000"}}
-    );
-    featureLayerLeft = L.geoJson(data, { style: {}});
-    map.addLayer(featureLayerRight);
-    // map.addLayer(featureLayerLeft);
-  };
-	
-function getData(){
-    
-    var geoJsonUrl ='http://54.154.15.47/geoserver/postgis/ows';
-    var defaultParameters = {
-      service: 'WFS',
-      version: '1.0.0',
-      request: 'getFeature',
-      srsName: 'urn:x-ogc:def:crs:EPSG:4326',
-      //srsName: 'urn:x-ogc:def:crs:EPSG:4277',
-      typeName: 'postgis:flood_warning_areas',
-      maxFeatures: 100,
-      outputFormat: 'text/javascript',
-      format_options: 'callback:loadGeoJson'
-    };
-
-    var customParams = {
-      bbox: map.getBounds().toBBoxString()
-    };
-
-    var parameters = L.Util.extend(defaultParameters, customParams);
-    // console.log(geoJsonUrl + L.Util.getParamString(parameters));
-
-    var url = geoJsonUrl + L.Util.getParamString(parameters);
-
-    $.ajax({
-        url: url,
-        jsonp: "loadGeoJson",
-        dataType: "jsonp"
-    });
-};
-
-map.on('moveend', function(){
-    if(map.getZoom() > 11){ getData(); }
-    else { map.removeLayer(featureLayerLeft).removeLayer(featureLayerRight); };
-});
-      
 // SEARCH BAR EXPAND
 $('#search-bar input').click(function(){
 
     // IF HIDDEN, SHOW
     if(!$('#search-bar-expanded').is(':visible')){
+        
+        addrSearch();
         
         $('#search-mask').fadeIn();
         
@@ -157,39 +130,76 @@ $('#menu-icon').click(function() {
     });
 });
 
-function sliderOffset(offset){
+var sliderOffset = 0;
 
-    var newWidth = $(window).width() - offset;
-    $('svg.leaflet-zoom-animated').attr("width", newWidth);
-   // document.getElementsByTagName("svg")[0].getAttribute("viewBox").replace(document.getElementsByTagName("svg")[0].getAttribute("viewBox").split(" ")[2], newWidth)
+function getTransform(el) {
+    var results = $('.leaflet-map-pane').css('transform').match(/matrix\((-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+)\)/);
+
+    if(!results) return [0, 0];
+    
+    return results.slice(5, 7);
+}
+
+function adjustDataContainer(){
+    $('.rightData').width($(window).width() - sliderOffset).css('left', sliderOffset).children().css('margin-left', -sliderOffset);
+    $('.leftData').width(sliderOffset);
+}
+
+function adjustDataTiles(){
+    var panCoords = getTransform($('.leaflet-map-pane'));
+    var translateOuter = "translate3d(" + (-panCoords[0]) + "px, " + (-panCoords[1]) + "px, 0px)";
+    var translateInner = "translate3d(" + panCoords[0] + "px, " + panCoords[1] + "px, 0px)";
+    $('.rightData').css("transform", translateOuter).children().css({"transform": translateInner, "margin-left": -sliderOffset});
+    $('.leftData').css("transform",  translateOuter).children().css({"transform": translateInner});
+}
+   
+map.on('move', function(){
+    adjustDataTiles();
+});
+
+map.on('zoomstart', function(){
+    $('.rightData:last, .leftData:last').hide();
+});
+
+map.on('zoomend', function(){
+    adjustDataContainer();
+    adjustDataTiles();
+    $('.rightData:last, .leftData:last').hide();
+    $('.rightData:first, .leftData:first').show();
+    
+});
+
+function offsetFunc(){
+    
+    adjustDataContainer();
     
     // SHOW BUTTON IF SIDE IS VISIBLE
-    if(offset >= 135 && !$('#left-button-block').is(':visible')){
+    if(sliderOffset >= 135 && !$('#left-button-block').is(':visible')){
         $('#left-button-block').fadeIn();
     }
-    else if(offset < 135 && $('#left-button-block').is(':visible')){
+    else if(sliderOffset < 135 && $('#left-button-block').is(':visible')){
         buttonExpand("left", true);
         $('#left-button-block').fadeOut();        
     }
-    else if(offset <= $(window).width() - 185 && !$('#right-button-block').is(':visible')){
+    else if(sliderOffset <= $(window).width() - 185 && !$('#right-button-block').is(':visible')){
         $('#right-button-block').fadeIn();
     }
-    else if(offset > $(window).width() - 185 && $('#right-button-block').is(':visible')){
+    else if(sliderOffset > $(window).width() - 185 && $('#right-button-block').is(':visible')){
         buttonExpand("right", true);
         $('#right-button-block').fadeOut();    
     }
     
     // SHOW ARROWS ON SIDE OF SLIDER
-    if(offset >= 50 && $('#drag-right').is(':visible')){
+    if(sliderOffset >= 50 && $('#drag-right').is(':visible')){
         $('#drag-right').fadeOut();
     }
-    else if(offset < 50 && !$('#drag-right').is(':visible')){
+    else if(sliderOffset < 50 && !$('#drag-right').is(':visible')){
         $('#drag-right').fadeIn();        
     }
-    if(offset <= $(window).width() - 100 && $('#drag-left').is(':visible')){
+    if(sliderOffset <= $(window).width() - 100 && $('#drag-left').is(':visible')){
         $('#drag-left').fadeOut();
     }
-    else if(offset > $(window).width() - 100 && !$('#drag-left').is(':visible')){
+    else if(sliderOffset > $(window).width() - 100 && !$('#drag-left').is(':visible')){
         $('#drag-left').fadeIn();        
     }
 }
@@ -203,75 +213,231 @@ $('#slider-bar').on('mouseup', function(){
 });
 
 $('body').on('mousemove', function(e){
-    var leftOffset = 0;
     if($('#slider-bar').hasClass('dragging')){       
-        if(leftOffset != e.pageX - 25);{
-            leftOffset = e.pageX - 25;
-            sliderOffset(leftOffset);
+        if(sliderOffset != e.pageX);{
+            sliderOffset = e.pageX;
+            offsetFunc();
             $('#slider-bar').offset({
-                left: leftOffset
+                left: sliderOffset - 25
             });
         }
     }
 });
 
-
 // ADDRESS SEARCH
-// TODO: proper styling, (responsiveness etc)
+var curLocData;	//object for the current location data
 var searchTimer;
-$('#search-input').on('input', function() { 
-    var inp = $("#search-input");
-    $.ajax({
-      //fetch from http://nominatim.openstreetmap.org/
-      url: 'http://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=gb&q=' + inp.val(),
-      dataType: 'json',
-      success: addrSearch,
-      timeout: 1000 //1 second timeout
-    });
+
+//search bar text changed
+$('#search-input').on('input', function() {
+    
+    //reset fav icon & curloc
+    $('#search-bar-favourite img').attr("src","img/search/favourite-empty-icon.png");
+    curLocData = undefined;
+    
+    addrSearch();
 });
 
-function addrSearch(data) {
-    console.log("call");
-  var inp = $("#search-input");
-  if(typeof data === "undefined") {
-    return;
-  }
-  var items = [];
-  $.each(data, function(key, val) {
-      items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lon+"' data-type='"+val.type+"'>" + val.display_name +'</li>');
-  });
-
-  $('#search-results .expanded-locations').empty();
-  if (items.length != 0) {
-      $(items.join('')).appendTo('#search-results .expanded-locations');
-      $('#search-results .expanded-title').text("Search results");
-  } else {
-      $('#search-results .expanded-title').text("No results found");
-  }
+//Update the dropdown box with the search results (given by 'data')
+function addrSearch() {
+    
+    // no API call if empty
+    var inp = $("#search-input");
+    $('#search-results .expanded-locations').empty();
+    
+    if(inp.val() == ""){
+        $('#search-results').hide();
+        $('#search-bar-empty').hide();
+        return;
+    }
+    else {
+        $('#search-results').show();
+        $('#search-bar-empty').css("display", "inline-block");
+    }
+    
+    //timer used so fast-typing doesn't trigger rapid requests
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function() {      
+        $.ajax({
+            //fetch from http://nominatim.openstreetmap.org/
+            url: 'http://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=gb&q=' + inp.val(),
+            dataType: 'json',
+            success: updateSearchResults
+        });
+    }, 250); 
 }
 
-$('#search-results').on('click', 'li', function(){
-    
-    var location = new L.LatLng($(this).attr('data-lat'), $(this).attr('data-lon'));
-    map.panTo(location);
-    var type = $(this).attr('data-type');
-    $('#search-input').val($(this).text());
-    console.log(type);
-    //set zoom level based on type of location
-    //known outliers: tadley = administrative?
-    if(type == "administrative") {  //country
-      map.setZoom(8);
-    } else if(type == "city") {
-      map.setZoom(12);
-    } else if(type == "town") {
-      map.setZoom(13);
-    } else if(type == "village") {
-      map.setZoom(14);
+function updateSearchResults(data){
+    if(typeof data === "undefined") {
+        return;
+    }
+    var items = [];
+    $.each(data, function(key, val) {
+        items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lon+"' data-type='"+val.type+"'>" + val.display_name +'</li>');
+    });
+
+    $('#search-results .expanded-locations').empty();
+    if (items.length != 0) {
+        $(items.join('')).appendTo('#search-results .expanded-locations');
+        $('#search-results .expanded-title').text("Search results");
     } else {
-      map.setZoom(13);
+        $('#search-results .expanded-title').text("No results found");
+    }
+}
+
+//	FAVOURITE LOCATION
+var savedLocations = [];	//holds loc data for all saved locs
+localStorage.setItem("savedLocations", JSON.stringify(savedLocations));
+
+
+// add saved location
+function addSavedLocation(){
+    var val = savedLocations[savedLocations.length - 1];
+    $('#saved-locations .expanded-locations').append("<li data-lat='"+val.lat+"' data-lon='"+val.lng+"' data-type='"+val.type+"'>" + val.dispname + 
+        '<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>');
+        
+    if(savedLocations.length == 1){
+        $('#saved-locations .expanded-title').text("Saved locations");
+    }
+}
+    
+// remove saved location
+function removeSavedLocation(index){
+    $('#saved-locations .expanded-locations li:eq(' + index + ')').remove();
+    if(savedLocations.length == 0){
+        $('#saved-locations .expanded-title').text("No saved locations");
+    }
+}
+    
+//updates saved location ui with contents of 'savedLocations'
+function renderSavedLocations() {
+      
+    var items = [];
+    $.each(savedLocations, function(key, val) {
+        items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lng+"' data-type='"+val.type+"'>" + val.dispname + 
+            '<img class="favourite-delete" src="img/search/favourite-delete-icon.png" alt="Delete favourite" /><div class="clearfix"></div></li>');
+    });
+    
+    $('#saved-locations .expanded-locations').empty();
+    
+    if (items.length != 0) {
+        $(items.join('')).appendTo('#saved-locations .expanded-locations');
+        $('#saved-locations .expanded-title').text("Saved locations");
+    } else {
+        $('#saved-locations .expanded-title').text("No saved locations");
+    }
+}
+renderSavedLocations();
+
+// search/saved result item is clicked
+$('#search-results, #saved-locations').on('click', 'li', function(){
+	goToLocation(this);
+});
+
+//click on delete saved location item
+//TODO: clicking this still triggers the above event to fire..
+$('#saved-locations').on('click', 'li .favourite-delete', function(e) {
+    var index = savedLocIndex($(this).text());
+    savedLocations.splice(index, 1);
+    removeSavedLocation(index);
+    e.stopPropagation();
+});
+
+//pans map to location given by 'data'
+function goToLocation(data) {
+	//update current location
+ 	curLocData = {
+        lat: $(data).attr('data-lat'),
+        lng: $(data).attr('data-lon'),
+        dispname: $(data).text(),
+        type: $(data).attr('data-type')
+    };
+    
+    var location = new L.LatLng(curLocData.lat, curLocData.lng);
+    map.panTo(location);
+    $('#search-input').val($(data).text());
+  
+	//set zoom level based on type of location
+    //known outliers: tadley = administrative?
+    if(curLocData.type == "administrative") {  //country
+        map.setZoom(8);
+    } else if(curLocData.type == "city") {
+        map.setZoom(12);
+    } else if(curLocData.type == "town") {
+        map.setZoom(13);
+    } else if(curLocData.type == "village") {
+        map.setZoom(14);
+    } else {
+        map.setZoom(13);
     }
     hideSearchBar();
-});
-    
-  
+    updateFavIcon();
+}
 
+//location is favourited
+$('#search-bar-favourite').on('click', function() {
+    toggleFavourite();
+});
+
+//adds/removes from savedLocations, updates icon and the ui
+function toggleFavourite() {
+    if(typeof curLocData === "undefined") {
+		return;
+	}
+    if(savedLocations.length == 0) {
+		savedLocations.push(curLocData); addSavedLocation();
+	} else {  
+        var index = savedLocIndex(curLocData.dispname);
+        if(index != -1) {
+            savedLocations.splice(index, 1); removeSavedLocation(index);
+        } else {
+            savedLocations.push(curLocData); addSavedLocation();
+        }
+    } 
+    toggleFavIcon();
+    localStorage["savedLocations"] = JSON.stringify(savedLocations);
+}
+
+//finds the index of the input loc data in savedLocations
+function savedLocIndex(dispName) {
+    var ind = -1;
+    $.each(savedLocations, function(index, value) {
+        if(dispName == value.dispname) {
+            ind = index;
+            return false;
+        }
+    });
+    return ind;
+}
+
+//sets the fav icon according to whether curLocData is in savedLocations
+function updateFavIcon() {
+    if(savedLocIndex(curLocData.dispname) == -1) {
+        $('#search-bar-favourite img').attr("src","img/search/favourite-empty-icon.png");
+    } else {
+        $('#search-bar-favourite img').attr("src","img/search/favourite-icon.png");
+    }
+}
+
+function toggleFavIcon() {
+    if($('#search-bar-favourite img').attr("src") == "img/search/favourite-icon.png") {
+        $('#search-bar-favourite img').attr("src","img/search/favourite-empty-icon.png");
+    } else {
+        $('#search-bar-favourite img').attr("src","img/search/favourite-icon.png");
+    }
+}
+
+// empty search string
+$("#search-bar-empty").click(function(){
+    $('#search-input').val("");
+    $('#search-results').hide();
+});
+
+var datasetsArray = {   
+    "Flood warning areas" : "ea:flood_warning_areas",
+    "Flood alert areas" : "ea:flood_alert_areas",
+    "Nitrate-sensitive areas" : "ea:nitrate_sensitive_areas",
+    "Areas of outstanding natural beauty" : "ea:areasoutstgnaturalbeauty_eng",
+    "Agricultural land" : "ea:agri_land_class",   
+    "Flood risk areas" : "ea:flood_risk_areas"
+};
