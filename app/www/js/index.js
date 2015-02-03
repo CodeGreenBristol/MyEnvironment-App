@@ -6,17 +6,17 @@ var accToken = '?access_token=pk.eyJ1IjoibWMxMzgxOCIsImEiOiI4Tlp2cFlBIn0.reMspV4
 map = L.map('map-layer', {
     attributionControl: false,
     zoomControl:false,
-    center: [51.45, -2.6],
+    //center: [51.45, -2.6],
+    //zoom: 15,
+    center: [51.396, -2.298],
     zoom: 14,
-    //center: [51.396, -2.298],
-    minZoom: 7
+    minZoom: 8
 });
 
 L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.concat(accToken), {
     maxZoom: 18
 }).addTo(map);
 
-<<<<<<< HEAD
 var rightLayerData = 'ea:flood_warning_areas';
 var leftLayerData = 'ea:areasoutstgnaturalbeauty_eng';
 var rightLayer;
@@ -49,30 +49,6 @@ function setLeftLayer(rightLayerData) {
     $(leftLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
 }
 setLeftLayer(leftLayerData);
-=======
-var rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
-    layers: 'ea:flood_warning_areas',
-    format: 'image/png8',
-    transparent: true,
-    tiled: true,
-    srs: 'EPSG:4326',
-    version: '1.1.0',
-    reuseTiles: true
-}).addTo(map);
-
-var leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
-    layers: 'ea:flood_alert_areas',
-    format: 'image/png8',
-    transparent: true,
-    tiled: true,
-    srs: 'EPSG:4326',
-    version: '1.1.0',
-    reuseTiles: true
-}).addTo(map);
-
-//$(rightLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("rightData");
-//$(leftLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
->>>>>>> 5f6eb283518f41ee7da14112c48079b622d7e2bd
 
 // SEARCH BAR EXPAND
 $('#search-bar input').click(function(){
@@ -168,7 +144,6 @@ $('#menu-icon').click(function() {
 
 var sliderOffset = 0;
 
-/*
 function getTransform() {
     var results = $('.leaflet-map-pane').css('transform').match(/matrix\((-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+)\)/);
 
@@ -187,20 +162,6 @@ function adjustDataContainer(){
 map.on('move', function(){
     adjustDataContainer();
 });
-*/
-
-function clip() 
-{
-  var nw = map.containerPointToLayerPoint([0, 0]),
-      se = map.containerPointToLayerPoint(map.getSize()),
-			range = sliderOffset / $(window).width(),
-      clipX = nw.x + (se.x - nw.x) * range;
-
-	leftLayer.getContainer().style.clip = 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)';
-	rightLayer.getContainer().style.clip = 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)';
-}
-
-map.on('move', clip);
 
 function generateButtonRules(){
     if($(window).width() <= 768) return {buttonLimit: 80};
@@ -211,9 +172,8 @@ var sliderLimits = generateButtonRules();
     
 function offsetFunc(){
     
-    //adjustDataContainer();
-    clip();
-	
+    adjustDataContainer();
+    
     // SHOW BUTTON IF SIDE IS VISIBLE
     if(sliderOffset >= sliderLimits.buttonLimit && !$('#left-button-block').is(':visible')){
         $('#left-button-block').fadeIn();
@@ -276,10 +236,8 @@ $('body').on('mousemove touchmove', function(e){
     }
 });
 
-clip();
-
 // ADDRESS SEARCH
-var curLocData;	//object for the current location data
+var curLocData; //object for the current location data
 var searchTimer;
 
 //search bar text changed
@@ -344,8 +302,8 @@ function updateSearchResults(data){
     }
 }
 
-//	FAVOURITE LOCATION
-var savedLocations = [];	//holds loc data for all saved locs
+//  FAVOURITE LOCATION
+var savedLocations = [];    //holds loc data for all saved locs
 localStorage.setItem("savedLocations", JSON.stringify(savedLocations));
 
 
@@ -390,7 +348,7 @@ renderSavedLocations();
 
 // search/saved result item is clicked
 $('#search-results, #saved-locations').on('click', 'li', function(){
-	goToLocation(this);
+    goToLocation(this);
 });
 
 //click on delete saved location item
@@ -404,8 +362,8 @@ $('#saved-locations').on('click', 'li .favourite-delete', function(e) {
 
 //pans map to location given by 'data'
 function goToLocation(data) {
-	//update current location
- 	curLocData = {
+    //update current location
+    curLocData = {
         lat: $(data).attr('data-lat'),
         lng: $(data).attr('data-lon'),
         dispname: $(data).text(),
@@ -416,7 +374,7 @@ function goToLocation(data) {
     map.panTo(location);
     $('#search-input').val($(data).text());
   
-	//set zoom level based on type of location
+    //set zoom level based on type of location
     //known outliers: tadley = administrative?
     if(curLocData.type == "administrative") {  //country
         map.setZoom(8);
@@ -441,11 +399,11 @@ $('#search-bar-favourite').on('click', function() {
 //adds/removes from savedLocations, updates icon and the ui
 function toggleFavourite() {
     if(typeof curLocData === "undefined") {
-		return;
-	}
+        return;
+    }
     if(savedLocations.length == 0) {
-		savedLocations.push(curLocData); addSavedLocation();
-	} else {  
+        savedLocations.push(curLocData); addSavedLocation();
+    } else {  
         var index = savedLocIndex(curLocData.dispname);
         if(index != -1) {
             savedLocations.splice(index, 1); removeSavedLocation(index);
