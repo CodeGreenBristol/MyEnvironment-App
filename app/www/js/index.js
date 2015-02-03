@@ -6,17 +6,17 @@ var accToken = '?access_token=pk.eyJ1IjoibWMxMzgxOCIsImEiOiI4Tlp2cFlBIn0.reMspV4
 map = L.map('map-layer', {
     attributionControl: false,
     zoomControl:false,
-    //center: [51.45, -2.6],
-    //zoom: 15,
-    center: [51.396, -2.298],
+    center: [51.45, -2.6],
     zoom: 14,
-    minZoom: 8
+    //center: [51.396, -2.298],
+    minZoom: 7
 });
 
 L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.concat(accToken), {
     maxZoom: 18
 }).addTo(map);
 
+<<<<<<< HEAD
 var rightLayerData = 'ea:flood_warning_areas';
 var leftLayerData = 'ea:areasoutstgnaturalbeauty_eng';
 var rightLayer;
@@ -49,6 +49,30 @@ function setLeftLayer(rightLayerData) {
     $(leftLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
 }
 setLeftLayer(leftLayerData);
+=======
+var rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
+    layers: 'ea:flood_warning_areas',
+    format: 'image/png8',
+    transparent: true,
+    tiled: true,
+    srs: 'EPSG:4326',
+    version: '1.1.0',
+    reuseTiles: true
+}).addTo(map);
+
+var leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
+    layers: 'ea:flood_alert_areas',
+    format: 'image/png8',
+    transparent: true,
+    tiled: true,
+    srs: 'EPSG:4326',
+    version: '1.1.0',
+    reuseTiles: true
+}).addTo(map);
+
+//$(rightLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("rightData");
+//$(leftLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
+>>>>>>> 5f6eb283518f41ee7da14112c48079b622d7e2bd
 
 // SEARCH BAR EXPAND
 $('#search-bar input').click(function(){
@@ -144,6 +168,7 @@ $('#menu-icon').click(function() {
 
 var sliderOffset = 0;
 
+/*
 function getTransform() {
     var results = $('.leaflet-map-pane').css('transform').match(/matrix\((-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+)\)/);
 
@@ -162,6 +187,20 @@ function adjustDataContainer(){
 map.on('move', function(){
     adjustDataContainer();
 });
+*/
+
+function clip() 
+{
+  var nw = map.containerPointToLayerPoint([0, 0]),
+      se = map.containerPointToLayerPoint(map.getSize()),
+			range = sliderOffset / $(window).width(),
+      clipX = nw.x + (se.x - nw.x) * range;
+
+	leftLayer.getContainer().style.clip = 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)';
+	rightLayer.getContainer().style.clip = 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)';
+}
+
+map.on('move', clip);
 
 function generateButtonRules(){
     if($(window).width() <= 768) return {buttonLimit: 80};
@@ -172,8 +211,9 @@ var sliderLimits = generateButtonRules();
     
 function offsetFunc(){
     
-    adjustDataContainer();
-    
+    //adjustDataContainer();
+    clip();
+	
     // SHOW BUTTON IF SIDE IS VISIBLE
     if(sliderOffset >= sliderLimits.buttonLimit && !$('#left-button-block').is(':visible')){
         $('#left-button-block').fadeIn();
@@ -235,6 +275,8 @@ $('body').on('mousemove touchmove', function(e){
         }
     }
 });
+
+clip();
 
 // ADDRESS SEARCH
 var curLocData;	//object for the current location data

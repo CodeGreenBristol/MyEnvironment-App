@@ -231,14 +231,24 @@ body {
 #ui-layer #left-button-block {
   left: 25px;
 }
+#ui-layer #left-button-block #left-legend-button,
+#ui-layer #left-button-block #left-topic-button {
+  left: 0px;
+}
 #ui-layer #right-button-block {
   right: 25px;
+}
+#ui-layer #right-button-block #right-legend-button,
+#ui-layer #right-button-block #right-topic-button {
+  right: 0px;
 }
 #ui-layer #left-legend-button,
 #ui-layer #right-legend-button,
 #ui-layer #left-topic-button,
 #ui-layer #right-topic-button {
   position: absolute;
+  -webkit-transform: scale(0.01);
+  -ms-transform: scale(0.01);
   transform: scale(0.01);
   display: none;
 }
@@ -246,6 +256,8 @@ body {
 #ui-layer #right-legend-button.btn-expanded,
 #ui-layer #left-topic-button.btn-expanded,
 #ui-layer #right-topic-button.btn-expanded {
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
   transform: scale(1);
 }
 #ui-layer #left-legend-button,
