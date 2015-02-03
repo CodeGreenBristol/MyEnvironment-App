@@ -17,28 +17,38 @@ L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.co
     maxZoom: 18
 }).addTo(map);
 
-var rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
-    layers: 'ea:flood_warning_areas',
-    format: 'image/png8',
-    transparent: true,
-    tiled: true,
-    srs: 'EPSG:4326',
-    version: '1.1.0',
-    reuseTiles: true
-}).addTo(map);
+var rightLayerData = 'ea:flood_warning_areas';
+var leftLayerData = 'ea:areasoutstgnaturalbeauty_eng';
+var rightLayer;
+var leftLayer;
 
-var leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
-    layers: 'ea:areasoutstgnaturalbeauty_eng',
-    format: 'image/png8',
-    transparent: true,
-    tiled: true,
-    srs: 'EPSG:4326',
-    version: '1.1.0',
-    reuseTiles: true
-}).addTo(map);
+function setRightLayer(rightLayerData) {
+    rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
+        layers: rightLayerData,
+        format: 'image/png8',
+        transparent: true,
+        tiled: true,
+        srs: 'EPSG:4326',
+        version: '1.1.0',
+        reuseTiles: true
+    }).addTo(map);
+    $(rightLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("rightData");
+}
+setRightLayer(rightLayerData);
 
-$(rightLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("rightData");
-$(leftLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
+function setLeftLayer(rightLayerData) {
+    leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
+        layers: leftLayerData,
+        format: 'image/png8',
+        transparent: true,
+        tiled: true,
+        srs: 'EPSG:4326',
+        version: '1.1.0',
+        reuseTiles: true
+    }).addTo(map);
+    $(leftLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
+}
+setLeftLayer(leftLayerData);
 
 // SEARCH BAR EXPAND
 $('#search-bar input').click(function(){
@@ -121,11 +131,15 @@ $('#right-topic-button, #left-topic-button').click(function() {
     $('#map-select-layer').show().animate({height: "100%"}, {duration: 750});
 });
 
-// SLIDE DOWN TOPIC MENU
-$('#menu-icon').click(function() {
-    $('#map-select-layer').animate({height: "0px"}, {duration: 750, complete: function(){
+function slideDownMenu(delay) {
+    $('#map-select-layer').delay(delay).animate({height: "0px"}, {duration: 750, complete: function(){
         $(this).hide();
     }});
+}
+
+// SLIDE DOWN TOPIC MENU
+$('#menu-icon').click(function() {
+    slideDownMenu(0);
 });
 
 var sliderOffset = 0;
@@ -445,3 +459,54 @@ var datasetsArray = {
     "Agricultural land" : "ea:agri_land_class",   
     "Flood risk areas" : "ea:flood_risk_areas"
 };
+
+// GENERATE DATASET MENU RIGHT SIDE
+$('#right-topic-button').click(function() {
+    // Clear previous data set menu
+    $('#map-select-layer #menu-options ul').html('');
+    // Generate new list
+    for (var datasetTitle in datasetsArray) {
+        if (rightLayerData == datasetsArray[datasetTitle]) {
+            $('#map-select-layer #menu-options ul').append('<li class = "topic-selected">'+ datasetTitle + '</li>');
+        }
+        else if (leftLayerData != datasetsArray[datasetTitle]) {
+            $('#map-select-layer #menu-options ul').append('<li>'+ datasetTitle + '</li>');
+        }        
+    }
+
+    // Click Handler
+    $('#map-select-layer #menu-options ul li').click(function() {
+        $('.topic-selected').removeClass('topic-selected');
+        $(this).addClass('topic-selected');
+        rightLayerData = datasetsArray[this.innerText];
+        map.removeLayer(rightLayer);
+        setRightLayer(rightLayerData);
+        slideDownMenu(800);
+    });
+});
+
+// GENERATE DATASET MENU LEFT SIDE
+$('#left-topic-button').click(function() {
+    // Clear previous data set menu
+    $('#map-select-layer #menu-options ul').html('');
+    // Generate new list
+    for (var datasetTitle in datasetsArray) {
+        if (leftLayerData == datasetsArray[datasetTitle]) {
+            $('#map-select-layer #menu-options ul').append('<li class = "topic-selected">'+ datasetTitle + '</li>');
+        }
+        else if (rightLayerData != datasetsArray[datasetTitle]) {
+            $('#map-select-layer #menu-options ul').append('<li>'+ datasetTitle + '</li>');
+        }        
+    }
+
+    // Click Handler
+    $('#map-select-layer #menu-options ul li').click(function() {
+        $('.topic-selected').removeClass('topic-selected');
+        $(this).addClass('topic-selected');
+        leftLayerData = datasetsArray[this.innerText];
+        map.removeLayer(leftLayer);
+        setLeftLayer(leftLayerData);
+        slideDownMenu(800);
+    });
+});
+
