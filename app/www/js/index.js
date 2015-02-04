@@ -215,14 +215,15 @@ $('#slider-bar').on('mouseup touchend', function(){
     $(this).removeClass('dragging');
     //if($(this).offset().left < -25) $(this).offset({ left: -25 });
     //else if($(this).offset().left > $(window).width() - 25) $(this).offset({ left: $(window).width() - 25 });
-		if(sliderOffset / $(window).width() < 0.05)
-		{
-			$(this).offset({ left: -25 });
-		}
-		else	if(sliderOffset / $(window).width() > 0.95)
-		{
-			$(this).offset({ left: $(window).width() - 25 });
-		}
+    if(sliderOffset / $(window).width() < 0.05){
+        sliderOffset = 0;
+    }
+    else if(sliderOffset / $(window).width() > 0.95){
+        sliderOffset = $(window).width();       
+    }
+    
+    $(this).offset({ left: sliderOffset - 25 });
+    adjustDataContainer();
 });
 
 $('body').on('mousemove touchmove', function(e){
