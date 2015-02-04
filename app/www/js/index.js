@@ -1,6 +1,6 @@
 // MAP FUNCTIONS
 var map;
-  
+
 //https://www.mapbox.com/developers/api/
 var accToken = '?access_token=pk.eyJ1IjoibWMxMzgxOCIsImEiOiI4Tlp2cFlBIn0.reMspV4lEYawDlSZ6U1fqQ';
 map = L.map('map-layer', {
@@ -37,10 +37,10 @@ function setRightLayer(rightLayerData) {
         detectRetina: true,
 				unloadInvisibleTiles: false
     }).addTo(map);
-    
+    $(rightLayer._container).attr("id", "rightData");
 }
 setRightLayer(rightLayerData);
-$(rightLayer._container).attr("id", "rightData");
+
 
 function setLeftLayer(rightLayerData) {
     leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
@@ -195,18 +195,13 @@ function offsetFunc(){
     if(sliderOffset / $(window).width() >= 0.05 && $('#drag-right').is(':visible')){
         $('#drag-right').fadeOut();
     }
-<<<<<<< HEAD
     else if(sliderOffset / $(window).width() < 0.05 && !$('#drag-right').is(':visible')){
         $('#drag-right').fadeIn();        
-=======
-    else if(sliderOffset < 50 && !$('#drag-right').is(':visible')){
-        $('#drag-right').fadeIn();
->>>>>>> 4768a4162888e7e27b8ee55a8311620a8518b681
+
     }
     if(sliderOffset / $(window).width() <= 0.95 && $('#drag-left').is(':visible')){
         $('#drag-left').fadeOut();
     }
-<<<<<<< HEAD
     else if(sliderOffset / $(window).width() > 0.95 && !$('#drag-left').is(':visible')){
         $('#drag-left').fadeIn();        
     }
@@ -220,7 +215,14 @@ $('#slider-bar').on('mouseup touchend', function(){
     $(this).removeClass('dragging');
     //if($(this).offset().left < -25) $(this).offset({ left: -25 });
     //else if($(this).offset().left > $(window).width() - 25) $(this).offset({ left: $(window).width() - 25 });
-	
+		if(sliderOffset / $(window).width() < 0.05)
+		{
+			$(this).offset({ left: -25 });
+		}
+		else	if(sliderOffset / $(window).width() > 0.95)
+		{
+			$(this).offset({ left: $(window).width() - 25 });
+		}
 });
 
 $('body').on('mousemove touchmove', function(e){
