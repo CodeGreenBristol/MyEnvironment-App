@@ -14,7 +14,10 @@ map = L.map('map-layer', {
 });
 
 L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.concat(accToken), {
-    maxZoom: 18
+    maxZoom: 18,
+		reuseTiles: true,
+    detectRetina: true,
+		unloadInvisibleTiles: false
 }).addTo(map);
 
 var rightLayerData = 'ea:flood_warning_areas';
@@ -31,7 +34,8 @@ function setRightLayer(rightLayerData) {
         srs: 'EPSG:4326',
         version: '1.1.0',
         reuseTiles: true,
-        detectRetina: true
+        detectRetina: true,
+				unloadInvisibleTiles: false
     }).addTo(map);
     
 }
@@ -47,7 +51,8 @@ function setLeftLayer(rightLayerData) {
         srs: 'EPSG:4326',
         version: '1.1.0',
         reuseTiles: true,
-        detectRetina: true
+        detectRetina: true,
+				unloadInvisibleTiles: false
     }).addTo(map);
 }
 setLeftLayer(leftLayerData);
@@ -187,16 +192,16 @@ function offsetFunc(){
     }
     
     // SHOW ARROWS ON SIDE OF SLIDER
-    if(sliderOffset >= 50 && $('#drag-right').is(':visible')){
+    if(sliderOffset / $(window).width() >= 0.05 && $('#drag-right').is(':visible')){
         $('#drag-right').fadeOut();
     }
-    else if(sliderOffset < 50 && !$('#drag-right').is(':visible')){
+    else if(sliderOffset / $(window).width() < 0.05 && !$('#drag-right').is(':visible')){
         $('#drag-right').fadeIn();        
     }
-    if(sliderOffset <= $(window).width() - 100 && $('#drag-left').is(':visible')){
+    if(sliderOffset / $(window).width() <= 0.95 && $('#drag-left').is(':visible')){
         $('#drag-left').fadeOut();
     }
-    else if(sliderOffset > $(window).width() - 100 && !$('#drag-left').is(':visible')){
+    else if(sliderOffset / $(window).width() > 0.95 && !$('#drag-left').is(':visible')){
         $('#drag-left').fadeIn();        
     }
 }
@@ -207,8 +212,9 @@ $('#slider-bar').on('mousedown touchstart', function(){
 });
 $('#slider-bar').on('mouseup touchend', function(){
     $(this).removeClass('dragging');
-    if($(this).offset().left < -25) $(this).offset({ left: -25 });
-    else if($(this).offset().left > $(window).width() - 25) $(this).offset({ left: $(window).width() - 25 });
+    //if($(this).offset().left < -25) $(this).offset({ left: -25 });
+    //else if($(this).offset().left > $(window).width() - 25) $(this).offset({ left: $(window).width() - 25 });
+	
 });
 
 $('body').on('mousemove touchmove', function(e){
