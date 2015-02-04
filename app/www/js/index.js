@@ -18,7 +18,7 @@ L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.co
 }).addTo(map);
 
 var rightLayerData = 'ea:flood_warning_areas';
-var leftLayerData = 'ea:areasoutstgnaturalbeauty_eng';
+var leftLayerData = 'ea:flood_alert_areas';
 var rightLayer;
 var leftLayer;
 
@@ -30,11 +30,13 @@ function setRightLayer(rightLayerData) {
         tiled: true,
         srs: 'EPSG:4326',
         version: '1.1.0',
-        reuseTiles: true
+        reuseTiles: true,
+        detectRetina: true
     }).addTo(map);
-    $(rightLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("rightData");
+    
 }
 setRightLayer(rightLayerData);
+$(rightLayer._container).attr("id", "rightData");
 
 function setLeftLayer(rightLayerData) {
     leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
@@ -44,11 +46,12 @@ function setLeftLayer(rightLayerData) {
         tiled: true,
         srs: 'EPSG:4326',
         version: '1.1.0',
-        reuseTiles: true
+        reuseTiles: true,
+        detectRetina: true
     }).addTo(map);
-    $(leftLayer._tileContainer).parent().children('.leaflet-tile-container').addClass("leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
 }
 setLeftLayer(leftLayerData);
+$(leftLayer._container).attr("id", "leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
 
 // SEARCH BAR EXPAND
 $('#search-bar input').click(function(){
@@ -126,24 +129,9 @@ $('#right-button').click(function() {
     buttonExpand("right");
 });
 
-// TOGGLE MAP TOPIC MENU
-$('#right-topic-button, #left-topic-button').click(function() {
-    $('#map-select-layer').show().animate({height: "100%"}, {duration: 750});
-});
-
-function slideDownMenu(delay) {
-    $('#map-select-layer').delay(delay).animate({height: "0px"}, {duration: 750, complete: function(){
-        $(this).hide();
-    }});
-}
-
-// SLIDE DOWN TOPIC MENU
-$('#menu-icon').click(function() {
-    slideDownMenu(0);
-});
-
 var sliderOffset = 0;
 
+/*
 function getTransform() {
     var results = $('.leaflet-map-pane').css('transform').match(/matrix\((-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+)\)/);
 
@@ -157,11 +145,19 @@ function adjustDataContainer(){
     $('.rightData').css("clip","rect("+(-parseInt(panCoords[1]))+"px, "+($(window).width() - parseInt(panCoords[0]))+"px, "+($(window).height() - parseInt(panCoords[1]))+"px, "+(sliderOffset - parseInt(panCoords[0]))+"px)");
     $('.leftData').css("clip", "rect("+(-parseInt(panCoords[1]))+"px, "+(sliderOffset - parseInt(panCoords[0]))+"px, "+($(window).height() - parseInt(panCoords[1]))+"px, "+(-parseInt(panCoords[0]))+"px)");
 }
+*/
 
+function adjustDataContainer(){
+    var nw = map.containerPointToLayerPoint([0, 0]),
+    se = map.containerPointToLayerPoint(map.getSize()),
+    range = sliderOffset / $(window).width(),
+    clipX = nw.x + (se.x - nw.x) * range;
+    
+    $('#leftData').css("clip", 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)');
+    $('#rightData').css("clip", 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)');
+}
    
-map.on('move', function(){
-    adjustDataContainer();
-});
+map.on('move', adjustDataContainer);
 
 function generateButtonRules(){
     if($(window).width() <= 768) return {buttonLimit: 80};
@@ -352,7 +348,6 @@ $('#search-results, #saved-locations').on('click', 'li', function(){
 });
 
 //click on delete saved location item
-//TODO: clicking this still triggers the above event to fire..
 $('#saved-locations').on('click', 'li .favourite-delete', function(e) {
     var index = savedLocIndex($(this).text());
     savedLocations.splice(index, 1);
@@ -460,10 +455,29 @@ var datasetsArray = {
     "Flood risk areas" : "ea:flood_risk_areas"
 };
 
+// TOGGLE MAP TOPIC MENU
+$('#right-topic-button, #left-topic-button').click(function() {
+    $('#map-select-layer').show().animate({height: "100%"}, {duration: 750});
+});
+
+// SLIDE DOWN TOPIC MENU
+$('#menu-icon').click(function() {
+    $('#map-select-layer').animate({height: "0px"}, {duration: 750, complete: function(){
+        $(this).hide();
+    }});
+});
+
+function renderDataSets(){
+    $.each(datasetsArray, function(key, val){
+        $('#map-select-layer #menu-options ul').append('<li data-layer="' + val + '">' + key + '</li>');
+    });
+}    
+renderDataSets();
+
+/*
 // GENERATE DATASET MENU RIGHT SIDE
 $('#right-topic-button').click(function() {
-    // Clear previous data set menu
-    $('#map-select-layer #menu-options ul').html('');
+
     // Generate new list
     for (var datasetTitle in datasetsArray) {
         if (rightLayerData == datasetsArray[datasetTitle]) {
@@ -481,7 +495,6 @@ $('#right-topic-button').click(function() {
         rightLayerData = datasetsArray[this.innerText];
         map.removeLayer(rightLayer);
         setRightLayer(rightLayerData);
-        slideDownMenu(800);
     });
 });
 
@@ -506,7 +519,6 @@ $('#left-topic-button').click(function() {
         leftLayerData = datasetsArray[this.innerText];
         map.removeLayer(leftLayer);
         setLeftLayer(leftLayerData);
-        slideDownMenu(800);
     });
 });
-
+*/
