@@ -1,6 +1,9 @@
 /* Smartphones (portrait and landscape) ----------- */
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-width: 320px) and (max-width: 768px) {
+  #slider-bar {
+    background-image: url('../img/slider/slider-middle-small.png'), url('../img/slider/slider-bar-small.png');
+  }
   #ui-layer {
     /* SEARCH BAR STYLES */
   

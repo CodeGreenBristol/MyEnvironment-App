@@ -33,10 +33,10 @@ function setRightLayer(rightLayerData) {
         reuseTiles: true,
         detectRetina: true
     }).addTo(map);
-    
+    $(rightLayer._container).attr("id", "rightData");
 }
 setRightLayer(rightLayerData);
-$(rightLayer._container).attr("id", "rightData");
+
 
 function setLeftLayer(rightLayerData) {
     leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
@@ -49,9 +49,9 @@ function setLeftLayer(rightLayerData) {
         reuseTiles: true,
         detectRetina: true
     }).addTo(map);
+    $(leftLayer._container).attr("id", "leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
 }
 setLeftLayer(leftLayerData);
-$(leftLayer._container).attr("id", "leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
 
 // SEARCH BAR EXPAND
 $('#search-bar input').click(function(){
@@ -456,69 +456,60 @@ var datasetsArray = {
 };
 
 // TOGGLE MAP TOPIC MENU
+var menuViewed;
 $('#right-topic-button, #left-topic-button').click(function() {
+    
+    $('#map-select-layer #menu-options ul li.topic-selected').removeClass('topic-selected');
+    
+    if($(this).attr("id") == "right-topic-button") { var dataVal = rightLayerData; menuViewed = 1; }
+    else { var dataVal = leftLayerData; menuViewed = 0; }
+    
+    $.each($('#map-select-layer #menu-options ul li'), function(key, val){
+        if(datasetsArray[$(val).text()] == dataVal){
+            $(val).addClass("topic-selected");
+            return false;
+        }
+    });
+    
     $('#map-select-layer').show().animate({height: "100%"}, {duration: 750});
 });
 
 // SLIDE DOWN TOPIC MENU
-$('#menu-icon').click(function() {
+function hideTopicMenu(){
     $('#map-select-layer').animate({height: "0px"}, {duration: 750, complete: function(){
         $(this).hide();
     }});
+}
+    
+$('#menu-icon').click(function() {
+    hideTopicMenu();
 });
 
 function renderDataSets(){
     $.each(datasetsArray, function(key, val){
-        $('#map-select-layer #menu-options ul').append('<li data-layer="' + val + '">' + key + '</li>');
+        $('#map-select-layer #menu-options ul').append('<li>' + key + '</li>');
     });
 }    
 renderDataSets();
 
-/*
-// GENERATE DATASET MENU RIGHT SIDE
-$('#right-topic-button').click(function() {
-
-    // Generate new list
-    for (var datasetTitle in datasetsArray) {
-        if (rightLayerData == datasetsArray[datasetTitle]) {
-            $('#map-select-layer #menu-options ul').append('<li class = "topic-selected">'+ datasetTitle + '</li>');
-        }
-        else if (leftLayerData != datasetsArray[datasetTitle]) {
-            $('#map-select-layer #menu-options ul').append('<li>'+ datasetTitle + '</li>');
-        }        
-    }
-
-    // Click Handler
-    $('#map-select-layer #menu-options ul li').click(function() {
-        $('.topic-selected').removeClass('topic-selected');
-        $(this).addClass('topic-selected');
-        rightLayerData = datasetsArray[this.innerText];
-        map.removeLayer(rightLayer);
-        setRightLayer(rightLayerData);
-    });
-});
-
-// GENERATE DATASET MENU LEFT SIDE
-$('#left-topic-button').click(function() {
-    // Clear previous data set menu
-    $('#map-select-layer #menu-options ul').html('');
-    // Generate new list
-    for (var datasetTitle in datasetsArray) {
-        if (leftLayerData == datasetsArray[datasetTitle]) {
-            $('#map-select-layer #menu-options ul').append('<li class = "topic-selected">'+ datasetTitle + '</li>');
-        }
-        else if (rightLayerData != datasetsArray[datasetTitle]) {
-            $('#map-select-layer #menu-options ul').append('<li>'+ datasetTitle + '</li>');
-        }        
-    }
-
-    // Click Handler
-    $('#map-select-layer #menu-options ul li').click(function() {
-        $('.topic-selected').removeClass('topic-selected');
-        $(this).addClass('topic-selected');
-        leftLayerData = datasetsArray[this.innerText];
+$('#map-select-layer #menu-options ul').on("click", "li", function() {
+    if($(this).hasClass('topic-selected')){ hideTopicMenu(); return; }
+    $('.topic-selected').removeClass('topic-selected');
+    $(this).addClass('topic-selected');
+    
+    if(menuViewed == 0){
+        leftLayerData = datasetsArray[$(this).text()];
         map.removeLayer(leftLayer);
         setLeftLayer(leftLayerData);
-    });
+        buttonExpand("left", true);
+    }
+    else {
+        rightLayerData = datasetsArray[$(this).text()];
+        map.removeLayer(rightLayer);
+        setRightLayer(rightLayerData);
+        buttonExpand("right", true);
+    }
+    
+    hideTopicMenu();
+    adjustDataContainer();
 });
-*/
