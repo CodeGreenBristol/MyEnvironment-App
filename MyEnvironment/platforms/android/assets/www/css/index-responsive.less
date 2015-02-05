@@ -1,0 +1,270 @@
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-width : 320px) and (max-width : 768px) {
+    
+    #slider-bar {
+        background-image: url('../img/slider/slider-middle-small.png'), url('../img/slider/slider-bar-small.png');
+    }
+    
+    #ui-layer {
+    
+        /* SEARCH BAR STYLES */
+    
+        #search-bar, #search-bar-expanded { 
+            width:~"calc(100% - 20px)";
+        }
+        #search-bar {
+            margin:25px 10px 0px;
+            padding:10px 15px;
+            background:#fff;
+            #search-icon {
+                img {
+                    width:15px;
+                    vertical-align:top;
+                    margin-top:3px;
+                    margin-left:-2px;
+                }
+            }
+            input {
+                font-size:15px;
+                width:~"calc(100% - 120px)"; /* 50px left margin, 130px for icons on right */
+                margin-left:25px;
+            }
+            #search-bar-options {
+                li {        
+                    img {
+                        width:18px;
+                        margin-top:2px;
+                    }
+                }
+                #search-bar-favourite, #search-bar-location {
+                    margin-left:10px;
+                }
+            }
+        }
+        #search-bar-expanded {
+            margin:0 10px;
+            top:65px;
+            .expanded-section {
+                margin-top:10px;
+                .expanded-title {
+                    font-size:15px;
+                    padding:10px 15px;
+                }
+                .expanded-locations {
+                    font-size:15px;
+                    li {
+                        padding:10px 15px;
+                    }
+                }
+                &#saved-locations .expanded-locations li {
+                    div {
+                        width:~"calc(100% - 20px)";
+                    }
+                    .favourite-delete {
+                        margin-top:5px;
+                        width: 12px;
+                    }
+                }
+            }
+        }
+        
+        /* BUTTON STYLES */
+        
+        #left-button-block, #right-button-block {
+            img {
+                width: 50px;
+            }
+            bottom: 12px;
+        }
+        #left-button-block {
+            left: 15px;
+        }
+        #right-button-block {
+            right: 15px;
+        }
+        #left-button-block, #right-button-block {
+            #left-legend-button, #right-legend-button {
+                bottom: 62px;
+            }
+            #left-topic-button, #right-topic-button {
+                bottom: 122px;
+            }
+        }       
+    }
+        
+    /* MAP SELECT LAYER STYLES */
+    
+    #map-select-layer {
+        #menu-header {
+            padding-bottom:15px;
+            #menu-icon {
+                width: 19px;
+                height: 19px;
+                top: 35px;
+                left: 15px;
+            }
+            #menu-title {
+                padding-top: 31px;
+                font-size: 18px;
+            }
+        }
+        #menu-options {
+            max-height: ~"calc(100% - 103px - 24px)";
+            padding: 12px 0px;
+            ul {
+                margin:0px 12px;
+                li {
+                    padding: 22px;
+                    font-size: 26px;
+                }
+                .topic-selected {
+                    background-size: 24px 20px;
+                    background-position: ~"calc(100% - 22px)" 50%;
+                }
+            }
+        }
+        #menu-options {
+            max-height: ~"calc(100% - 70px - 20px)";
+            padding:10px 0px;
+            ul {
+                margin: 0px 10px;
+                li {
+                    padding: 13px 15px;
+                    font-size: 15px;
+                }
+                .topic-selected {
+                    background-size: 16px 13px;
+                    background-position: ~"calc(100% - 15px)" 50%;
+                }
+            }
+        }
+    }
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width : 321px) {
+
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width : 320px) {
+
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+
+    #ui-layer {
+    
+        /* SEARCH BAR STYLES */
+    
+        #search-bar {
+            margin-top:30px;
+            padding:15px 22px;
+			#search-icon {
+				img {
+					width: 26px;
+					margin-top:6px;
+					margin-left:-4px;
+				}
+			}
+			input {
+				font-size: 26px;
+                width:~"calc(100% - 200px)";
+			}
+			#search-bar-options {
+                li {        
+                    img {
+                        width:30px;
+                        margin-top:3px;
+                    }
+                }
+                #search-bar-favourite, #search-bar-location {
+                    margin-left:15px;
+                }
+            }
+        }
+		#search-bar-expanded {
+            margin:0 15px;
+            top:96px;
+			.expanded-section {
+				.expanded-title {
+                font-size:26px;
+                padding:15px 22px;
+				}
+				.expanded-locations {
+					font-size:26px;
+					li {
+						padding:15px 22px;
+					}
+				}
+			}
+        }
+		
+		/* BUTTON STYLES */
+		
+		#left-button-block, #right-button-block {
+            bottom: 19px;
+            img {
+                width: 75px;
+            }			
+        }
+		#left-button-block {
+			left: 19px;
+		}
+		#right-button-block {
+			right: 19px;
+		}
+		#left-button-block, #right-button-block {
+			#left-legend-button, #right-legend-button {
+				bottom: 95px;
+			}
+			#left-topic-button, #right-topic-button {
+				bottom: 185px;
+			}
+		}
+    }
+    
+    /* MAP SELECT LAYER STYLES */
+    
+    #map-select-layer {
+        #menu-header {
+            #menu-icon {
+                width: 27px;
+                height: 27px;
+                top: 49px;
+                left: 22px;
+                
+            }
+            #menu-title {
+                padding-top: 47px;
+                font-size: 26px;
+            }
+        }
+        #menu-options {
+            max-height: ~"calc(100% - 103px - 24px)";
+            padding: 12px 0px;
+            ul {
+                margin:0px 12px;
+                li {
+                    padding: 22px;
+                    font-size: 26px;
+                }
+                .topic-selected {
+                    background-size: 24px 20px;
+                    background-position: ~"calc(100% - 22px)" 50%;
+                }
+            }
+        }
+    }
+}
+
+/* iPads (landscape) ----------- */
+@media only screen and (min-width : 768px) and (max-width : 1024px) and (orientation : landscape) {
+
+}
+
+/* iPads (portrait) ----------- */
+@media only screen and (min-width : 768px) and (max-width : 1024px) and (orientation : portrait) {
+
+}

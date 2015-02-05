@@ -1,0 +1,249 @@
+/* Smartphones (portrait and landscape) ----------- */
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+  #slider-bar {
+    background-image: url('../img/slider/slider-middle-small.png'), url('../img/slider/slider-bar-small.png');
+  }
+  #ui-layer {
+    /* SEARCH BAR STYLES */
+  
+    /* BUTTON STYLES */
+  
+  }
+  #ui-layer #search-bar,
+  #ui-layer #search-bar-expanded {
+    width: calc(100% - 20px);
+  }
+  #ui-layer #search-bar {
+    margin: 25px 10px 0px;
+    padding: 10px 15px;
+    background: #fff;
+  }
+  #ui-layer #search-bar #search-icon img {
+    width: 15px;
+    vertical-align: top;
+    margin-top: 3px;
+    margin-left: -2px;
+  }
+  #ui-layer #search-bar input {
+    font-size: 15px;
+    width: calc(100% - 120px);
+    /* 50px left margin, 130px for icons on right */
+  
+    margin-left: 25px;
+  }
+  #ui-layer #search-bar #search-bar-options li img {
+    width: 18px;
+    margin-top: 2px;
+  }
+  #ui-layer #search-bar #search-bar-options #search-bar-favourite,
+  #ui-layer #search-bar #search-bar-options #search-bar-location {
+    margin-left: 10px;
+  }
+  #ui-layer #search-bar-expanded {
+    margin: 0 10px;
+    top: 65px;
+  }
+  #ui-layer #search-bar-expanded .expanded-section {
+    margin-top: 10px;
+  }
+  #ui-layer #search-bar-expanded .expanded-section .expanded-title {
+    font-size: 15px;
+    padding: 10px 15px;
+  }
+  #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
+    font-size: 15px;
+  }
+  #ui-layer #search-bar-expanded .expanded-section .expanded-locations li {
+    padding: 10px 15px;
+  }
+  #ui-layer #search-bar-expanded .expanded-section#saved-locations .expanded-locations li div {
+    width: calc(100% - 20px);
+  }
+  #ui-layer #search-bar-expanded .expanded-section#saved-locations .expanded-locations li .favourite-delete {
+    margin-top: 5px;
+    width: 12px;
+  }
+  #ui-layer #left-button-block,
+  #ui-layer #right-button-block {
+    bottom: 12px;
+  }
+  #ui-layer #left-button-block img,
+  #ui-layer #right-button-block img {
+    width: 50px;
+  }
+  #ui-layer #left-button-block {
+    left: 15px;
+  }
+  #ui-layer #right-button-block {
+    right: 15px;
+  }
+  #ui-layer #left-button-block #left-legend-button,
+  #ui-layer #right-button-block #left-legend-button,
+  #ui-layer #left-button-block #right-legend-button,
+  #ui-layer #right-button-block #right-legend-button {
+    bottom: 62px;
+  }
+  #ui-layer #left-button-block #left-topic-button,
+  #ui-layer #right-button-block #left-topic-button,
+  #ui-layer #left-button-block #right-topic-button,
+  #ui-layer #right-button-block #right-topic-button {
+    bottom: 122px;
+  }
+  /* MAP SELECT LAYER STYLES */
+  #map-select-layer #menu-header {
+    padding-bottom: 15px;
+  }
+  #map-select-layer #menu-header #menu-icon {
+    width: 19px;
+    height: 19px;
+    top: 35px;
+    left: 15px;
+  }
+  #map-select-layer #menu-header #menu-title {
+    padding-top: 31px;
+    font-size: 18px;
+  }
+  #map-select-layer #menu-options {
+    max-height: calc(100% - 103px - 24px);
+    padding: 12px 0px;
+  }
+  #map-select-layer #menu-options ul {
+    margin: 0px 12px;
+  }
+  #map-select-layer #menu-options ul li {
+    padding: 22px;
+    font-size: 26px;
+  }
+  #map-select-layer #menu-options ul .topic-selected {
+    background-size: 24px 20px;
+    background-position: calc(100% - 22px) 50%;
+  }
+  #map-select-layer #menu-options {
+    max-height: calc(100% - 70px - 20px);
+    padding: 10px 0px;
+  }
+  #map-select-layer #menu-options ul {
+    margin: 0px 10px;
+  }
+  #map-select-layer #menu-options ul li {
+    padding: 13px 15px;
+    font-size: 15px;
+  }
+  #map-select-layer #menu-options ul .topic-selected {
+    background-size: 16px 13px;
+    background-position: calc(100% - 15px) 50%;
+  }
+}
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width: 321px) {
+  
+}
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width: 320px) {
+  
+}
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  #ui-layer {
+    /* SEARCH BAR STYLES */
+  
+    /* BUTTON STYLES */
+  
+  }
+  #ui-layer #search-bar {
+    margin-top: 30px;
+    padding: 15px 22px;
+  }
+  #ui-layer #search-bar #search-icon img {
+    width: 26px;
+    margin-top: 6px;
+    margin-left: -4px;
+  }
+  #ui-layer #search-bar input {
+    font-size: 26px;
+    width: calc(100% - 200px);
+  }
+  #ui-layer #search-bar #search-bar-options li img {
+    width: 30px;
+    margin-top: 3px;
+  }
+  #ui-layer #search-bar #search-bar-options #search-bar-favourite,
+  #ui-layer #search-bar #search-bar-options #search-bar-location {
+    margin-left: 15px;
+  }
+  #ui-layer #search-bar-expanded {
+    margin: 0 15px;
+    top: 96px;
+  }
+  #ui-layer #search-bar-expanded .expanded-section .expanded-title {
+    font-size: 26px;
+    padding: 15px 22px;
+  }
+  #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
+    font-size: 26px;
+  }
+  #ui-layer #search-bar-expanded .expanded-section .expanded-locations li {
+    padding: 15px 22px;
+  }
+  #ui-layer #left-button-block,
+  #ui-layer #right-button-block {
+    bottom: 19px;
+  }
+  #ui-layer #left-button-block img,
+  #ui-layer #right-button-block img {
+    width: 75px;
+  }
+  #ui-layer #left-button-block {
+    left: 19px;
+  }
+  #ui-layer #right-button-block {
+    right: 19px;
+  }
+  #ui-layer #left-button-block #left-legend-button,
+  #ui-layer #right-button-block #left-legend-button,
+  #ui-layer #left-button-block #right-legend-button,
+  #ui-layer #right-button-block #right-legend-button {
+    bottom: 95px;
+  }
+  #ui-layer #left-button-block #left-topic-button,
+  #ui-layer #right-button-block #left-topic-button,
+  #ui-layer #left-button-block #right-topic-button,
+  #ui-layer #right-button-block #right-topic-button {
+    bottom: 185px;
+  }
+  /* MAP SELECT LAYER STYLES */
+  #map-select-layer #menu-header #menu-icon {
+    width: 27px;
+    height: 27px;
+    top: 49px;
+    left: 22px;
+  }
+  #map-select-layer #menu-header #menu-title {
+    padding-top: 47px;
+    font-size: 26px;
+  }
+  #map-select-layer #menu-options {
+    max-height: calc(100% - 103px - 24px);
+    padding: 12px 0px;
+  }
+  #map-select-layer #menu-options ul {
+    margin: 0px 12px;
+  }
+  #map-select-layer #menu-options ul li {
+    padding: 22px;
+    font-size: 26px;
+  }
+  #map-select-layer #menu-options ul .topic-selected {
+    background-size: 24px 20px;
+    background-position: calc(100% - 22px) 50%;
+  }
+}
+/* iPads (landscape) ----------- */
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  
+}
+/* iPads (portrait) ----------- */
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  
+}
