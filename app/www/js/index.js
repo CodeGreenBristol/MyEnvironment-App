@@ -1,20 +1,20 @@
 // MAP FUNCTIONS
 var map;
+var rViz = true;
+var lViz = false;
 
 //https://www.mapbox.com/developers/api/
 var accToken = '?access_token=pk.eyJ1IjoibWMxMzgxOCIsImEiOiI4Tlp2cFlBIn0.reMspV4lEYawDlSZ6U1fqQ';
 map = L.map('map-layer', {
     attributionControl: false,
     zoomControl:false,
-    //center: [51.45, -2.6],
-    //zoom: 15,
-    center: [51.396, -2.298],
+    center: [51.45, -2.59],
     zoom: 14,
-    minZoom: 8
+    minZoom: 7,
+		maxZoom: 17
 });
 
 L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.concat(accToken), {
-    maxZoom: 18,
 		reuseTiles: true,
     detectRetina: true,
 		unloadInvisibleTiles: false
@@ -134,7 +134,7 @@ $('#right-button').click(function() {
     buttonExpand("right");
 });
 
-var sliderOffset = 0;
+var sliderOffset = 4;
 
 /*
 function getTransform() {
@@ -183,7 +183,7 @@ function offsetFunc(){
         buttonExpand("left", true);
         $('#left-button-block').fadeOut();
     }
-    else if(sliderOffset <= $(window).width() - sliderLimits.buttonLimit && !$('#right-button-block').is(':visible')){
+    if(sliderOffset <= $(window).width() - sliderLimits.buttonLimit && !$('#right-button-block').is(':visible')){
         $('#right-button-block').fadeIn();
     }
     else if(sliderOffset > $(window).width() - sliderLimits.buttonLimit && $('#right-button-block').is(':visible')){
@@ -192,17 +192,16 @@ function offsetFunc(){
     }
 
     // SHOW ARROWS ON SIDE OF SLIDER
-    if(sliderOffset / $(window).width() >= 0.05 && $('#drag-right').is(':visible')){
+    if(sliderOffset / $(window).width() >= 0.07 && $('#drag-right').is(':visible')){
         $('#drag-right').fadeOut();
     }
-    else if(sliderOffset / $(window).width() < 0.05 && !$('#drag-right').is(':visible')){
-        $('#drag-right').fadeIn();        
-
+    else if(sliderOffset / $(window).width() < 0.07 && !$('#drag-right').is(':visible')){
+        $('#drag-right').fadeIn();
     }
-    if(sliderOffset / $(window).width() <= 0.95 && $('#drag-left').is(':visible')){
+    if(sliderOffset / $(window).width() <= 0.93 && $('#drag-left').is(':visible')){
         $('#drag-left').fadeOut();
     }
-    else if(sliderOffset / $(window).width() > 0.95 && !$('#drag-left').is(':visible')){
+    else if(sliderOffset / $(window).width() > 0.93 && !$('#drag-left').is(':visible')){
         $('#drag-left').fadeIn();        
     }
 }
@@ -213,15 +212,28 @@ $('#slider-bar').on('mousedown touchstart', function(){
 });
 $('#slider-bar').on('mouseup touchend', function(){
     $(this).removeClass('dragging');
-    //if($(this).offset().left < -25) $(this).offset({ left: -25 });
-    //else if($(this).offset().left > $(window).width() - 25) $(this).offset({ left: $(window).width() - 25 });
-    if(sliderOffset / $(window).width() < 0.05){
-        sliderOffset = 0;
+    if(sliderOffset / $(window).width() < 0.07){
+        sliderOffset = 4;
     }
-    else if(sliderOffset / $(window).width() > 0.95){
-        sliderOffset = $(window).width();       
+    else if(sliderOffset / $(window).width() > 0.93){
+        sliderOffset = $(window).width() - 4;       
     }
     
+	  if(sliderOffset >= sliderLimits.buttonLimit){
+        $('#left-button-block').fadeIn();
+    }
+    else if(sliderOffset < sliderLimits.buttonLimit){
+        buttonExpand("left", true);
+        $('#left-button-block').fadeOut();
+    }
+    if(sliderOffset <= $(window).width() - sliderLimits.buttonLimit){
+        $('#right-button-block').fadeIn();
+    }
+    else if(sliderOffset > $(window).width() - sliderLimits.buttonLimit){
+        buttonExpand("right", true);
+        $('#right-button-block').fadeOut();	
+		}
+	
     $(this).offset({ left: sliderOffset - 25 });
     adjustDataContainer();
 });
@@ -235,8 +247,8 @@ $('body').on('mousemove touchmove', function(e){
 
         if(sliderOffset != out.pageX);{
 
-            if(sliderOffset < 0) sliderOffset = 0;
-            else if(sliderOffset > $(window).width()) sliderOffset = $(window).width();
+            if(sliderOffset < 4) sliderOffset = 4;
+            else if(sliderOffset > $(window).width() - 4) sliderOffset = $(window).width() - 4;
             else sliderOffset = out.pageX;
 
             offsetFunc();
