@@ -1,5 +1,7 @@
 *.ppk
 *.pem
+*.zip
+*.pdf
 
 # ANDROID / ECLIPSE
 
