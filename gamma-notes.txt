@@ -1,0 +1,6 @@
+- improved retina support (no more bluriness) <- haven't done search bar icons yet
+- improved button responsiveness
+- improved button clarity
+- slider snaps to side (alex's idea)
+- marker on searched location (default leaflet marker for now)
+- pan to center of searched location on marker click

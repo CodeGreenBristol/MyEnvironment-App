@@ -22,6 +22,7 @@ var rightLayerData = 'ea:flood_warning_areas';
 var leftLayerData = 'ea:flood_alert_areas';
 var rightLayer;
 var leftLayer;
+var locationMarker;
 
 function setRightLayer(rightLayerData) {
     rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
@@ -155,8 +156,7 @@ function adjustDataContainer(){
 function adjustDataContainer(){
     var nw = map.containerPointToLayerPoint([0, 0]),
     se = map.containerPointToLayerPoint(map.getSize()),
-    range = sliderOffset / $(window).width(),
-    clipX = nw.x + (se.x - nw.x) * range;
+    clipX = nw.x + (se.x - nw.x) * (sliderOffset / $(window).width());
 
     $('#leftData').css("clip", 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)');
     $('#rightData').css("clip", 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)');
@@ -164,6 +164,7 @@ function adjustDataContainer(){
 
 map.on('move', adjustDataContainer);
 
+// REDUNDANCY, SEE IF WE CAN MAKE IT PERCENTAGES
 function generateButtonRules(){
     if($(window).width() <= 768) return {buttonLimit: 80};
     else if($(window).width() <= 1024) return {buttonLimit: 120};
@@ -205,37 +206,39 @@ function offsetFunc(){
 }
 
 // DRAGGABLE SLIDER
+sliderLeft = parseInt($('#slider-bar').css('left'), 10);
+
 $('#slider-bar').on('mousedown touchstart', function(){
     $(this).addClass('dragging');
 });
 $('#slider-bar').on('mouseup touchend', function(){
     $(this).removeClass('dragging');
-    if(sliderOffset / $(window).width() < 0.07){
-        sliderOffset = 4;
+    if(sliderOffset / $(window).width() < 0.1){
+        sliderOffset = 0;
     }
-    else if(sliderOffset / $(window).width() > 0.93){
-        sliderOffset = $(window).width() - 4;       
+    else if(sliderOffset / $(window).width() > 0.90){
+        sliderOffset = $(window).width();       
     }
     
-	  if(sliderOffset >= sliderLimits.buttonLimit){
+    if(sliderOffset >= sliderLimits.buttonLimit){
         $('#left-button-block').fadeIn();
     }
     else if(sliderOffset < sliderLimits.buttonLimit){
-        buttonExpand("left", true);
         $('#left-button-block').fadeOut();
     }
     if(sliderOffset <= $(window).width() - sliderLimits.buttonLimit){
         $('#right-button-block').fadeIn();
     }
     else if(sliderOffset > $(window).width() - sliderLimits.buttonLimit){
-        buttonExpand("right", true);
         $('#right-button-block').fadeOut();	
-		}
+    }
 	
-    $(this).offset({ left: sliderOffset - 25 });
+    $(this).offset({ left: sliderOffset + sliderLeft });
+    offsetFunc();
     adjustDataContainer();
 });
 
+// CAN OPTIMISE, NO NEED FOR OFFSETFUNC WHEN PAST THRESHOLD
 $('body').on('mousemove touchmove', function(e){
 
     if(e.type == "touchmove") var out = e.originalEvent.touches[0];
@@ -245,14 +248,12 @@ $('body').on('mousemove touchmove', function(e){
 
         if(sliderOffset != out.pageX);{
 
-            if(sliderOffset < 4) sliderOffset = 4;
-            else if(sliderOffset > $(window).width() - 4) sliderOffset = $(window).width() - 4;
+            if(sliderOffset < 0) sliderOffset = 0;
+            else if(sliderOffset > $(window).width()) sliderOffset = $(window).width();
             else sliderOffset = out.pageX;
 
             offsetFunc();
-            $('#slider-bar').offset({
-                left: sliderOffset - 25
-            });
+            $('#slider-bar').offset({ left: sliderOffset + sliderLeft });
         }
     }
 
@@ -382,6 +383,11 @@ $('#saved-locations').on('click', 'li .favourite-delete', function(e) {
     e.stopPropagation();
 });
 
+// pan map on marker click
+$('#map-layer').on('click', '.leaflet-marker-icon', function(){
+    map.panTo(locationMarker.getLatLng());
+});
+
 //pans map to location given by 'data'
 function goToLocation(data) {
     //update current location
@@ -393,6 +399,15 @@ function goToLocation(data) {
     };
 
     var location = new L.LatLng(curLocData.lat, curLocData.lng);
+    
+    // set marker for location
+    if(typeof locationMarker === "undefined"){
+        locationMarker = L.marker(location).addTo(map);
+    }
+    else {
+        locationMarker.setLatLng(location);
+    }
+    
     map.panTo(location);
     $('#search-input').val($(data).text());
 
@@ -474,29 +489,53 @@ $("#search-bar-empty").click(function(){
 });
 
 var datasetsArray = {
-    "Flood warning areas" : "ea:flood_warning_areas",
-    "Flood alert areas" : "ea:flood_alert_areas",
-    "Nitrate-sensitive areas" : "ea:nitrate_sensitive_areas",
-    "Areas of outstanding natural beauty" : "ea:areasoutstgnaturalbeauty_eng",
-    "Agricultural land" : "ea:agri_land_class",
-    "Flood risk areas" : "ea:flood_risk_areas"
+	"Risk of Flooding from Rivers and Sea" : {"link" : "ea:rofrs_england_v201412", "description" : "River flooding happens when a river cannot cope with the amount of water draining into it from the surrounding land. Sea flooding happens when there are high tides and stormy conditions.The shading on the map shows the risk of flooding from rivers and the sea in this particular area."},
+    "Flood warning areas" : {"link" : "ea:flood_warning_areas", "description" : " "},
+    "Flood risk areas" : {"link" : "ea:flood_risk_areas", "description" : "Flood Risk Areas are areas that are at risk of surface water flooding."},
+    "Nitrate-sensitive areas" : {"link" : "ea:nitrate_sensitive_areas", "description" : "Nitrate sensitive areas are areas where the concentration of nitrates in drinking water sources is particularly high."},
+    "Oil and Gas Wells" : {"link" : "decc_on_wells", "description" : "Oil and gas wells in onshore licence areas."},
+	"Outfall and Discharge Points" : {"link" : "outfall_discharge_points", "description" : "Outfall and Discharge Points are points at which waste is discharged into bodies of water."},
+	"Areas of outstanding natural beauty" : {"link" : "ea:areasoutstgnaturalbeauty_eng", "description" : "Areas of outstanding natural beauty are areas of countryside that are designated for conservation due to their significant landscape value. "},
+    "Registered Parks and Gardens" : {"link" : "registered_parks_and_gardens", "description" : "Parks and Gardens as included on the Register of Historic Parks and Gardens."},
+    "World Heritage Sites" : {"link" : "world_heritage_sites", "description" : "Properties in England as inscribed by the World Heritage Committee of UNESCO."}
 };
+
+var naturalHazardsDataset = {
+		"Risk of Flooding from Rivers and Sea" : {"link" : "ea:rofrs_england_v201412", "description" : "River flooding happens when a river cannot cope with the amount of water draining into it from the surrounding land. Sea flooding happens when there are high tides and stormy conditions.The shading on the map shows the risk of flooding from rivers and the sea in this particular area."},
+    "Flood warning areas" : {"link" : "ea:flood_warning_areas", "description" : " "},
+    "Flood risk areas" : {"link" : "ea:flood_risk_areas", "description" : "Flood Risk Areas are areas that are at risk of surface water flooding."}
+}
+
+var manmadeHazardsDataset = {
+	"Nitrate-sensitive areas" : {"link" : "ea:nitrate_sensitive_areas", "description" : "Nitrate sensitive areas are areas where the concentration of nitrates in drinking water sources is particularly high."},
+    "Oil and Gas Wells" : {"link" : "decc_on_wells", "description" : "Oil and gas wells in onshore licence areas."},
+	"Outfall and Discharge Points" : {"link" : "outfall_discharge_points", "description" : "Outfall and Discharge Points are points at which waste is discharged into bodies of water."}
+}
+
+var recreationDataset = {
+	"Areas of outstanding natural beauty" : {"link" : "ea:areasoutstgnaturalbeauty_eng", "description" : "Areas of outstanding natural beauty are areas of countryside that are designated for conservation due to their significant landscape value. "},
+    "Registered Parks and Gardens" : {"link" : "registered_parks_and_gardens", "description" : "Parks and Gardens as included on the Register of Historic Parks and Gardens."},
+    "World Heritage Sites" : {"link" : "world_heritage_sites", "description" : "Properties in England as inscribed by the World Heritage Committee of UNESCO."}
+}
 
 // TOGGLE MAP TOPIC MENU
 var menuViewed;
+var dataVal;
 $('#right-button, #left-button').click(function() {
 
     $('#map-select-layer #menu-options ul li.topic-selected').removeClass('topic-selected');
 
-    if($(this).attr("id") == "right-button") { var dataVal = rightLayerData; menuViewed = 1; }
-    else { var dataVal = leftLayerData; menuViewed = 0; }
+    if($(this).attr("id") == "right-button") { dataVal = rightLayerData; menuViewed = 1; }
+    else { dataVal = leftLayerData; menuViewed = 0; }
+	
+	console.log(dataVal);
 
-    $.each($('#map-select-layer #menu-options ul li'), function(key, val){
-        if(datasetsArray[$(val).text()] == dataVal){
+    /*$.each($('#map-select-layer #menu-options ul li'), function(key, val){
+        if(datasetsArray[$(this).clone().children().remove().end().text()]["link"] == dataVal){
             $(val).addClass("topic-selected");
             return false;
         }
-    });
+    });*/
 
     $('#map-select-layer').show().animate({height: "100%"}, {duration: 750});
 });
@@ -509,34 +548,78 @@ function hideTopicMenu(){
 }
 
 $('#menu-icon').click(function() {
-    hideTopicMenu();
+	if($(this).hasClass('expanded-menu')) {
+		$(this).removeClass('expanded-menu');
+		$('#map-select-layer #menu-options ul').empty();
+		$('#map-select-layer #menu-options ul').append('<li class="expandable-menu-item">Natural Hazards</li><li class="expandable-menu-item">Man-made Hazards</li><li class="expandable-menu-item">Recreation</li>');
+		$('#map-select-layer #menu-header #menu-title').text('Choose a topic');
+	}
+    else hideTopicMenu();
 });
 
-function renderDataSets(){
+function renderDataSets(datasetsArray){
+	$('#map-select-layer #menu-options ul').empty();
     $.each(datasetsArray, function(key, val){
-        $('#map-select-layer #menu-options ul').append('<li>' + key + '</li>');
+        $('#map-select-layer #menu-options ul').append('<li>' + key + '<img class="info-icon" src="img/info-icon.png" alt="Info" /><div class="dataset-description">'+datasetsArray[key]["description"]+'</div></li>');
     });
+	
+	$.each($('#map-select-layer #menu-options ul li'), function(key, val){
+        if(datasetsArray[$(this).clone().children().remove().end().text()]["link"] == dataVal){
+            $(val).addClass("topic-selected");
+            return false;
+        }
+    });
+	
+	$('#map-select-layer #menu-options ul').fadeIn(450);
 }
-renderDataSets();
 
-$('#map-select-layer #menu-options ul').on("click", "li", function() {
-    if($(this).hasClass('topic-selected')){ hideTopicMenu(); return; }
-    $('.topic-selected').removeClass('topic-selected');
-    $(this).addClass('topic-selected');
+$('#map-select-layer #menu-options ul').on("click", "li", function(event) {
+	if($(event.target).hasClass('info-icon')) {
+		if(!$(event.target).hasClass('description-expanded')){
+			$(event.target).addClass('description-expanded');
+			$(event.target).next().slideDown(300);
+		}
+		else {
+			$('.description-expanded').removeClass('description-expanded');
+			$(event.target).next().slideUp(300);
+		}
+	}
+	else if($(event.target).hasClass('expandable-menu-item')) {
+		$('#menu-icon').addClass('expanded-menu');
+		$('#map-select-layer #menu-options ul').hide();
+		if($(this).text() == "Natural Hazards") {
+			renderDataSets(naturalHazardsDataset);
+			$('#map-select-layer #menu-header #menu-title').text('Natural Hazards');
+		}
+		else if($(this).text() == "Man-made Hazards") {
+			renderDataSets(manmadeHazardsDataset);
+			$('#map-select-layer #menu-header #menu-title').text('Man-made Hazards');
+		}
+		else {
+			renderDataSets(recreationDataset);
+			$('#map-select-layer #menu-header #menu-title').text('Recreation');
+		}
+	}
+	else {
+		if($(this).hasClass('topic-selected')){ hideTopicMenu(); return; }
+		$('.topic-selected').removeClass('topic-selected');
+		$(this).addClass('topic-selected');
+		
+		$('.description-expanded').removeClass('description-expanded');
+		$('.dataset-description').slideUp(300);
 
-    if(menuViewed == 0){
-        leftLayerData = datasetsArray[$(this).text()];
-        map.removeLayer(leftLayer);
-        setLeftLayer(leftLayerData);
-       // buttonExpand("left", true);
-    }
-    else {
-        rightLayerData = datasetsArray[$(this).text()];
-        map.removeLayer(rightLayer);
-        setRightLayer(rightLayerData);
-        //buttonExpand("right", true);
-    }
-
-    hideTopicMenu();
-    adjustDataContainer();
+		if(menuViewed == 0){
+			leftLayerData = datasetsArray[$(this).clone().children().remove().end().text()]["link"];
+			map.removeLayer(leftLayer);
+			setLeftLayer(leftLayerData);
+		}
+		else {
+			rightLayerData = datasetsArray[$(this).clone().children().remove().end().text()]["link"];
+			map.removeLayer(rightLayer);
+			setRightLayer(rightLayerData);
+		}
+		
+		hideTopicMenu();
+		adjustDataContainer();
+	}
 });

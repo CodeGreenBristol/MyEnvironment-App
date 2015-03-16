@@ -2,7 +2,20 @@
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-width: 320px) and (max-width: 768px) {
   #slider-bar {
-    background-image: url('../img/slider/slider-middle-small.png'), url('../img/slider/slider-bar-small.png');
+    width: 36px;
+    left: -18px;
+  }
+  #slider-bar #drag-right,
+  #slider-bar #drag-left {
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+  }
+  #slider-bar #drag-left {
+    margin-left: -40px;
+  }
+  #slider-bar #drag-right {
+    margin-left: 40px;
   }
   #ui-layer {
     /* SEARCH BAR STYLES */
@@ -16,46 +29,49 @@
   }
   #ui-layer #search-bar {
     margin: 25px 10px 0px;
-    padding: 10px 15px;
     background: #fff;
   }
+  #ui-layer #search-bar #search-icon {
+    padding: 15px;
+  }
   #ui-layer #search-bar #search-icon img {
-    width: 15px;
+    width: 20px;
     vertical-align: top;
-    margin-top: 3px;
-    margin-left: -2px;
+    margin-top: 1px;
+    margin-left: 0px;
   }
   #ui-layer #search-bar input {
-    font-size: 15px;
-    width: calc(100% - 120px);
-    /* 50px left margin, 130px for icons on right */
-  
-    margin-left: 25px;
+    font-size: 18px;
+    width: calc(100% - 150px);
+    margin-left: 30px;
+    padding: 15px;
+  }
+  #ui-layer #search-bar #search-bar-options li {
+    padding: 15px 6px;
   }
   #ui-layer #search-bar #search-bar-options li img {
-    width: 18px;
-    margin-top: 2px;
+    width: 22px;
+    margin-top: 1px;
   }
-  #ui-layer #search-bar #search-bar-options #search-bar-favourite,
-  #ui-layer #search-bar #search-bar-options #search-bar-location {
-    margin-left: 10px;
+  #ui-layer #search-bar #search-bar-options #search-bar-favourite {
+    padding-right: 15px;
   }
   #ui-layer #search-bar-expanded {
     margin: 0 10px;
-    top: 65px;
+    top: 79px;
   }
   #ui-layer #search-bar-expanded .expanded-section {
     margin-top: 10px;
   }
   #ui-layer #search-bar-expanded .expanded-section .expanded-title {
-    font-size: 15px;
-    padding: 10px 15px;
+    font-size: 18px;
+    padding: 15px;
   }
   #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
-    font-size: 15px;
+    font-size: 18px;
   }
   #ui-layer #search-bar-expanded .expanded-section .expanded-locations li {
-    padding: 10px 15px;
+    padding: 15px;
   }
   #ui-layer #search-bar-expanded .expanded-section#saved-locations .expanded-locations li div {
     width: calc(100% - 20px);
@@ -66,14 +82,9 @@
   }
   #ui-layer #left-button,
   #ui-layer #right-button {
-    width: 50px;
-    bottom: 12px;
-  }
-  #ui-layer #left-button {
-    left: 15px;
-  }
-  #ui-layer #right-button {
-    right: 15px;
+    width: 65px;
+    height: 65px;
+    padding: 15px;
   }
   /* MAP SELECT LAYER STYLES */
   #map-select-layer #menu-header {
@@ -100,9 +111,19 @@
     padding: 22px;
     font-size: 26px;
   }
+  #map-select-layer #menu-options ul li .info-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 26px;
+  }
   #map-select-layer #menu-options ul .topic-selected {
     background-size: 24px 20px;
     background-position: calc(100% - 22px) 50%;
+  }
+  #map-select-layer #menu-options ul .dataset-description {
+    margin-top: 8px;
+    padding: 8px;
+    font-size: 18px;
   }
   #map-select-layer #menu-options {
     max-height: calc(100% - 70px - 20px);
@@ -138,6 +159,8 @@
   }
   #ui-layer #search-bar {
     margin-top: 30px;
+  }
+  #ui-layer #search-bar #search-icon {
     padding: 15px 22px;
   }
   #ui-layer #search-bar #search-icon img {
@@ -148,14 +171,18 @@
   #ui-layer #search-bar input {
     font-size: 26px;
     width: calc(100% - 200px);
+    padding: 15px 22px;
+    margin-left: 40px;
+  }
+  #ui-layer #search-bar #search-bar-options li {
+    padding: 15px 8px;
   }
   #ui-layer #search-bar #search-bar-options li img {
     width: 30px;
     margin-top: 3px;
   }
-  #ui-layer #search-bar #search-bar-options #search-bar-favourite,
-  #ui-layer #search-bar #search-bar-options #search-bar-location {
-    margin-left: 15px;
+  #ui-layer #search-bar #search-bar-options #search-bar-favourite {
+    padding-right: 15px;
   }
   #ui-layer #search-bar-expanded {
     margin: 0 15px;
@@ -173,14 +200,9 @@
   }
   #ui-layer #left-button,
   #ui-layer #right-button {
-    bottom: 19px;
+    padding: 20px;
     width: 75px;
-  }
-  #ui-layer #left-button {
-    left: 19px;
-  }
-  #ui-layer #right-button {
-    right: 19px;
+    height: 75px;
   }
   /* MAP SELECT LAYER STYLES */
   #map-select-layer #menu-header #menu-icon {
