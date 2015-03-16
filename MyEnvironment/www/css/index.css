@@ -25,7 +25,7 @@ body {
 #slider-bar {
   z-index: 75;
   width: 50px;
-  left: -21px;
+  left: -25px;
   position: absolute;
   height: 100%;
   background-image: url('../img/slider/slider-middle.png'), url('../img/slider/slider-bar.png');
@@ -219,68 +219,18 @@ body {
   vertical-align: top;
   z-index: 110;
 }
-#ui-layer #left-button-block {
+#ui-layer #left-button {
   display: none;
 }
-#ui-layer #left-button-block,
-#ui-layer #right-button-block {
+#ui-layer #left-button,
+#ui-layer #right-button {
   position: absolute;
   z-index: 100;
   bottom: 25px;
 }
-#ui-layer #left-button-block {
+#ui-layer #left-button {
   left: 25px;
 }
-#ui-layer #left-button-block #left-legend-button,
-#ui-layer #left-button-block #left-topic-button {
-  left: 0px;
-}
-#ui-layer #right-button-block {
+#ui-layer #right-button {
   right: 25px;
-}
-#ui-layer #right-button-block #right-legend-button,
-#ui-layer #right-button-block #right-topic-button {
-  right: 0px;
-}
-#ui-layer #left-legend-button,
-#ui-layer #right-legend-button,
-#ui-layer #left-topic-button,
-#ui-layer #right-topic-button {
-  position: absolute;
-  -webkit-transform: scale(0.01);
-  -ms-transform: scale(0.01);
-  transform: scale(0.01);
-  display: none;
-}
-#ui-layer #left-legend-button.btn-expanded,
-#ui-layer #right-legend-button.btn-expanded,
-#ui-layer #left-topic-button.btn-expanded,
-#ui-layer #right-topic-button.btn-expanded {
-  -webkit-transform: scale(1);
-  -ms-transform: scale(1);
-  transform: scale(1);
-}
-#ui-layer #left-legend-button,
-#ui-layer #right-legend-button {
-  bottom: 120px;
-}
-#ui-layer #left-legend-button:not(.btn-expanded),
-#ui-layer #right-legend-button:not(.btn-expanded) {
-  transition: all .5s ease;
-}
-#ui-layer #left-legend-button.btn-expanded,
-#ui-layer #right-legend-button.btn-expanded {
-  transition: all .25s ease;
-}
-#ui-layer #left-topic-button,
-#ui-layer #right-topic-button {
-  bottom: 240px;
-}
-#ui-layer #left-topic-button:not(.btn-expanded),
-#ui-layer #right-topic-button:not(.btn-expanded) {
-  transition: all .25s ease;
-}
-#ui-layer #left-topic-button.btn-expanded,
-#ui-layer #right-topic-button.btn-expanded {
-  transition: all .5s ease;
 }

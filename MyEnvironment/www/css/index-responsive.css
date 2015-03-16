@@ -64,31 +64,16 @@
     margin-top: 5px;
     width: 12px;
   }
-  #ui-layer #left-button-block,
-  #ui-layer #right-button-block {
+  #ui-layer #left-button,
+  #ui-layer #right-button {
+    width: 50px;
     bottom: 12px;
   }
-  #ui-layer #left-button-block img,
-  #ui-layer #right-button-block img {
-    width: 50px;
-  }
-  #ui-layer #left-button-block {
+  #ui-layer #left-button {
     left: 15px;
   }
-  #ui-layer #right-button-block {
+  #ui-layer #right-button {
     right: 15px;
-  }
-  #ui-layer #left-button-block #left-legend-button,
-  #ui-layer #right-button-block #left-legend-button,
-  #ui-layer #left-button-block #right-legend-button,
-  #ui-layer #right-button-block #right-legend-button {
-    bottom: 62px;
-  }
-  #ui-layer #left-button-block #left-topic-button,
-  #ui-layer #right-button-block #left-topic-button,
-  #ui-layer #left-button-block #right-topic-button,
-  #ui-layer #right-button-block #right-topic-button {
-    bottom: 122px;
   }
   /* MAP SELECT LAYER STYLES */
   #map-select-layer #menu-header {
@@ -186,31 +171,16 @@
   #ui-layer #search-bar-expanded .expanded-section .expanded-locations li {
     padding: 15px 22px;
   }
-  #ui-layer #left-button-block,
-  #ui-layer #right-button-block {
+  #ui-layer #left-button,
+  #ui-layer #right-button {
     bottom: 19px;
-  }
-  #ui-layer #left-button-block img,
-  #ui-layer #right-button-block img {
     width: 75px;
   }
-  #ui-layer #left-button-block {
+  #ui-layer #left-button {
     left: 19px;
   }
-  #ui-layer #right-button-block {
+  #ui-layer #right-button {
     right: 19px;
-  }
-  #ui-layer #left-button-block #left-legend-button,
-  #ui-layer #right-button-block #left-legend-button,
-  #ui-layer #left-button-block #right-legend-button,
-  #ui-layer #right-button-block #right-legend-button {
-    bottom: 95px;
-  }
-  #ui-layer #left-button-block #left-topic-button,
-  #ui-layer #right-button-block #left-topic-button,
-  #ui-layer #left-button-block #right-topic-button,
-  #ui-layer #right-button-block #right-topic-button {
-    bottom: 185px;
   }
   /* MAP SELECT LAYER STYLES */
   #map-select-layer #menu-header #menu-icon {

@@ -100,6 +100,7 @@ $('#search-bar, #search-bar-expanded').click(function(e){
     e.stopPropagation();
 });
 
+/*
 // BUTTONS EXPAND
 function buttonExpand(side, override){
 
@@ -131,6 +132,7 @@ $('#left-button').click(function() {
 $('#right-button').click(function() {
     buttonExpand("right");
 });
+*/
 
 var sliderOffset = 4;
 
@@ -174,19 +176,17 @@ function offsetFunc(){
     adjustDataContainer();
 
     // SHOW BUTTON IF SIDE IS VISIBLE
-    if(sliderOffset >= sliderLimits.buttonLimit && !$('#left-button-block').is(':visible')){
-        $('#left-button-block').fadeIn();
+    if(sliderOffset >= sliderLimits.buttonLimit && !$('#left-button').is(':visible')){
+        $('#left-button').fadeIn();
     }
-    else if(sliderOffset < sliderLimits.buttonLimit && $('#left-button-block').is(':visible')){
-        buttonExpand("left", true);
-        $('#left-button-block').fadeOut();
+    else if(sliderOffset < sliderLimits.buttonLimit && $('#left-button').is(':visible')){
+        $('#left-button').fadeOut();
     }
-    if(sliderOffset <= $(window).width() - sliderLimits.buttonLimit && !$('#right-button-block').is(':visible')){
-        $('#right-button-block').fadeIn();
+    if(sliderOffset <= $(window).width() - sliderLimits.buttonLimit && !$('#right-button').is(':visible')){
+        $('#right-button').fadeIn();
     }
-    else if(sliderOffset > $(window).width() - sliderLimits.buttonLimit && $('#right-button-block').is(':visible')){
-        buttonExpand("right", true);
-        $('#right-button-block').fadeOut();
+    else if(sliderOffset > $(window).width() - sliderLimits.buttonLimit && $('#right-button').is(':visible')){
+        $('#right-button').fadeOut();
     }
 
     // SHOW ARROWS ON SIDE OF SLIDER
@@ -484,11 +484,11 @@ var datasetsArray = {
 
 // TOGGLE MAP TOPIC MENU
 var menuViewed;
-$('#right-topic-button, #left-topic-button').click(function() {
+$('#right-button, #left-button').click(function() {
 
     $('#map-select-layer #menu-options ul li.topic-selected').removeClass('topic-selected');
 
-    if($(this).attr("id") == "right-topic-button") { var dataVal = rightLayerData; menuViewed = 1; }
+    if($(this).attr("id") == "right-button") { var dataVal = rightLayerData; menuViewed = 1; }
     else { var dataVal = leftLayerData; menuViewed = 0; }
 
     $.each($('#map-select-layer #menu-options ul li'), function(key, val){
@@ -528,13 +528,13 @@ $('#map-select-layer #menu-options ul').on("click", "li", function() {
         leftLayerData = datasetsArray[$(this).text()];
         map.removeLayer(leftLayer);
         setLeftLayer(leftLayerData);
-        buttonExpand("left", true);
+       // buttonExpand("left", true);
     }
     else {
         rightLayerData = datasetsArray[$(this).text()];
         map.removeLayer(rightLayer);
         setRightLayer(rightLayerData);
-        buttonExpand("right", true);
+        //buttonExpand("right", true);
     }
 
     hideTopicMenu();

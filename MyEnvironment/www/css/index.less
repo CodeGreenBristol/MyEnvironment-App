@@ -222,54 +222,18 @@ html, body {
     
     /* BUTTON STYLES */
     
-    #left-button-block {
+    #left-button {
         display:none;
     }
-    #left-button-block, #right-button-block {
+    #left-button, #right-button {
         position:absolute;
         z-index:100;
         bottom:25px;
     }
-    #left-button-block {
+    #left-button {
         left:25px;
-        #left-legend-button, #left-topic-button {
-            left:0px;
-        }
     }
-    #right-button-block {
+    #right-button {
         right:25px;
-        #right-legend-button, #right-topic-button {
-            right:0px;
-        }
-    }
-    #left-legend-button, #right-legend-button, #left-topic-button, #right-topic-button {
-        position: absolute;
-        -webkit-transform: scale(0.01);
-        -ms-transform: scale(0.01);
-        transform: scale(0.01);
-        display:none;       
-        &.btn-expanded {     
-            -webkit-transform: scale(1);
-            -ms-transform: scale(1);
-            transform: scale(1);          
-        }
-    }
-    #left-legend-button, #right-legend-button {
-        bottom: 120px;
-        &:not(.btn-expanded) {
-            transition:all .5s ease;
-        }
-        &.btn-expanded {
-            transition:all .25s ease;
-        }
-    }
-    #left-topic-button, #right-topic-button {
-        bottom: 240px;
-        &:not(.btn-expanded) {
-            transition:all .25s ease;
-        }
-        &.btn-expanded {
-            transition:all .5s ease;
-        }
     }
 }
