@@ -1,6 +1,14 @@
-- improved retina support (no more bluriness) <- haven't done search bar icons yet
-- improved button responsiveness
+- improved retina support (no more bluriness) <- haven't done search bar icons/dataset info/selected icon yet
+- improved button triggering <- haven't done topic select back button yet
 - improved button clarity
+- bigger search bar 
 - slider snaps to side (alex's idea)
 - marker on searched location (default leaflet marker for now)
 - pan to center of searched location on marker click
+- responsiveness improvements
+- data separated into three groups
+- dataset descriptions
+
+To do:
+- pin dataset
+- user testing prompts

@@ -19,7 +19,7 @@ L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.co
 }).addTo(map);
 
 var rightLayerData = 'ea:flood_warning_areas';
-var leftLayerData = 'ea:flood_alert_areas';
+var leftLayerData = 'ea:rofrs_england_v201412';
 var rightLayer;
 var leftLayer;
 var locationMarker;
@@ -100,40 +100,6 @@ function hideSearchBar() {
 $('#search-bar, #search-bar-expanded').click(function(e){
     e.stopPropagation();
 });
-
-/*
-// BUTTONS EXPAND
-function buttonExpand(side, override){
-
-    // IF NOT VISIBLE, DISPLAY
-    if(typeof override === "undefined" && !$('#' + side + '-legend-button').is(':visible') && !$('#' + side + '-topic-button').is(':visible')) {
-        $('#' + side + '-legend-button').show("fast", function(){ $(this).addClass('btn-expanded'); });
-        $('#' + side + '-topic-button').show("fast", function(){ $(this).addClass('btn-expanded'); });
-        $('#' + side + '-button').attr('src', 'img/buttons/close-menu-icon.png');
-    }
-
-    // IF VISIBLE, HIDE
-    else {
-        $('#' + side + '-legend-button').removeClass("btn-expanded");
-        $('#' + side + '-topic-button').removeClass("btn-expanded");
-
-        setTimeout(function(){
-            $('#' + side + '-legend-button').hide();
-            $('#' + side + '-topic-button').hide();
-        }, 500);
-
-        $('#' + side + '-button').attr('src', 'img/buttons/'+ side +'-menu-icon.png');
-    }
-}
-
-$('#left-button').click(function() {
-    buttonExpand("left");
-});
-
-$('#right-button').click(function() {
-    buttonExpand("right");
-});
-*/
 
 var sliderOffset = 4;
 
@@ -489,54 +455,30 @@ $("#search-bar-empty").click(function(){
 });
 
 var datasetsArray = {
-	"Risk of Flooding from Rivers and Sea" : {"link" : "ea:rofrs_england_v201412", "description" : "River flooding happens when a river cannot cope with the amount of water draining into it from the surrounding land. Sea flooding happens when there are high tides and stormy conditions.The shading on the map shows the risk of flooding from rivers and the sea in this particular area."},
-    "Flood warning areas" : {"link" : "ea:flood_warning_areas", "description" : " "},
-    "Flood risk areas" : {"link" : "ea:flood_risk_areas", "description" : "Flood Risk Areas are areas that are at risk of surface water flooding."},
-    "Nitrate-sensitive areas" : {"link" : "ea:nitrate_sensitive_areas", "description" : "Nitrate sensitive areas are areas where the concentration of nitrates in drinking water sources is particularly high."},
-    "Oil and Gas Wells" : {"link" : "decc_on_wells", "description" : "Oil and gas wells in onshore licence areas."},
-	"Outfall and Discharge Points" : {"link" : "outfall_discharge_points", "description" : "Outfall and Discharge Points are points at which waste is discharged into bodies of water."},
-	"Areas of outstanding natural beauty" : {"link" : "ea:areasoutstgnaturalbeauty_eng", "description" : "Areas of outstanding natural beauty are areas of countryside that are designated for conservation due to their significant landscape value. "},
-    "Registered Parks and Gardens" : {"link" : "registered_parks_and_gardens", "description" : "Parks and Gardens as included on the Register of Historic Parks and Gardens."},
-    "World Heritage Sites" : {"link" : "world_heritage_sites", "description" : "Properties in England as inscribed by the World Heritage Committee of UNESCO."}
+	"Risk of Flooding from Rivers and Sea" : {"type": "natural", "link" : "ea:rofrs_england_v201412", "description" : "River flooding happens when a river cannot cope with the amount of water draining into it from the surrounding land. Sea flooding happens when there are high tides and stormy conditions.The shading on the map shows the risk of flooding from rivers and the sea in this particular area."},
+    "Flood warning areas" : {"type": "natural", "link" : "ea:flood_warning_areas", "description" : "No description"},
+    "Flood risk areas" : {"type": "natural", "link" : "ea:flood_risk_areas", "description" : "Flood Risk Areas are areas that are at risk of surface water flooding."},
+    "Nitrate-sensitive areas" : {"type": "man", "link" : "ea:nitrate_sensitive_areas", "description" : "Nitrate sensitive areas are areas where the concentration of nitrates in drinking water sources is particularly high."},
+    "Oil and Gas Wells" : {"type": "man", "link" : "decc_on_wells", "description" : "Oil and gas wells in onshore licence areas."},
+	"Outfall and Discharge Points" : {"type": "man", "link" : "outfall_discharge_points", "description" : "Outfall and Discharge Points are points at which waste is discharged into bodies of water."},
+	"Areas of outstanding natural beauty" : {"type": "recreation", "link" : "ea:areasoutstgnaturalbeauty_eng", "description" : "Areas of outstanding natural beauty are areas of countryside that are designated for conservation due to their significant landscape value. "},
+    "Registered Parks and Gardens" : {"type": "recreation", "link" : "registered_parks_and_gardens", "description" : "Parks and Gardens as included on the Register of Historic Parks and Gardens."},
+    "World Heritage Sites" : {"type": "recreation", "link" : "world_heritage_sites", "description" : "Properties in England as inscribed by the World Heritage Committee of UNESCO."}
 };
 
-var naturalHazardsDataset = {
-		"Risk of Flooding from Rivers and Sea" : {"link" : "ea:rofrs_england_v201412", "description" : "River flooding happens when a river cannot cope with the amount of water draining into it from the surrounding land. Sea flooding happens when there are high tides and stormy conditions.The shading on the map shows the risk of flooding from rivers and the sea in this particular area."},
-    "Flood warning areas" : {"link" : "ea:flood_warning_areas", "description" : " "},
-    "Flood risk areas" : {"link" : "ea:flood_risk_areas", "description" : "Flood Risk Areas are areas that are at risk of surface water flooding."}
-}
-
-var manmadeHazardsDataset = {
-	"Nitrate-sensitive areas" : {"link" : "ea:nitrate_sensitive_areas", "description" : "Nitrate sensitive areas are areas where the concentration of nitrates in drinking water sources is particularly high."},
-    "Oil and Gas Wells" : {"link" : "decc_on_wells", "description" : "Oil and gas wells in onshore licence areas."},
-	"Outfall and Discharge Points" : {"link" : "outfall_discharge_points", "description" : "Outfall and Discharge Points are points at which waste is discharged into bodies of water."}
-}
-
-var recreationDataset = {
-	"Areas of outstanding natural beauty" : {"link" : "ea:areasoutstgnaturalbeauty_eng", "description" : "Areas of outstanding natural beauty are areas of countryside that are designated for conservation due to their significant landscape value. "},
-    "Registered Parks and Gardens" : {"link" : "registered_parks_and_gardens", "description" : "Parks and Gardens as included on the Register of Historic Parks and Gardens."},
-    "World Heritage Sites" : {"link" : "world_heritage_sites", "description" : "Properties in England as inscribed by the World Heritage Committee of UNESCO."}
-}
-
 // TOGGLE MAP TOPIC MENU
-var menuViewed;
 var dataVal;
+var menuViewed;
 $('#right-button, #left-button').click(function() {
 
     $('#map-select-layer #menu-options ul li.topic-selected').removeClass('topic-selected');
 
     if($(this).attr("id") == "right-button") { dataVal = rightLayerData; menuViewed = 1; }
     else { dataVal = leftLayerData; menuViewed = 0; }
-	
-	console.log(dataVal);
 
-    /*$.each($('#map-select-layer #menu-options ul li'), function(key, val){
-        if(datasetsArray[$(this).clone().children().remove().end().text()]["link"] == dataVal){
-            $(val).addClass("topic-selected");
-            return false;
-        }
-    });*/
-
+    // add tick to current selected topic based on left/right select
+    $('#map-select-layer #menu-options ul li[data-link="'+dataVal+'"]').addClass('topic-selected');
+    
     $('#map-select-layer').show().animate({height: "100%"}, {duration: 750});
 });
 
@@ -547,61 +489,29 @@ function hideTopicMenu(){
     }});
 }
 
-$('#menu-icon').click(function() {
-	if($(this).hasClass('expanded-menu')) {
-		$(this).removeClass('expanded-menu');
-		$('#map-select-layer #menu-options ul').empty();
-		$('#map-select-layer #menu-options ul').append('<li class="expandable-menu-item">Natural Hazards</li><li class="expandable-menu-item">Man-made Hazards</li><li class="expandable-menu-item">Recreation</li>');
-		$('#map-select-layer #menu-header #menu-title').text('Choose a topic');
-	}
-    else hideTopicMenu();
-});
+$('#menu-icon').click(hideTopicMenu);
 
-function renderDataSets(datasetsArray){
-	$('#map-select-layer #menu-options ul').empty();
+function renderDataSets(){  
     $.each(datasetsArray, function(key, val){
-        $('#map-select-layer #menu-options ul').append('<li>' + key + '<img class="info-icon" src="img/info-icon.png" alt="Info" /><div class="dataset-description">'+datasetsArray[key]["description"]+'</div></li>');
-    });
-	
-	$.each($('#map-select-layer #menu-options ul li'), function(key, val){
-        if(datasetsArray[$(this).clone().children().remove().end().text()]["link"] == dataVal){
-            $(val).addClass("topic-selected");
-            return false;
-        }
-    });
-	
-	$('#map-select-layer #menu-options ul').fadeIn(450);
+        $('#map-select-layer #menu-options #datasets-' + val['type'] + '').append('<li data-link="'+val['link']+'"><div class="dataset-title">' + key + '</div><img class="dataset-info" src="img/info-icon.png" alt="Info" /><div class="clearfix"></div><div class="dataset-description">' + val["description"] + '</div></li>');
+   });
 }
+renderDataSets();
 
-$('#map-select-layer #menu-options ul').on("click", "li", function(event) {
-	if($(event.target).hasClass('info-icon')) {
-		if(!$(event.target).hasClass('description-expanded')){
-			$(event.target).addClass('description-expanded');
-			$(event.target).next().slideDown(300);
+$('#map-select-layer #menu-options ul').on("click", "li", function(e) {
+	if($(e.target).hasClass('dataset-info')) {
+		if(!$(e.target).hasClass('description-expanded')){
+			$(e.target).addClass('description-expanded');
+			$(e.target).siblings('.dataset-description').slideDown(300);
 		}
 		else {
 			$('.description-expanded').removeClass('description-expanded');
-			$(event.target).next().slideUp(300);
-		}
-	}
-	else if($(event.target).hasClass('expandable-menu-item')) {
-		$('#menu-icon').addClass('expanded-menu');
-		$('#map-select-layer #menu-options ul').hide();
-		if($(this).text() == "Natural Hazards") {
-			renderDataSets(naturalHazardsDataset);
-			$('#map-select-layer #menu-header #menu-title').text('Natural Hazards');
-		}
-		else if($(this).text() == "Man-made Hazards") {
-			renderDataSets(manmadeHazardsDataset);
-			$('#map-select-layer #menu-header #menu-title').text('Man-made Hazards');
-		}
-		else {
-			renderDataSets(recreationDataset);
-			$('#map-select-layer #menu-header #menu-title').text('Recreation');
+			$(e.target).siblings('.dataset-description').slideUp(300);
 		}
 	}
 	else {
 		if($(this).hasClass('topic-selected')){ hideTopicMenu(); return; }
+        
 		$('.topic-selected').removeClass('topic-selected');
 		$(this).addClass('topic-selected');
 		
@@ -609,12 +519,12 @@ $('#map-select-layer #menu-options ul').on("click", "li", function(event) {
 		$('.dataset-description').slideUp(300);
 
 		if(menuViewed == 0){
-			leftLayerData = datasetsArray[$(this).clone().children().remove().end().text()]["link"];
+			leftLayerData = datasetsArray[$(this).children('.dataset-title').text()]["link"];
 			map.removeLayer(leftLayer);
 			setLeftLayer(leftLayerData);
 		}
 		else {
-			rightLayerData = datasetsArray[$(this).clone().children().remove().end().text()]["link"];
+			rightLayerData = datasetsArray[$(this).children('.dataset-title').text()]["link"];
 			map.removeLayer(rightLayer);
 			setRightLayer(rightLayerData);
 		}
