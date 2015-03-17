@@ -24,6 +24,7 @@ var rightLayer;
 var leftLayer;
 var locationMarker;
 
+
 function setRightLayer(rightLayerData) {
     rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
         layers: rightLayerData,
@@ -167,7 +168,7 @@ function offsetFunc(){
         $('#drag-left').fadeOut();
     }
     else if(sliderOffset / $(window).width() > 0.93 && !$('#drag-left').is(':visible')){
-        $('#drag-left').fadeIn();        
+        $('#drag-left').fadeIn();
     }
 }
 
@@ -183,9 +184,9 @@ $('#slider-bar').on('mouseup touchend', function(){
         sliderOffset = 0;
     }
     else if(sliderOffset / $(window).width() > 0.90){
-        sliderOffset = $(window).width();       
+        sliderOffset = $(window).width();
     }
-    
+
     if(sliderOffset >= sliderLimits.buttonLimit){
         $('#left-button-block').fadeIn();
     }
@@ -196,9 +197,9 @@ $('#slider-bar').on('mouseup touchend', function(){
         $('#right-button-block').fadeIn();
     }
     else if(sliderOffset > $(window).width() - sliderLimits.buttonLimit){
-        $('#right-button-block').fadeOut();	
+        $('#right-button-block').fadeOut();
     }
-	
+
     $(this).offset({ left: sliderOffset + sliderLeft });
     offsetFunc();
     adjustDataContainer();
@@ -354,6 +355,18 @@ $('#map-layer').on('click', '.leaflet-marker-icon', function(){
     map.panTo(locationMarker.getLatLng());
 });
 
+function panToLocation(location) {
+  // set marker for location
+  if(typeof locationMarker === "undefined"){
+      locationMarker = L.marker(location).addTo(map);
+  }
+  else {
+      locationMarker.setLatLng(location);
+  }
+
+  map.panTo(location);
+}
+
 //pans map to location given by 'data'
 function goToLocation(data) {
     //update current location
@@ -365,16 +378,9 @@ function goToLocation(data) {
     };
 
     var location = new L.LatLng(curLocData.lat, curLocData.lng);
-    
-    // set marker for location
-    if(typeof locationMarker === "undefined"){
-        locationMarker = L.marker(location).addTo(map);
-    }
-    else {
-        locationMarker.setLatLng(location);
-    }
-    
-    map.panTo(location);
+
+    panToLocation(location);
+
     $('#search-input').val($(data).text());
 
     //set zoom level based on type of location
@@ -397,6 +403,20 @@ function goToLocation(data) {
 //location is favourited
 $('#search-bar-favourite').on('click', function() {
     toggleFavourite();
+});
+
+//pan to location if geolocation was successful
+var geolocationSuccess = function(location) {
+  panToLocation(new L.LatLng(location.coords.latitude, location.coords.longitude));
+}
+
+function geolocationError() {
+  window.alert("Sorry, we couldn't find your location!");
+}
+
+//sets marker and pans to location on click
+$('#search-bar-location').on('click', function() {
+    navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
 });
 
 //adds/removes from savedLocations, updates icon and the ui
@@ -478,7 +498,7 @@ $('#right-button, #left-button').click(function() {
 
     // add tick to current selected topic based on left/right select
     $('#map-select-layer #menu-options ul li[data-link="'+dataVal+'"]').addClass('topic-selected');
-    
+
     $('#map-select-layer').show().animate({height: "100%"}, {duration: 750});
 });
 
@@ -491,7 +511,20 @@ function hideTopicMenu(){
 
 $('#menu-icon').click(hideTopicMenu);
 
-function renderDataSets(){  
+// if on a mobile device use the deviceready event, else trigger manually
+if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+    document.addEventListener("deviceready", onDeviceReady, false);
+} else {
+    onDeviceReady();
+}
+
+// enable the android backbutton and get current position
+function onDeviceReady() {
+    navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
+    document.addEventListener("backbutton", hideTopicMenu, false);
+}
+
+function renderDataSets(){
     $.each(datasetsArray, function(key, val){
         $('#map-select-layer #menu-options #datasets-' + val['type'] + '').append('<li data-link="'+val['link']+'"><div class="dataset-title">' + key + '</div><img class="dataset-info" src="img/info-icon.png" alt="Info" /><div class="clearfix"></div><div class="dataset-description">' + val["description"] + '</div></li>');
    });
@@ -511,10 +544,10 @@ $('#map-select-layer #menu-options ul').on("click", "li", function(e) {
 	}
 	else {
 		if($(this).hasClass('topic-selected')){ hideTopicMenu(); return; }
-        
+
 		$('.topic-selected').removeClass('topic-selected');
 		$(this).addClass('topic-selected');
-		
+
 		$('.description-expanded').removeClass('description-expanded');
 		$('.dataset-description').slideUp(300);
 
@@ -528,7 +561,7 @@ $('#map-select-layer #menu-options ul').on("click", "li", function(e) {
 			map.removeLayer(rightLayer);
 			setRightLayer(rightLayerData);
 		}
-		
+
 		hideTopicMenu();
 		adjustDataContainer();
 	}
