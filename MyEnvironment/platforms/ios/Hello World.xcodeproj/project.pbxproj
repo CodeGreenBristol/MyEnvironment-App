@@ -47,6 +47,8 @@
 		F9E745B25E5048D2BBECDD31 /* GCDWebServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32F4BE91798441A5BB9065CD /* GCDWebServer.framework */; };
 		62163CAE96EF4E09941FF3D3 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDA41E786D64342AA919F4C /* WebKit.framework */; };
 		628AD5F41A3A419CB903D461 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DAD5657297E42D5BB5D84EB /* libz.dylib */; };
+		6D2E443961A743D1855A5D48 /* CDVLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 661703B463BB436E860F81E3 /* CDVLocation.m */; };
+		91DE975DB8034D48BBF38D15 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD2DA6BAAAA64E919EA91D7A /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +126,9 @@
 		32F4BE91798441A5BB9065CD /* GCDWebServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "GCDWebServer.framework"; path = "Hello World/Plugins/com.telerik.plugins.wkwebview/GCDWebServer.framework"; sourceTree = "<group>"; };
 		5FDA41E786D64342AA919F4C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "WebKit.framework"; path = "System/Library/Frameworks/WebKit.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 		4DAD5657297E42D5BB5D84EB /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libz.dylib"; path = "usr/lib/libz.dylib"; sourceTree = SDKROOT; fileEncoding = 4; };
+		661703B463BB436E860F81E3 /* CDVLocation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVLocation.m"; path = "org.apache.cordova.geolocation/CDVLocation.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		F9030CCEAFC64428A5E9C074 /* CDVLocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVLocation.h"; path = "org.apache.cordova.geolocation/CDVLocation.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		FD2DA6BAAAA64E919EA91D7A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "CoreLocation.framework"; path = "System/Library/Frameworks/CoreLocation.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +143,7 @@
 				F9E745B25E5048D2BBECDD31 /* GCDWebServer.framework in Frameworks */,
 				62163CAE96EF4E09941FF3D3 /* WebKit.framework in Frameworks */,
 				628AD5F41A3A419CB903D461 /* libz.dylib in Frameworks */,
+				91DE975DB8034D48BBF38D15 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +219,7 @@
 				32F4BE91798441A5BB9065CD /* GCDWebServer.framework */,
 				5FDA41E786D64342AA919F4C /* WebKit.framework */,
 				4DAD5657297E42D5BB5D84EB /* libz.dylib */,
+				FD2DA6BAAAA64E919EA91D7A /* CoreLocation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -237,6 +244,8 @@
 				9E79F030594D434EA52F8D9F /* ReroutingUIWebView.h */,
 				13B6E2BBB0F04BCDB1C6ED5B /* CDVWebViewOperationsDelegate.h */,
 				C7661405221741F6B1FF6795 /* CDVWebViewUIDelegate.h */,
+				661703B463BB436E860F81E3 /* CDVLocation.m */,
+				F9030CCEAFC64428A5E9C074 /* CDVLocation.h */,
 			);
 			name = Plugins;
 			path = "Hello World/Plugins";
@@ -426,6 +435,7 @@
 				6FBDFCFFA7D94913AB09A6E1 /* ReroutingUIWebView.m in Sources */,
 				E6D5C247B3A94706AB701FBB /* CDVWebViewOperationsDelegate.m in Sources */,
 				F2BC05604FB84DD587807705 /* CDVWebViewUIDelegate.m in Sources */,
+				6D2E443961A743D1855A5D48 /* CDVLocation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
