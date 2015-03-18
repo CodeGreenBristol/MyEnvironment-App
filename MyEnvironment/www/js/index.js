@@ -9,22 +9,22 @@ map = L.map('map-layer', {
     center: [51.45, -2.59],
     zoom: 14,
     minZoom: 7,
-		maxZoom: 17
+    maxZoom: 17
 });
 
 L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.concat(accToken), {
-		reuseTiles: true,
+    reuseTiles: true,
     detectRetina: true,
-		unloadInvisibleTiles: false
+    unloadInvisibleTiles: false
 }).addTo(map);
 
-var rightLayerData = 'ea:flood_warning_areas';
-var leftLayerData = 'ea:rofrs_england_v201412';
+var rightLayerData = (typeof localStorage['rightLayer'] !== "undefined") ? localStorage['rightLayer'] : undefined;
+var leftLayerData = (typeof localStorage['leftLayer'] !== "undefined") ? localStorage['leftLayer'] : undefined;
 var rightLayer;
 var leftLayer;
 var locationMarker;
 
-function setRightLayer(rightLayerData) {
+function setRightLayer() {
     rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
         layers: rightLayerData,
         format: 'image/png8',
@@ -34,14 +34,19 @@ function setRightLayer(rightLayerData) {
         version: '1.1.0',
         reuseTiles: true,
         detectRetina: true,
-				unloadInvisibleTiles: false
-    }).addTo(map);
+        unloadInvisibleTiles: false
+    }).addTo(map);   
     $(rightLayer._container).attr("id", "rightData");
+    
+    // add to localstorage
+    localStorage['rightLayer'] = rightLayerData;
+    
+    adjustDataContainer();
 }
-setRightLayer(rightLayerData);
+if(typeof rightLayerData !== "undefined") setRightLayer();
 
 
-function setLeftLayer(rightLayerData) {
+function setLeftLayer() {
     leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
         layers: leftLayerData,
         format: 'image/png8',
@@ -52,10 +57,15 @@ function setLeftLayer(rightLayerData) {
         reuseTiles: true,
         detectRetina: true,
 				unloadInvisibleTiles: false
-    }).addTo(map);
-    $(leftLayer._container).attr("id", "leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
+    }).addTo(map); 
+    $(leftLayer._container).attr("id", "leftData");
+    
+    // add to localstorage
+    localStorage['leftLayer'] = leftLayerData;
+    
+    adjustDataContainer();
 }
-setLeftLayer(leftLayerData);
+if(typeof leftLayerData !== "undefined") setLeftLayer();
 
 // SEARCH BAR EXPAND
 $('#search-bar input').click(function(){
@@ -101,8 +111,6 @@ $('#search-bar, #search-bar-expanded').click(function(e){
     e.stopPropagation();
 });
 
-var sliderOffset = 4;
-
 /*
 function getTransform() {
     var results = $('.leaflet-map-pane').css('transform').match(/matrix\((-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+), ?(-?\d+)\)/);
@@ -124,36 +132,36 @@ function adjustDataContainer(){
     se = map.containerPointToLayerPoint(map.getSize()),
     clipX = nw.x + (se.x - nw.x) * (sliderOffset / $(window).width());
 
-    $('#leftData').css("clip", 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)');
-    $('#rightData').css("clip", 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)');
+    if(!$('#left-pin').hasClass('pin-active')) $('#leftData').css("clip", 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)');
+    if(!$('#right-pin').hasClass('pin-active')) $('#rightData').css("clip", 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)');
 }
 
 map.on('move', adjustDataContainer);
 
 // REDUNDANCY, SEE IF WE CAN MAKE IT PERCENTAGES
 function generateButtonRules(){
-    if($(window).width() <= 768) return {buttonLimit: 80};
-    else if($(window).width() <= 1024) return {buttonLimit: 120};
-    else return {buttonLimit: 150};
+    if($(window).width() <= 768) return 80;
+    else if($(window).width() <= 1024) return 120;
+    return 150;
 }
-var sliderLimits = generateButtonRules();
+var sliderLimit = generateButtonRules();
 
 function offsetFunc(){
 
     adjustDataContainer();
 
     // SHOW BUTTON IF SIDE IS VISIBLE
-    if(sliderOffset >= sliderLimits.buttonLimit && !$('#left-button').is(':visible')){
-        $('#left-button').fadeIn();
+    if(sliderOffset >= sliderLimit && !$('#left-button').is(':visible')){
+        $('#left-button, #left-pin').fadeIn();
     }
-    else if(sliderOffset < sliderLimits.buttonLimit && $('#left-button').is(':visible')){
-        $('#left-button').fadeOut();
+    else if(sliderOffset < sliderLimit && $('#left-button').is(':visible')){
+        $('#left-button, #left-pin').fadeOut();
     }
-    if(sliderOffset <= $(window).width() - sliderLimits.buttonLimit && !$('#right-button').is(':visible')){
-        $('#right-button').fadeIn();
+    if(sliderOffset <= $(window).width() - sliderLimit && !$('#right-button').is(':visible')){
+        $('#right-button, #right-pin').fadeIn();
     }
-    else if(sliderOffset > $(window).width() - sliderLimits.buttonLimit && $('#right-button').is(':visible')){
-        $('#right-button').fadeOut();
+    else if(sliderOffset > $(window).width() - sliderLimit && $('#right-button').is(':visible')){
+        $('#right-button, #right-pin').fadeOut();
     }
 
     // SHOW ARROWS ON SIDE OF SLIDER
@@ -171,11 +179,15 @@ function offsetFunc(){
     }
 }
 
-// DRAGGABLE SLIDER
-sliderLeft = parseInt($('#slider-bar').css('left'), 10);
-
+// DRAGGABLE SLIDER   
 $('#slider-bar').on('mousedown touchstart', function(){
     $(this).addClass('dragging');
+    
+    // hide prompt if first time
+    if($('#slide-prompt').is(":visible")){
+        $('#slide-prompt').fadeOut();
+        localStorage['userReturning'] = true;
+    }
 });
 $('#slider-bar').on('mouseup touchend', function(){
     $(this).removeClass('dragging');
@@ -185,23 +197,12 @@ $('#slider-bar').on('mouseup touchend', function(){
     else if(sliderOffset / $(window).width() > 0.90){
         sliderOffset = $(window).width();       
     }
-    
-    if(sliderOffset >= sliderLimits.buttonLimit){
-        $('#left-button-block').fadeIn();
-    }
-    else if(sliderOffset < sliderLimits.buttonLimit){
-        $('#left-button-block').fadeOut();
-    }
-    if(sliderOffset <= $(window).width() - sliderLimits.buttonLimit){
-        $('#right-button-block').fadeIn();
-    }
-    else if(sliderOffset > $(window).width() - sliderLimits.buttonLimit){
-        $('#right-button-block').fadeOut();	
-    }
 	
     $(this).offset({ left: sliderOffset + sliderLeft });
     offsetFunc();
-    adjustDataContainer();
+    
+    // add offset to localstorage
+    localStorage['sliderOffset'] = sliderOffset;
 });
 
 // CAN OPTIMISE, NO NEED FOR OFFSETFUNC WHEN PAST THRESHOLD
@@ -222,9 +223,20 @@ $('body').on('mousemove touchmove', function(e){
             $('#slider-bar').offset({ left: sliderOffset + sliderLeft });
         }
     }
-
-    e.preventDefault();
+    
+    // don't prevent default if choosing topic
+    if(!$('#map-select-layer').hasClass('menu-expanded')){
+        e.preventDefault();
+    }
 });
+
+// on startup, set slider if in localstorage
+var sliderOffset = (typeof localStorage['sliderOffset'] !== "undefined") ? parseInt(localStorage['sliderOffset']) : 0 ;
+if(sliderOffset > $(window).width()) sliderOffset = 0;
+sliderLeft = parseInt($('#slider-bar').css('left'), 10);
+
+$('#slider-bar').offset({ left: sliderOffset + sliderLeft });
+offsetFunc();
 
 // ADDRESS SEARCH
 var curLocData; //object for the current location data
@@ -293,9 +305,7 @@ function updateSearchResults(data){
 }
 
 //  FAVOURITE LOCATION
-var savedLocations = [];    //holds loc data for all saved locs
-localStorage.setItem("savedLocations", JSON.stringify(savedLocations));
-
+var savedLocations = (typeof localStorage['savedLocations'] !== "undefined") ? JSON.parse(localStorage['savedLocations']) : [];    //holds loc data for all saved locs
 
 // add saved location
 function addSavedLocation(){
@@ -455,14 +465,14 @@ $("#search-bar-empty").click(function(){
 });
 
 var datasetsArray = {
-	"Risk of Flooding from Rivers and Sea" : {"type": "natural", "link" : "ea:rofrs_england_v201412", "description" : "River flooding happens when a river cannot cope with the amount of water draining into it from the surrounding land. Sea flooding happens when there are high tides and stormy conditions.The shading on the map shows the risk of flooding from rivers and the sea in this particular area."},
-    "Flood warning areas" : {"type": "natural", "link" : "ea:flood_warning_areas", "description" : "No description"},
-    "Flood risk areas" : {"type": "natural", "link" : "ea:flood_risk_areas", "description" : "Flood Risk Areas are areas that are at risk of surface water flooding."},
+	"Risk of flooding from rivers and sea" : {"type": "natural", "link" : "ea:rofrs_england_v201412", "description" : "River flooding happens when a river cannot cope with the amount of water draining into it from the surrounding land. Sea flooding happens when there are high tides and stormy conditions.The shading on the map shows the risk of flooding from rivers and the sea in this particular area."},
+    "Flood alert areas" : {"type": "natural", "link" : "ea:flood_alert_areas", "description" : "Large expanses of floodplain that are at risk of low-impact flooding such as floodplain inundation, road flooding and farmland flooding."},
+    "Flood risk areas" : {"type": "natural", "link" : "ea:flood_risk_areas", "description" : "Flood Risk Areas are areas that are at risk of surface water flooding"},
     "Nitrate-sensitive areas" : {"type": "man", "link" : "ea:nitrate_sensitive_areas", "description" : "Nitrate sensitive areas are areas where the concentration of nitrates in drinking water sources is particularly high."},
-    "Oil and Gas Wells" : {"type": "man", "link" : "decc_on_wells", "description" : "Oil and gas wells in onshore licence areas."},
-	"Outfall and Discharge Points" : {"type": "man", "link" : "outfall_discharge_points", "description" : "Outfall and Discharge Points are points at which waste is discharged into bodies of water."},
+    "Oil and gas wells" : {"type": "man", "link" : "decc_on_wells", "description" : "Oil and gas wells in onshore licence areas."},
+	"Outfall and discharge points" : {"type": "man", "link" : "outfall_discharge_points", "description" : "Outfall and Discharge Points are points at which waste is discharged into bodies of water."},
 	"Areas of outstanding natural beauty" : {"type": "recreation", "link" : "ea:areasoutstgnaturalbeauty_eng", "description" : "Areas of outstanding natural beauty are areas of countryside that are designated for conservation due to their significant landscape value. "},
-    "Registered Parks and Gardens" : {"type": "recreation", "link" : "registered_parks_and_gardens", "description" : "Parks and Gardens as included on the Register of Historic Parks and Gardens."},
+    "Registered parks and gardens" : {"type": "recreation", "link" : "registered_parks_and_gardens", "description" : "Parks and Gardens as included on the Register of Historic Parks and Gardens."},
     "World Heritage Sites" : {"type": "recreation", "link" : "world_heritage_sites", "description" : "Properties in England as inscribed by the World Heritage Committee of UNESCO."}
 };
 
@@ -470,6 +480,12 @@ var datasetsArray = {
 var dataVal;
 var menuViewed;
 $('#right-button, #left-button').click(function() {
+
+    // hide prompt if first time
+    if($('#select-map-prompt').is(":visible")){
+        $('#select-map-prompt').fadeOut();
+        $('#slide-prompt').fadeIn();
+    }
 
     $('#map-select-layer #menu-options ul li.topic-selected').removeClass('topic-selected');
 
@@ -479,14 +495,44 @@ $('#right-button, #left-button').click(function() {
     // add tick to current selected topic based on left/right select
     $('#map-select-layer #menu-options ul li[data-link="'+dataVal+'"]').addClass('topic-selected');
     
-    $('#map-select-layer').show().animate({height: "100%"}, {duration: 750});
+    $('#map-select-layer').addClass('menu-expanded');
+});
+
+$('#right-pin, #left-pin').click(function(){
+    
+    // if pinning
+    if(!$(this).hasClass('pin-active')){
+    
+        $(this).attr('src', 'img/buttons/active-pin-icon.png').addClass('pin-active');
+        
+        if($(this).attr('id') == "right-pin"){
+            $('#left-pin').fadeOut();
+            $('#rightData').css('clip', 'auto');
+            if(typeof rightLayer !== "undefined") rightLayer.bringToFront();
+        }
+        else {
+            $('#right-pin').fadeOut();
+            $('#leftData').css('clip', 'auto');
+            if(typeof leftLayer !== "undefined") leftLayer.bringToFront();
+        }
+    }
+    // else unpinning
+    else {
+        $(this).attr('src', 'img/buttons/inactive-pin-icon.png').removeClass('pin-active');
+        
+        if($(this).attr('id') == "right-pin"){
+            $('#left-pin').fadeIn();
+        }
+        else {
+            $('#right-pin').fadeIn();
+        }
+        adjustDataContainer();
+    }
 });
 
 // SLIDE DOWN TOPIC MENU
 function hideTopicMenu(){
-    $('#map-select-layer').animate({height: "0px"}, {duration: 750, complete: function(){
-        $(this).hide();
-    }});
+    $('#map-select-layer').removeClass('menu-expanded');
 }
 
 $('#menu-icon').click(hideTopicMenu);
@@ -520,16 +566,21 @@ $('#map-select-layer #menu-options ul').on("click", "li", function(e) {
 
 		if(menuViewed == 0){
 			leftLayerData = datasetsArray[$(this).children('.dataset-title').text()]["link"];
-			map.removeLayer(leftLayer);
-			setLeftLayer(leftLayerData);
+			if(typeof leftLayer !== "undefined") map.removeLayer(leftLayer);
+			setLeftLayer();
 		}
 		else {
 			rightLayerData = datasetsArray[$(this).children('.dataset-title').text()]["link"];
-			map.removeLayer(rightLayer);
-			setRightLayer(rightLayerData);
+			if(typeof rightLayer !== "undefined") map.removeLayer(rightLayer);
+			setRightLayer();
 		}
 		
-		hideTopicMenu();
-		adjustDataContainer();
+		hideTopicMenu();		
 	}
 });
+
+/* IF FIRST TIME, SHOW PROMPTS */
+
+if(typeof localStorage['userReturning'] === "undefined"){
+    $('#select-map-prompt').show();
+}

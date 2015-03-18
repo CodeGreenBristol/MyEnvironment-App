@@ -1,6 +1,21 @@
 /* Smartphones (portrait and landscape) ----------- */
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-width: 320px) and (max-width: 768px) {
+  /* USER PROMPT STYLES */
+  .user-prompt {
+    font-size: 20px;
+    text-shadow: 0px 0px 20px #000000, 0px 0px 5px rgba(0, 0, 0, 0.8);
+  }
+  .user-prompt#select-map-prompt {
+    right: 100px;
+    bottom: 35px;
+  }
+  .user-prompt#slide-prompt {
+    left: 70px;
+    height: 27px;
+    margin-top: -14px;
+  }
+  /* SLIDER STYLES */
   #slider-bar {
     width: 36px;
     left: -18px;
@@ -80,11 +95,24 @@
     margin-top: 5px;
     width: 12px;
   }
+  #ui-layer #right-pin,
+  #ui-layer #left-pin {
+    bottom: 80px;
+    padding: 15px;
+    width: 50px;
+    height: 50px;
+  }
+  #ui-layer #right-pin {
+    right: 8px;
+  }
+  #ui-layer #left-pin {
+    left: 8px;
+  }
   #ui-layer #left-button,
   #ui-layer #right-button {
     width: 65px;
     height: 65px;
-    padding: 15px;
+    padding: 0px 15px 15px;
   }
   /* MAP SELECT LAYER STYLES */
   #map-select-layer #menu-header {
@@ -147,6 +175,19 @@
 }
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
+  /* USER PROMPT STYLES */
+  .user-prompt {
+    font-size: 25px;
+  }
+  .user-prompt#select-map-prompt {
+    right: 130px;
+    bottom: 45px;
+  }
+  .user-prompt#slide-prompt {
+    left: 100px;
+    height: 34px;
+    margin-top: -17px;
+  }
   #ui-layer {
     /* SEARCH BAR STYLES */
   
@@ -194,9 +235,22 @@
   #ui-layer #search-bar-expanded .expanded-section .expanded-locations li {
     padding: 15px 22px;
   }
+  #ui-layer #right-pin,
+  #ui-layer #left-pin {
+    bottom: 95px;
+    padding: 20px;
+    width: 60px;
+    height: 60px;
+  }
+  #ui-layer #right-pin {
+    right: 8px;
+  }
+  #ui-layer #left-pin {
+    left: 8px;
+  }
   #ui-layer #left-button,
   #ui-layer #right-button {
-    padding: 20px;
+    padding: 0px 20px 20px;
     width: 75px;
     height: 75px;
   }

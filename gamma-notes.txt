@@ -8,8 +8,11 @@
 - responsiveness improvements
 - data separated into three groups
 - dataset descriptions
+- user testing prompts
+- datasets and slider position saved
+- pin dataset
+- pinned dataset defaults on top
 
 To do:
-- pin dataset
-- user testing prompts
+
 - better location zooming
