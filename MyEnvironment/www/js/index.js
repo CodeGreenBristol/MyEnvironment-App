@@ -35,12 +35,12 @@ function setRightLayer() {
         reuseTiles: true,
         detectRetina: true,
         unloadInvisibleTiles: false
-    }).addTo(map);   
+    }).addTo(map);
     $(rightLayer._container).attr("id", "rightData");
-    
+
     // add to localstorage
     localStorage['rightLayer'] = rightLayerData;
-    
+
     adjustDataContainer();
 }
 if(typeof rightLayerData !== "undefined") setRightLayer();
@@ -57,12 +57,12 @@ function setLeftLayer() {
         reuseTiles: true,
         detectRetina: true,
 				unloadInvisibleTiles: false
-    }).addTo(map); 
+    }).addTo(map);
     $(leftLayer._container).attr("id", "leftData");
-    
+
     // add to localstorage
     localStorage['leftLayer'] = leftLayerData;
-    
+
     adjustDataContainer();
 }
 if(typeof leftLayerData !== "undefined") setLeftLayer();
@@ -179,10 +179,10 @@ function offsetFunc(){
     }
 }
 
-// DRAGGABLE SLIDER   
+// DRAGGABLE SLIDER
 $('#slider-bar').on('mousedown touchstart', function(){
     $(this).addClass('dragging');
-    
+
     // hide prompt if first time
     if($('#slide-prompt').is(":visible")){
         $('#slide-prompt').fadeOut();
@@ -200,7 +200,7 @@ $('#slider-bar').on('mouseup touchend', function(){
 
     $(this).offset({ left: sliderOffset + sliderLeft });
     offsetFunc();
-    
+
     // add offset to localstorage
     localStorage['sliderOffset'] = sliderOffset;
 });
@@ -223,7 +223,7 @@ $('body').on('mousemove touchmove', function(e){
             $('#slider-bar').offset({ left: sliderOffset + sliderLeft });
         }
     }
-    
+
     // don't prevent default if choosing topic
     if(!$('#map-select-layer').hasClass('menu-expanded')){
         e.preventDefault();
@@ -513,17 +513,17 @@ $('#right-button, #left-button').click(function() {
 
     // add tick to current selected topic based on left/right select
     $('#map-select-layer #menu-options ul li[data-link="'+dataVal+'"]').addClass('topic-selected');
-    
+
     $('#map-select-layer').addClass('menu-expanded');
 });
 
 $('#right-pin, #left-pin').click(function(){
-    
+
     // if pinning
     if(!$(this).hasClass('pin-active')){
-    
+
         $(this).attr('src', 'img/buttons/active-pin-icon.png').addClass('pin-active');
-        
+
         if($(this).attr('id') == "right-pin"){
             $('#left-pin').fadeOut();
             $('#rightData').css('clip', 'auto');
@@ -538,7 +538,7 @@ $('#right-pin, #left-pin').click(function(){
     // else unpinning
     else {
         $(this).attr('src', 'img/buttons/inactive-pin-icon.png').removeClass('pin-active');
-        
+
         if($(this).attr('id') == "right-pin"){
             $('#left-pin').fadeIn();
         }
@@ -556,18 +556,18 @@ function hideTopicMenu(){
 
 $('#menu-icon').click(hideTopicMenu);
 
-// if on a mobile device use the deviceready event, else trigger manually
-// if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
-    // document.addEventListener("deviceready", onDeviceReady, false);
-// } else {
-    // onDeviceReady();
-// }
+//if on a mobile device use the deviceready event, else trigger manually
+if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+    document.addEventListener("deviceready", onDeviceReady, false);
+} else {
+    onDeviceReady();
+}
 
 // enable the android backbutton and get current position
-// function onDeviceReady() {
-    // navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
-    // document.addEventListener("backbutton", hideTopicMenu, false);
-// }
+function onDeviceReady() {
+    navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
+    document.addEventListener("backbutton", hideTopicMenu, false);
+}
 
 function renderDataSets(){
     $.each(datasetsArray, function(key, val){
@@ -606,8 +606,8 @@ $('#map-select-layer #menu-options ul').on("click", "li", function(e) {
 			if(typeof rightLayer !== "undefined") map.removeLayer(rightLayer);
 			setRightLayer();
 		}
-		
-		hideTopicMenu();		
+
+		hideTopicMenu();
 	}
 });
 
