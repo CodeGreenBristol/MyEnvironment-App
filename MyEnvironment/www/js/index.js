@@ -88,6 +88,15 @@ $('#search-bar input').click(function(){
 
 });
 
+$('#search-bar input').bind("enter", enterPressed);
+
+$('#search-bar input').keyup(function(e){
+    if(e.keyCode == 13)
+    {
+      $(this).trigger("enter");
+    }
+});
+
 // CLOSE SEARCH BAR
 $('#search-icon').click(function(){
     hideSearchBar();
@@ -305,7 +314,6 @@ function updateSearchResults(data){
     var displayedResults = [];
 
     $.each(data, function(key, val) {
-        console.log(JSON.stringify(val));
         if($.inArray(val.display_name.toLowerCase(), displayedResults) == -1){
             items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lon+"' data-type='"+val.type+"'>" + val.display_name +'</li>');
             displayedResults.push(val.display_name.toLowerCase());
@@ -317,11 +325,17 @@ function updateSearchResults(data){
     $('#search-results .expanded-title').empty();
     if (items.length != 0) {
         $(items.join('')).appendTo('#search-results .expanded-locations');
-        console.log($('#search-results .expanded-title').text());
         //add new text
         $('#search-results .expanded-title').text("Search results");
     } else {
         $('#search-results .expanded-title').text("No results found");
+    }
+}
+
+// go to first search result if enter is pressed
+function enterPressed() {
+    if($('#search-results .expanded-locations li').length != 0) {
+        goToLocation($('#search-results .expanded-locations li').first());
     }
 }
 
