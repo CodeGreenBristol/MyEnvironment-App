@@ -1,5 +1,4 @@
 /* COPYRIGHT INFO HERE */
-/* COPYRIGHT INFO HERE */
 /* GENERAL STYLES */
 * {
   padding: 0;
@@ -107,7 +106,6 @@ body {
   overflow-y: auto;
   padding: 15px 0px;
   /*-webkit-overflow-scrolling:touch;*/
-
 }
 #map-select-layer #menu-options .dataset-type-label {
   font-family: "Open Sans", sans-serif;
@@ -164,9 +162,7 @@ body {
 /* UI LAYER STYLES */
 #ui-layer {
   /* SEARCH BAR STYLES */
-
   /* BUTTON STYLES */
-
 }
 #ui-layer #search-mask {
   position: absolute;
@@ -245,6 +241,14 @@ body {
   font-weight: 300;
   font-size: 30px;
   padding: 20px 30px;
+}
+#ui-layer #search-bar-expanded .expanded-section .expanded-title .loading-icon {
+  float: left;
+  height: 24px;
+  width: 24px;
+  margin-right: 20px;
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.8) url('../img/search/spinner.gif') 50% 50% no-repeat;
 }
 #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
   list-style-type: none;

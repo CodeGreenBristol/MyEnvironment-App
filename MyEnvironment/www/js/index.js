@@ -257,6 +257,7 @@ function addrSearch() {
 
     // no API call if empty
     var inp = $("#search-input");
+    var query = "";
     $('#search-results .expanded-locations').empty();
 
     if(inp.val() == ""){
@@ -267,6 +268,8 @@ function addrSearch() {
     else {
         $('#search-results').show();
         $('#search-bar-empty').css("display", "inline-block");
+        //clean commas from query string to optimise processing on nominatim's end
+        query = inp.val().replace(", ", " ").replace(","," ");
     }
 
     //timer used so fast-typing doesn't trigger rapid requests
@@ -274,14 +277,27 @@ function addrSearch() {
     searchTimer = setTimeout(function() {
         $.ajax({
             //fetch from http://nominatim.openstreetmap.org/
-            url: 'http://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=gb&q=' + inp.val(),
+            url: 'http://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=gb&q=' + query,
             dataType: 'json',
-            success: updateSearchResults
+            beforeSend: displayLoadingIcon,
+            success: updateSearchResults,
+            error: function() {
+                console.log("Error requesting data.");
+            },
+            complete: function() {
+                console.log("Request complete.");
+            }         
         });
     }, 250);
 }
 
-function updateSearchResults(data){
+function displayLoadingIcon() {
+    $('#search-results .expanded-title').empty();
+    $('#search-results .expanded-title').append('<div class="loading-icon"></div><span></span>');
+    $('#search-results .expanded-title span').text("Searching for locations...");
+}
+
+function updateSearchResults(data){    
     if(typeof data === "undefined") {
         return;
     }
@@ -289,6 +305,7 @@ function updateSearchResults(data){
     var displayedResults = [];
 
     $.each(data, function(key, val) {
+        console.log(JSON.stringify(val));
         if($.inArray(val.display_name.toLowerCase(), displayedResults) == -1){
             items.push("<li data-lat='"+val.lat+"' data-lon='"+val.lon+"' data-type='"+val.type+"'>" + val.display_name +'</li>');
             displayedResults.push(val.display_name.toLowerCase());
@@ -296,8 +313,12 @@ function updateSearchResults(data){
     });
 
     $('#search-results .expanded-locations').empty();
+    //remove loading icon and text
+    $('#search-results .expanded-title').empty();
     if (items.length != 0) {
         $(items.join('')).appendTo('#search-results .expanded-locations');
+        console.log($('#search-results .expanded-title').text());
+        //add new text
         $('#search-results .expanded-title').text("Search results");
     } else {
         $('#search-results .expanded-title').text("No results found");
