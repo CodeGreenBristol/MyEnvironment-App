@@ -12,6 +12,9 @@ map = L.map('map-layer', {
     maxZoom: 17
 });
 
+//add scale indicator
+//L.control.scale({position: 'topright'}).addTo(map);
+
 L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.concat(accToken), {
     reuseTiles: true,
     detectRetina: true,
@@ -195,6 +198,7 @@ $('#slider-bar').on('mousedown touchstart', function(){
     // hide prompt if first time
     if($('#slide-prompt').is(":visible")){
         $('#slide-prompt').fadeOut();
+		$('#pin-map-prompt').fadeIn();
         localStorage['userReturning'] = true;
     }
 });
@@ -553,6 +557,11 @@ $('#right-button, #left-button').click(function() {
 });
 
 $('#right-pin, #left-pin').click(function(){
+
+	// hide pin prompt if first time
+	if($('#pin-map-prompt').is(":visible")){
+		$('#pin-map-prompt').fadeOut();
+	}
 
     // if pinning
     if(!$(this).hasClass('pin-active')){
