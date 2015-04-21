@@ -291,7 +291,7 @@ function addrSearch() {
             beforeSend: displayLoadingIcon,
             success: updateSearchResults,
             error: function() {
-                console.log("Error requesting data.");
+                console.log("Request failed.");
             },
             complete: function() {
                 console.log("Request complete.");
@@ -306,7 +306,7 @@ function displayLoadingIcon() {
     $('#search-results .expanded-title span').text("Searching for locations...");
 }
 
-function updateSearchResults(data){    
+function updateSearchResults(data){
     if(typeof data === "undefined") {
         return;
     }
@@ -428,16 +428,18 @@ function goToLocation(data) {
     $('#search-input').val($(data).text());
 
     //set zoom level based on type of location
-    //known outliers: tadley = administrative?
-    if(curLocData.type == "administrative") {  //country
+    console.log(curLocData.type);
+    if(curLocData.dispname == "England, United Kingdom" || curLocData.dispname == "Scotland, United Kingdom") {
         map.setZoom(8);
+    } else if(curLocData.type == "administrative") {  // country/county
+        map.setZoom(10);
     } else if(curLocData.type == "city") {
         map.setZoom(12);
     } else if(curLocData.type == "town") {
         map.setZoom(13);
-    } else if(curLocData.type == "village") {
+    } else if(curLocData.type == "village" || curLocData.type == "residential" || curLocData.type == "hamlet") {
         map.setZoom(14);
-    } else {
+    } else {    //unclassified, river, stream, 
         map.setZoom(13);
     }
     hideSearchBar();
