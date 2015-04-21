@@ -28,23 +28,47 @@ html, body {
 
 .user-prompt {
     position:absolute;
-    color:#fff;
+    color:#828282;
     font-family:"Open Sans", sans-serif;
     z-index:74;
-    font-size:30px;
+    font-size:20px;
     font-weight:400;
-    text-shadow:0px 0px 20px #000, 0px 0px 5px rgba(0, 0, 0, .5);
+    box-shadow:0px 0px 20px #000, 0px 0px 5px rgba(0, 0, 0, .3);
     display:none;
+	background-color:#fff;
+	padding:7px 10px;
     &#select-map-prompt {
-        right:180px;
-        bottom:60px;
+        right:150px;
+        bottom:50px;
+		#prompt-arrow-right {
+			position:absolute;
+			margin-top:-1px;
+			margin-left:10px;
+			opacity:1;
+		}
     }
     &#slide-prompt {
         top:50%;
-        left:100px;
-        height:41px;
+        left:95px;
+        /*height:41px;*/
         margin-top:-20px;
+		#prompt-arrow-left {
+			position:absolute;
+			margin-top:-1px;
+			margin-left:-25px;
+			opacity:1;
+		}
     }
+	&#pin-map-prompt {
+		right:25px;
+		bottom:242px;
+		#prompt-arrow-down {
+			position:absolute;
+			margin-top:34px;
+			margin-left:-55px;
+			opacity:1;
+		}
+	}
 }
 
 /* SLIDER LAYER STYLES */

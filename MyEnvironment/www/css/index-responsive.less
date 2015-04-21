@@ -4,17 +4,30 @@
     /* USER PROMPT STYLES */
 
     .user-prompt {
-        font-size:20px;
-        text-shadow:0px 0px 20px #000, 0px 0px 5px rgba(0, 0, 0, .8);
+        font-size:17px;
         &#select-map-prompt {
             right:100px;
-            bottom:35px;
+            bottom:27px;
+			#prompt-arrow-right {
+				margin-top:-3px;
+			}
         }
         &#slide-prompt {
-            left:70px;
-            height:27px;
-            margin-top:-14px;
+            left:75px;
+            margin-top:-19px;
+			#prompt-arrow-left {
+				margin-top:-3px;
+			}
         }
+		&#pin-map-prompt {
+			width:120px;
+			right:16px;
+			bottom:164px;
+			#prompt-arrow-down {
+				margin-left:10px;
+				margin-top:30px;
+			}
+		}
     }
     
     /* SLIDER STYLES */
@@ -204,16 +217,22 @@
     /* USER PROMPT STYLES */
 
     .user-prompt {
-        font-size:25px;
         &#select-map-prompt {
-            right:130px;
-            bottom:45px;
+            right:118px;
+            bottom:35px;
         }
         &#slide-prompt {
-            left:100px;
-            height:34px;
-            margin-top:-17px;
+            left:95px;
+            /*height:34px;*/
+            margin-top:-20px;
         }
+		&#pin-map-prompt {
+			right:20px;
+			bottom:198px;
+			#prompt-arrow-down {
+				margin-left:-45px;
+			}
+		}
     }
 
     #ui-layer {

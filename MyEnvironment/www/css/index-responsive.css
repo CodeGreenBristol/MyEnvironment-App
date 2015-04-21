@@ -1,18 +1,32 @@
 /* Smartphones (portrait and landscape) ----------- */
+/* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-width: 320px) and (max-width: 768px) {
   /* USER PROMPT STYLES */
   .user-prompt {
-    font-size: 20px;
-    text-shadow: 0px 0px 20px #000000, 0px 0px 5px rgba(0, 0, 0, 0.8);
+    font-size: 17px;
   }
   .user-prompt#select-map-prompt {
     right: 100px;
-    bottom: 35px;
+    bottom: 27px;
+  }
+  .user-prompt#select-map-prompt #prompt-arrow-right {
+    margin-top: -3px;
   }
   .user-prompt#slide-prompt {
-    left: 70px;
-    height: 27px;
-    margin-top: -14px;
+    left: 75px;
+    margin-top: -19px;
+  }
+  .user-prompt#slide-prompt #prompt-arrow-left {
+    margin-top: -3px;
+  }
+  .user-prompt#pin-map-prompt {
+    width: 120px;
+    right: 16px;
+    bottom: 164px;
+  }
+  .user-prompt#pin-map-prompt #prompt-arrow-down {
+    margin-left: 10px;
+    margin-top: 30px;
   }
   /* SLIDER STYLES */
   #slider-bar {
@@ -33,7 +47,9 @@
   }
   #ui-layer {
     /* SEARCH BAR STYLES */
+  
     /* BUTTON STYLES */
+  
   }
   #ui-layer #search-bar,
   #ui-layer #search-bar-expanded {
@@ -171,25 +187,38 @@
   }
 }
 /* Smartphones (landscape) ----------- */
+@media only screen and (min-width: 321px) {
+  
+}
 /* Smartphones (portrait) ----------- */
+@media only screen and (max-width: 320px) {
+  
+}
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
   /* USER PROMPT STYLES */
-  .user-prompt {
-    font-size: 25px;
-  }
   .user-prompt#select-map-prompt {
-    right: 130px;
-    bottom: 45px;
+    right: 118px;
+    bottom: 35px;
   }
   .user-prompt#slide-prompt {
-    left: 100px;
-    height: 34px;
-    margin-top: -17px;
+    left: 95px;
+    /*height:34px;*/
+  
+    margin-top: -20px;
+  }
+  .user-prompt#pin-map-prompt {
+    right: 20px;
+    bottom: 198px;
+  }
+  .user-prompt#pin-map-prompt #prompt-arrow-down {
+    margin-left: -45px;
   }
   #ui-layer {
     /* SEARCH BAR STYLES */
+  
     /* BUTTON STYLES */
+  
   }
   #ui-layer #search-bar {
     margin-top: 30px;
@@ -297,4 +326,10 @@
   }
 }
 /* iPads (landscape) ----------- */
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  
+}
 /* iPads (portrait) ----------- */
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  
+}
