@@ -525,7 +525,7 @@ $("#search-bar-empty").click(function(){
 });
 
 var datasetsArray = {
-    "Flood alert areas" : {"type": "natural", "link" : "ea:flood_alert_areas", "description" : "Large expanses of floodplain that are at risk of low-impact flooding such as floodplain inundation, road flooding and farmland flooding.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
+    "Areas at risk of flooding" : {"type": "natural", "link" : "ea:flood_alert_areas", "description" : "Large expanses of floodplain that are at risk of low-impact flooding such as floodplain inundation, road flooding and farmland flooding.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
     "Historically flooded landfills" : {"type": "natural", "link" : "ea:landfill_in_hfm", "description" : "Areas representing landfills that have flooded in the past.", "source" : "[Source: Environment Agency]"},
     "Flood defences" : {"type": "natural", "link" : "ea:spatial_flood_defences", "description" : "Lines representing flood defences protecting against river floods or sea floods.", "source" : "[Source: Environment Agency]"},
     "Nitrate-sensitive areas" : {"type": "man", "link" : "ea:nitrate_sensitive_areas", "description" : "Nitrate sensitive areas are areas where the concentration of nitrates in drinking water sources is particularly high.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
