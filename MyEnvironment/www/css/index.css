@@ -27,7 +27,7 @@ body {
   position: absolute;
   color: #828282;
   font-family: "Open Sans", sans-serif;
-  z-index: 74;
+  z-index: 76;
   font-size: 20px;
   font-weight: 400;
   box-shadow: 0px 0px 20px #000000, 0px 0px 5px rgba(0, 0, 0, 0.3);
@@ -35,11 +35,11 @@ body {
   background-color: #fff;
   padding: 7px 10px;
 }
-.user-prompt#select-map-prompt {
+.user-prompt#select-map-prompt-right {
   right: 150px;
   bottom: 50px;
 }
-.user-prompt#select-map-prompt #prompt-arrow-right {
+.user-prompt#select-map-prompt-right .prompt-arrow {
   position: absolute;
   margin-top: -1px;
   margin-left: 10px;
@@ -52,21 +52,62 @@ body {
 
   margin-top: -20px;
 }
-.user-prompt#slide-prompt #prompt-arrow-left {
+.user-prompt#slide-prompt .prompt-arrow {
   position: absolute;
   margin-top: -1px;
   margin-left: -25px;
+  opacity: 1;
+}
+.user-prompt#select-map-prompt-left {
+  left: 152px;
+  bottom: 50px;
+}
+.user-prompt#select-map-prompt-left .prompt-arrow {
+  position: absolute;
+  margin-top: -1px;
+  margin-left: -171px;
   opacity: 1;
 }
 .user-prompt#pin-map-prompt {
   right: 25px;
   bottom: 242px;
 }
-.user-prompt#pin-map-prompt #prompt-arrow-down {
+.user-prompt#pin-map-prompt .prompt-arrow {
   position: absolute;
   margin-top: 34px;
   margin-left: -55px;
   opacity: 1;
+}
+.dataset-label {
+  position: absolute;
+  color: #828282;
+  font-family: "Open Sans", sans-serif;
+  z-index: 76;
+  font-weight: 400;
+  box-shadow: 0px 0px 20px #000000, 0px 0px 5px rgba(0, 0, 0, 0.3);
+  display: none;
+  background-color: #fff;
+  padding: 7px 10px;
+  font-size: 15px;
+  opacity: 0.8;
+}
+.dataset-label#dataset-label-right {
+  right: 150px;
+  bottom: 55px;
+}
+.dataset-label#dataset-label-right .prompt-arrow {
+  position: absolute;
+  margin-top: -4px;
+  margin-left: 10px;
+}
+.dataset-label#dataset-label-left {
+  left: 150px;
+  bottom: 55px;
+}
+.dataset-label#dataset-label-left .prompt-arrow {
+  position: absolute;
+  margin-top: -4px;
+  left: -14px;
 }
 /* SLIDER LAYER STYLES */
 #slider-bar {

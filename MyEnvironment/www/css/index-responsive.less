@@ -4,31 +4,63 @@
     /* USER PROMPT STYLES */
 
     .user-prompt {
-        font-size:17px;
-        &#select-map-prompt {
+        font-size:15px;
+        &#select-map-prompt-right {
             right:100px;
             bottom:27px;
-			#prompt-arrow-right {
+			.prompt-arrow {
 				margin-top:-3px;
 			}
         }
         &#slide-prompt {
             left:75px;
             margin-top:-19px;
-			#prompt-arrow-left {
-				margin-top:-3px;
+			.prompt-arrow {
+				margin-top:-5px;
+			}
+        }
+		&#select-map-prompt-left {
+            left:99px;
+            bottom:27px;
+			.prompt-arrow {
+				margin-top:-5px;
+				margin-left:-134px;
 			}
         }
 		&#pin-map-prompt {
 			width:120px;
 			right:16px;
 			bottom:164px;
-			#prompt-arrow-down {
-				margin-left:10px;
-				margin-top:30px;
+			.prompt-arrow {
+				margin-left:45px;
+				margin-top:27px;
 			}
 		}
     }
+	.dataset-label {
+		overflow:hidden;
+		white-space:nowrap;
+		text-overflow:ellipsis;
+		font-size:10px;
+		width:100px;
+		&#dataset-label-right {
+			right:97px;
+			bottom:32px;
+			.prompt-arrow {
+				margin-top:-8px;
+				margin-right:10px;
+				margin-left:0px;
+			}
+		}
+		&#dataset-label-left {
+			left:97px;
+			bottom:32px;
+			.prompt-arrow {
+				margin-top:-8px;
+				left:14px;
+			}
+		}
+	}
     
     /* SLIDER STYLES */
     
@@ -217,9 +249,16 @@
     /* USER PROMPT STYLES */
 
     .user-prompt {
-        &#select-map-prompt {
+        &#select-map-prompt-right {
             right:118px;
             bottom:35px;
+        }
+		&#select-map-prompt-left {
+            left:118px;
+            bottom:35px;
+			.prompt-arrow {
+				margin-left:-171px;
+			}
         }
         &#slide-prompt {
             left:95px;
@@ -229,11 +268,22 @@
 		&#pin-map-prompt {
 			right:20px;
 			bottom:198px;
-			#prompt-arrow-down {
-				margin-left:-45px;
+			.prompt-arrow {
+				margin-left:-44px;
 			}
 		}
     }
+	
+	.dataset-label {
+		&#dataset-label-right {
+			right:116px;
+			bottom:38px;
+		}
+		&#dataset-label-left {
+			left:116px;
+			bottom:38px;
+		}
+	}
 
     #ui-layer {
     

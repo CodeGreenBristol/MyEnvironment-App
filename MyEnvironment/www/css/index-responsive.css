@@ -3,30 +3,62 @@
 @media only screen and (min-width: 320px) and (max-width: 768px) {
   /* USER PROMPT STYLES */
   .user-prompt {
-    font-size: 17px;
+    font-size: 15px;
   }
-  .user-prompt#select-map-prompt {
+  .user-prompt#select-map-prompt-right {
     right: 100px;
     bottom: 27px;
   }
-  .user-prompt#select-map-prompt #prompt-arrow-right {
+  .user-prompt#select-map-prompt-right .prompt-arrow {
     margin-top: -3px;
   }
   .user-prompt#slide-prompt {
     left: 75px;
     margin-top: -19px;
   }
-  .user-prompt#slide-prompt #prompt-arrow-left {
-    margin-top: -3px;
+  .user-prompt#slide-prompt .prompt-arrow {
+    margin-top: -5px;
+  }
+  .user-prompt#select-map-prompt-left {
+    left: 99px;
+    bottom: 27px;
+  }
+  .user-prompt#select-map-prompt-left .prompt-arrow {
+    margin-top: -5px;
+    margin-left: -134px;
   }
   .user-prompt#pin-map-prompt {
     width: 120px;
     right: 16px;
     bottom: 164px;
   }
-  .user-prompt#pin-map-prompt #prompt-arrow-down {
-    margin-left: 10px;
-    margin-top: 30px;
+  .user-prompt#pin-map-prompt .prompt-arrow {
+    margin-left: 45px;
+    margin-top: 27px;
+  }
+  .dataset-label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 10px;
+    width: 100px;
+  }
+  .dataset-label#dataset-label-right {
+    right: 97px;
+    bottom: 32px;
+  }
+  .dataset-label#dataset-label-right .prompt-arrow {
+    margin-top: -8px;
+    margin-right: 10px;
+    margin-left: 0px;
+  }
+  .dataset-label#dataset-label-left {
+    left: 97px;
+    bottom: 32px;
+  }
+  .dataset-label#dataset-label-left .prompt-arrow {
+    margin-top: -8px;
+    left: 14px;
   }
   /* SLIDER STYLES */
   #slider-bar {
@@ -197,9 +229,16 @@
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
   /* USER PROMPT STYLES */
-  .user-prompt#select-map-prompt {
+  .user-prompt#select-map-prompt-right {
     right: 118px;
     bottom: 35px;
+  }
+  .user-prompt#select-map-prompt-left {
+    left: 118px;
+    bottom: 35px;
+  }
+  .user-prompt#select-map-prompt-left .prompt-arrow {
+    margin-left: -171px;
   }
   .user-prompt#slide-prompt {
     left: 95px;
@@ -211,8 +250,16 @@
     right: 20px;
     bottom: 198px;
   }
-  .user-prompt#pin-map-prompt #prompt-arrow-down {
-    margin-left: -45px;
+  .user-prompt#pin-map-prompt .prompt-arrow {
+    margin-left: -44px;
+  }
+  .dataset-label#dataset-label-right {
+    right: 116px;
+    bottom: 38px;
+  }
+  .dataset-label#dataset-label-left {
+    left: 116px;
+    bottom: 38px;
   }
   #ui-layer {
     /* SEARCH BAR STYLES */

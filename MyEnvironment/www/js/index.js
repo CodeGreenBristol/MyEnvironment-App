@@ -158,6 +158,14 @@ function generateButtonRules(){
 }
 var sliderLimit = generateButtonRules();
 
+function generateLabelRules(){
+	if($(window).width() <= 400) return 160;
+    else if($(window).width() <= 768) return 300;
+    else if($(window).width() <= 1024) return 350;
+    return 440;
+}
+var labelLimit = generateLabelRules();
+
 function offsetFunc(){
 
     adjustDataContainer();
@@ -189,6 +197,20 @@ function offsetFunc(){
     else if(sliderOffset / $(window).width() > 0.93 && !$('#drag-left').is(':visible')){
         $('#drag-left').fadeIn();
     }
+	
+	// SHOW LABEL IF SIDE IS MORE THAN 1/3 VISIBLE
+	if(sliderOffset >= labelLimit && !$('#dataset-label-left').is(':visible')){
+        $('#dataset-label-left').fadeIn(300);
+    }
+    else if(sliderOffset < labelLimit && $('#dataset-label-left').is(':visible')){
+        $('#dataset-label-left').fadeOut(300);
+    }
+    if(sliderOffset <= $(window).width() - labelLimit && !$('#dataset-label-right').is(':visible')){
+        $('#dataset-label-right').fadeIn(300);
+    }
+    else if(sliderOffset > $(window).width() - labelLimit && $('#dataset-label-right').is(':visible')){
+        $('#dataset-label-right').fadeOut(300);
+    }
 }
 
 // DRAGGABLE SLIDER
@@ -198,7 +220,7 @@ $('#slider-bar').on('mousedown touchstart', function(){
     // hide prompt if first time
     if($('#slide-prompt').is(":visible")){
         $('#slide-prompt').fadeOut();
-		$('#pin-map-prompt').fadeIn();
+		$('#select-map-prompt-left').fadeIn();
         localStorage['userReturning'] = true;
     }
 });
@@ -250,6 +272,12 @@ sliderLeft = parseInt($('#slider-bar').css('left'), 10);
 
 $('#slider-bar').offset({ left: sliderOffset + sliderLeft });
 offsetFunc();
+
+// on startup, set dataset labels if in localstorage
+/*if (typeof localStorage['rightLayer'] !== "undefined"){
+	$('#dataset-label-right').fadeIn();
+	$('#dataset-label-right').text(datasetsArray[rightLayerData]);
+}*/
 
 // ADDRESS SEARCH
 var curLocData; //object for the current location data
@@ -541,10 +569,17 @@ var dataVal;
 var menuViewed;
 $('#right-button, #left-button').click(function() {
 
-    // hide prompt if first time
-    if($('#select-map-prompt').is(":visible")){
-        $('#select-map-prompt').fadeOut();
+    // hide right button prompt if first time and show left prompt
+    if($('#select-map-prompt-right').is(":visible")){
+        $('#select-map-prompt-right').fadeOut();
+		$('#slider-bar').fadeIn();
         $('#slide-prompt').fadeIn();
+    }
+	
+	// hide left button prompt if first time and show pin prompt
+    if($('#select-map-prompt-left').is(":visible")){
+        $('#select-map-prompt-left').fadeOut();
+        $('#pin-map-prompt').fadeIn();
     }
 
     $('#map-select-layer #menu-options ul li.topic-selected').removeClass('topic-selected');
@@ -646,11 +681,23 @@ $('#map-select-layer #menu-options ul').on("click", "li", function(e) {
 			leftLayerData = datasetsArray[$(this).children('.dataset-title').text()]["link"];
 			if(typeof leftLayer !== "undefined") map.removeLayer(leftLayer);
 			setLeftLayer();
+			// update left dataset label
+			if(!$('#dataset-label-left').is(':visible')){
+				$('#dataset-label-left').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-left.png" alt="Prompt arrow" />');
+				$('#dataset-label-left').fadeIn();
+			}
+			else $('#dataset-label-left').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-left.png" alt="Prompt arrow" />');
 		}
 		else {
 			rightLayerData = datasetsArray[$(this).children('.dataset-title').text()]["link"];
 			if(typeof rightLayer !== "undefined") map.removeLayer(rightLayer);
 			setRightLayer();
+			// update right dataset label
+			if(!$('#dataset-label-right').is(':visible')){
+				$('#dataset-label-right').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-right.png" alt="Prompt arrow" />');
+				$('#dataset-label-right').fadeIn();
+			}
+			else $('#dataset-label-right').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-right.png" alt="Prompt arrow" />');
 		}
 
 		hideTopicMenu();
@@ -660,5 +707,6 @@ $('#map-select-layer #menu-options ul').on("click", "li", function(e) {
 /* IF FIRST TIME, SHOW PROMPTS */
 
 if(typeof localStorage['userReturning'] === "undefined"){
-    $('#select-map-prompt').show();
+	$('#slider-bar').hide();
+    $('#select-map-prompt-right').show();
 }
