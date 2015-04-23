@@ -525,15 +525,15 @@ $("#search-bar-empty").click(function(){
 });
 
 var datasetsArray = {
-	"Risk of flooding from rivers and sea" : {"type": "natural", "link" : "ea:rofrs_england_v201412", "description" : "River flooding happens when a river cannot cope with the amount of water draining into it from the surrounding land. Sea flooding happens when there are high tides and stormy conditions.The shading on the map shows the risk of flooding from rivers and the sea in this particular area."},
-    "Flood alert areas" : {"type": "natural", "link" : "ea:flood_alert_areas", "description" : "Large expanses of floodplain that are at risk of low-impact flooding such as floodplain inundation, road flooding and farmland flooding."},
-    "Flood risk areas" : {"type": "natural", "link" : "ea:flood_risk_areas", "description" : "Flood Risk Areas are areas that are at risk of surface water flooding"},
-    "Nitrate-sensitive areas" : {"type": "man", "link" : "ea:nitrate_sensitive_areas", "description" : "Nitrate sensitive areas are areas where the concentration of nitrates in drinking water sources is particularly high."},
-    "Oil and gas wells" : {"type": "man", "link" : "decc_on_wells", "description" : "Oil and gas wells in onshore licence areas."},
-	"Outfall and discharge points" : {"type": "man", "link" : "outfall_discharge_points", "description" : "Outfall and Discharge Points are points at which waste is discharged into bodies of water."},
-	"Areas of outstanding natural beauty" : {"type": "recreation", "link" : "ea:areasoutstgnaturalbeauty_eng", "description" : "Areas of outstanding natural beauty are areas of countryside that are designated for conservation due to their significant landscape value. "},
-    "Registered parks and gardens" : {"type": "recreation", "link" : "registered_parks_and_gardens", "description" : "Parks and Gardens as included on the Register of Historic Parks and Gardens."},
-    "World Heritage Sites" : {"type": "recreation", "link" : "world_heritage_sites", "description" : "Properties in England as inscribed by the World Heritage Committee of UNESCO."}
+    "Flood alert areas" : {"type": "natural", "link" : "ea:flood_alert_areas", "description" : "Large expanses of floodplain that are at risk of low-impact flooding such as floodplain inundation, road flooding and farmland flooding.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
+    "Historically flooded landfills" : {"type": "natural", "link" : "ea:landfill_in_hfm", "description" : "Areas representing landfills that have flooded in the past.", "source" : "[Source: Environment Agency]"},
+    "Flood defences" : {"type": "natural", "link" : "ea:spatial_flood_defences", "description" : "Lines representing flood defences protecting against river floods or sea floods.", "source" : "[Source: Environment Agency]"},
+    "Nitrate-sensitive areas" : {"type": "man", "link" : "ea:nitrate_sensitive_areas", "description" : "Nitrate sensitive areas are areas where the concentration of nitrates in drinking water sources is particularly high.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
+    "Oil and gas wells" : {"type": "man", "link" : "decc_on_wells", "description" : "Oil and gas wells in onshore licence areas.", "source" : "[Source: https://www.gov.uk/oil-and-gas/licensing]"},
+	"Outfall and discharge points" : {"type": "man", "link" : "outfall_discharge_points", "description" : "Points at which waste is discharged into bodies of water.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
+	"Areas of outstanding natural beauty" : {"type": "recreation", "link" : "ea:areasoutstgnaturalbeauty_eng", "description" : "Areas of countryside designated for conservation due to their significant landscape value.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
+    "Registered parks and gardens" : {"type": "recreation", "link" : "registered_parks_and_gardens", "description" : "Parks and Gardens as included on the Register of Historic Parks and Gardens.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
+    "World Heritage Sites" : {"type": "recreation", "link" : "world_heritage_sites", "description" : "Properties in England with special cultural or physical significance, as inscribed by the World Heritage Committee of UNESCO.", "source" : "[Source: http://www.geostore.com/environment-agency/]"}
 };
 
 // TOGGLE MAP TOPIC MENU
@@ -617,7 +617,7 @@ function onDeviceReady() {
 
 function renderDataSets(){
     $.each(datasetsArray, function(key, val){
-        $('#map-select-layer #menu-options #datasets-' + val['type'] + '').append('<li data-link="'+val['link']+'"><div class="dataset-title">' + key + '</div><img class="dataset-info" src="img/info-icon.png" alt="Info" /><div class="clearfix"></div><div class="dataset-description">' + val["description"] + '</div></li>');
+        $('#map-select-layer #menu-options #datasets-' + val['type'] + '').append('<li data-link="'+val['link']+'"><div class="dataset-title">' + key + '</div><img class="dataset-info" src="img/info-icon.png" alt="Info" /><div class="clearfix"></div><div class="dataset-description">' + val["description"] + '</div><div class="dataset-source">' + val["source"] + '</div></li>');
    });
 }
 renderDataSets();
