@@ -202,6 +202,22 @@ var sliderLimit = generateButtonRules();
 // }
 // var labelLimit = generateLabelRules();
 
+function adjustPinning(){
+    
+    if(localStorage['currentPrompt'] != "done" && localStorage['currentPrompt'] != "pin") {
+        $('#left-pin').hide();
+        $('#right-pin').hide();
+        return;
+    }
+    
+    if(typeof leftLayerData === "undefined") $('#left-pin').hide();
+    else $('#left-pin').show();
+    
+    if(typeof rightLayerData === "undefined") $('#right-pin').hide();
+    else $('#right-pin').show();
+}
+adjustPinning();
+
 function offsetFunc(){
 
     adjustDataContainer();
@@ -209,16 +225,21 @@ function offsetFunc(){
     // SHOW BUTTON IF SIDE IS VISIBLE
     if(sliderOffset >= sliderLimit && !$('#outer-left-button').is(':visible')){
         $('#outer-left-button').fadeIn();
-        if(!$('#right-pin').hasClass('pin-active')) $('#left-pin').fadeIn();
+        if(localStorage['currentPrompt'] == "dataset2") $('#select-map-prompt-left').fadeIn();
+        if(!$('#right-pin').hasClass('pin-active') && typeof leftLayerData !== "undefined" && (localStorage['currentPrompt'] == "done" || localStorage['currentPrompt'] == "pin")) $('#left-pin').fadeIn();
     }
     else if(sliderOffset < sliderLimit && $('#outer-left-button').is(':visible')){
         $('#outer-left-button, #left-pin').fadeOut();
+        if(localStorage['currentPrompt'] == "dataset2") $('#select-map-prompt-left').fadeOut();
     }
+    
     if(sliderOffset <= $(window).width() - sliderLimit && !$('#outer-right-button').is(':visible')){
         $('#outer-right-button').fadeIn();
-        if(!$('#left-pin').hasClass('pin-active')) $('#right-pin').fadeIn();
+        if(localStorage['currentPrompt'] == "pin") $('#pin-map-prompt').fadeIn();
+        if(!$('#left-pin').hasClass('pin-active') && typeof rightLayerData !== "undefined" && (localStorage['currentPrompt'] == "done" || localStorage['currentPrompt'] == "pin")) $('#right-pin').fadeIn();
     }
     else if(sliderOffset > $(window).width() - sliderLimit && $('#outer-right-button').is(':visible')){
+        if(localStorage['currentPrompt'] == "pin") $('#pin-map-prompt').fadeOut();
         $('#outer-right-button, #right-pin').fadeOut();
     }
 
@@ -607,11 +628,6 @@ $('#outer-right-button, #outer-left-button').on('click', function() {
 
 $('#right-pin, #left-pin').on('click', function(){
 
-	// hide pin prompt if first time
-	if($('#pin-map-prompt').is(":visible")){
-		$('#pin-map-prompt').fadeOut();
-	}
-
     // if pinning
     if(!$(this).hasClass('pin-active')){
 
@@ -717,7 +733,7 @@ $('#map-select-layer #menu-options ul').on("click", "li", function(e) {
             
             if(localStorage['currentPrompt'] == "dataset1") updatePrompts();
 		}
-
+        adjustPinning();
         hideTopicMenu();
 	}
 });
@@ -749,6 +765,7 @@ function updatePrompts(){
         localStorage['currentPrompt'] = "pin";
     }
     else if(localStorage['currentPrompt'] == "pin"){
+        $('#pin-map-prompt').fadeOut();
         localStorage['currentPrompt'] = "done";
     }
 }

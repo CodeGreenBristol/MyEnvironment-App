@@ -5,13 +5,13 @@
 
 # BUGS
 
-- hide pin until dataset selected
 - current location still showing as 'favourited' after deletion
 - saved location not being removed from local storage
 - on init left button/slider appearing momentarily
 
 # DONE
 
+- hide pin until dataset selected
 - make loading icon lighter
 - finish loading indicator
 - scale indicator + restyling

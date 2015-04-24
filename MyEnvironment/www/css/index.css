@@ -222,6 +222,7 @@ body {
   margin-top: -26px;
   margin-bottom: -30px;
   float: right;
+  opacity: .5;
 }
 #map-select-layer #menu-options ul li .dataset-description {
   color: #666;
