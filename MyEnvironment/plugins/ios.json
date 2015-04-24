@@ -55,10 +55,10 @@
     },
     "installed_plugins": {
         "com.telerik.plugins.wkwebview": {
-            "PACKAGE_NAME": "com.phonegap.helloworld"
+            "PACKAGE_NAME": "licencetocode.myenvironment"
         },
         "org.apache.cordova.geolocation": {
-            "PACKAGE_NAME": "com.phonegap.helloworld"
+            "PACKAGE_NAME": "licencetocode.myenvironment"
         }
     },
     "dependent_plugins": {}

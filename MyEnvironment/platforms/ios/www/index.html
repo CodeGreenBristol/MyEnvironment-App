@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Environment Agency | What's in Your Backyard</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+        <title>MyEnvironment</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <meta name="author" content="Licence to Code" />
         <meta name="description" content="" />
@@ -17,12 +17,18 @@
     </head>
     <body>
         <div id="map-select-layer">
+            <div id="dev-reset"></div>
             <div id="menu-header">
                 <img id="menu-icon" src="img/back-white-icon.png" alt="Back icon" />
                 <div id="menu-title">Choose a topic</div>
             </div>
             <div id="menu-options">
-                <ul></ul>
+                <div class="dataset-type-label">Natural hazards</div>
+                <ul id="datasets-natural"></ul>
+                <div class="dataset-type-label">Man-made hazards</div>
+                <ul id="datasets-man"></ul>
+                <div class="dataset-type-label">Recreational</div>
+                <ul id="datasets-recreation"></ul>
             </div>
         </div>
         <div id="ui-layer">
@@ -39,7 +45,10 @@
             </div>
             <div id="search-bar-expanded">
                 <div class="expanded-section" id="search-results">
-                    <div class="expanded-title">Search results</div>
+                    <div class="expanded-title">
+                        <div class="loading-icon"></div>
+                        <span>Search results</span>
+                    </div>
                     <ul class="expanded-locations"></ul>
                 </div>
                 <div class="expanded-section" id="saved-locations">
@@ -47,18 +56,18 @@
                     <ul class="expanded-locations"></ul>
                 </div>
             </div>
-
-            <div id="right-button-block">
-                <img id="right-button" src="img/buttons/right-menu-icon.png" alt="Left menu icon" />
-                <img id="right-legend-button" src="img/buttons/legend-menu-icon.png" alt="Legend menu icon" />
-                <img id="right-topic-button" src="img/buttons/topic-menu-icon.png" alt="Topic menu icon" />
-            </div>
-
-            <div id="left-button-block">
-                <img id="left-button" src="img/buttons/left-menu-icon.png" alt="Left menu icon" />
-                <img id="left-legend-button" src="img/buttons/legend-menu-icon.png" alt="Legend menu icon" />
-                <img id="left-topic-button" src="img/buttons/topic-menu-icon.png" alt="Topic menu icon" />
-            </div>
+            <div id="slide-prompt" class="user-prompt"><img class="prompt-arrow arrow-left" src="img/prompt-arrow-left.png" alt="Prompt arrow" />Slide to compare maps</div>
+            <div id="select-map-prompt-right" class="user-prompt">Select a dataset<img class="prompt-arrow arrow-right" src="img/prompt-arrow-right.png" alt="Prompt arrow" /></div>
+			<div id="select-map-prompt-left" class="user-prompt">Select another dataset<img class="prompt-arrow arrow-left" src="img/prompt-arrow-left.png" alt="Prompt arrow" /></div>
+			<div id="pin-map-prompt" class="user-prompt">Pin this map to both sides of the slider<img class="prompt-arrow arrow-bottom-right" src="img/prompt-arrow-down.png" alt="Prompt arrow" /></div>
+			<!--
+            <div id="dataset-label-right" class="dataset-label"></div>
+			<div id="dataset-label-left" class="dataset-label"></div>
+            -->
+            <img id="right-pin" src="img/buttons/inactive-pin-icon.png" alt="Right pin icon" />
+            <img id="left-pin" src="img/buttons/inactive-pin-icon.png" alt="Left pin icon" />
+            <img id="right-button" src="img/buttons/right-menu-icon.png" alt="Right menu icon" />
+            <img id="left-button" src="img/buttons/left-menu-icon.png" alt="Left menu icon" />
         </div>
         <div id="slider-bar">
             <img id="drag-right" src="img/slider/right-slider-arrow.png" alt="Drag right" />
@@ -69,7 +78,10 @@
         <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
         <!-- LEAFLET JS -->
          <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <!-- CORDOVA -->
+        <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
         <!-- PAGE JS -->
+        <script type="text/javascript" src="js/fastclick.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>

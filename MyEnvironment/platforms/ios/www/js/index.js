@@ -1,3 +1,13 @@
+// TEMPORARY - DEV REST
+$('#dev-reset').on('click', function(){
+    localStorage.clear();
+    alert("Storage cleared!");
+});
+
+// eliminate 300ms delay
+var attachFastClick = Origami.fastclick;
+attachFastClick(document.body);
+
 // MAP FUNCTIONS
 var map;
 
@@ -9,23 +19,27 @@ map = L.map('map-layer', {
     center: [51.45, -2.59],
     zoom: 14,
     minZoom: 7,
-		maxZoom: 17
+    maxZoom: 17
 });
 
+//add scale indicator
+L.control.scale({position: 'topright', 'imperial': false}).addTo(map);
+
 L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.concat(accToken), {
-		reuseTiles: true,
+    reuseTiles: true,
     detectRetina: true,
-		unloadInvisibleTiles: false
+    unloadInvisibleTiles: false
 }).addTo(map);
 
-var rightLayerData = 'ea:flood_warning_areas';
-var leftLayerData = 'ea:flood_alert_areas';
+var rightLayerData = (typeof localStorage['rightLayer'] !== "undefined") ? JSON.parse(localStorage['rightLayer']) : undefined;
+var leftLayerData = (typeof localStorage['leftLayer'] !== "undefined") ? JSON.parse(localStorage['leftLayer']) : undefined;
 var rightLayer;
 var leftLayer;
+var locationMarker;
 
-function setRightLayer(rightLayerData) {
+function setRightLayer() {
     rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
-        layers: rightLayerData,
+        layers: rightLayerData.link,
         format: 'image/png8',
         transparent: true,
         tiled: true,
@@ -33,16 +47,23 @@ function setRightLayer(rightLayerData) {
         version: '1.1.0',
         reuseTiles: true,
         detectRetina: true,
-				unloadInvisibleTiles: false
+        unloadInvisibleTiles: false
     }).addTo(map);
     $(rightLayer._container).attr("id", "rightData");
+    
+    // loading events
+    rightLayer.on('loading', function(){ loadingEvent("right"); }).on('load', function(){ loadedEvent("right"); });
+    
+    // add to localstorage
+    localStorage['rightLayer'] = JSON.stringify(rightLayerData);
+
+    adjustDataContainer();
 }
-setRightLayer(rightLayerData);
+if(typeof rightLayerData !== "undefined") setRightLayer();
 
-
-function setLeftLayer(rightLayerData) {
+function setLeftLayer() {
     leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
-        layers: leftLayerData,
+        layers: leftLayerData.link,
         format: 'image/png8',
         transparent: true,
         tiled: true,
@@ -50,14 +71,29 @@ function setLeftLayer(rightLayerData) {
         version: '1.1.0',
         reuseTiles: true,
         detectRetina: true,
-				unloadInvisibleTiles: false
+        unloadInvisibleTiles: false
     }).addTo(map);
-    $(leftLayer._container).attr("id", "leftData").css("clip", "rect(0px, 0px, 0px, 0px)");
+    $(leftLayer._container).attr("id", "leftData");
+    
+    leftLayer.on('loading', function(){ loadingEvent("left"); }).on('load', function(){ loadedEvent("left"); });
+     
+    // add to localstorage
+    localStorage['leftLayer'] = JSON.stringify(leftLayerData);
+
+    adjustDataContainer();
 }
-setLeftLayer(leftLayerData);
+if(typeof leftLayerData !== "undefined") setLeftLayer();
+
+function loadingEvent(side){
+    
+}
+function loadedEvent(side){
+    
+}
+    
 
 // SEARCH BAR EXPAND
-$('#search-bar input').click(function(){
+$('#search-bar input').on('click', function(){
 
     // IF HIDDEN, SHOW
     if(!$('#search-bar-expanded').is(':visible')){
@@ -77,11 +113,20 @@ $('#search-bar input').click(function(){
 
 });
 
+$('#search-bar input').bind("enter", enterPressed);
+
+$('#search-bar input').keyup(function(e){
+    if(e.keyCode == 13)
+    {
+      $(this).trigger("enter");
+    }
+});
+
 // CLOSE SEARCH BAR
-$('#search-icon').click(function(){
+$('#search-icon').on('click', function(){
     hideSearchBar();
 });
-$('html').click(function() {
+$('html').on('click', function() {
     hideSearchBar();
 });
 
@@ -96,43 +141,9 @@ function hideSearchBar() {
     }
 }
 
-$('#search-bar, #search-bar-expanded').click(function(e){
+$('#search-bar, #search-bar-expanded').on('click', function(e){
     e.stopPropagation();
 });
-
-// BUTTONS EXPAND
-function buttonExpand(side, override){
-
-    // IF NOT VISIBLE, DISPLAY
-    if(typeof override === "undefined" && !$('#' + side + '-legend-button').is(':visible') && !$('#' + side + '-topic-button').is(':visible')) {
-        $('#' + side + '-legend-button').show("fast", function(){ $(this).addClass('btn-expanded'); });
-        $('#' + side + '-topic-button').show("fast", function(){ $(this).addClass('btn-expanded'); });
-        $('#' + side + '-button').attr('src', 'img/buttons/close-menu-icon.png');
-    }
-
-    // IF VISIBLE, HIDE
-    else {
-        $('#' + side + '-legend-button').removeClass("btn-expanded");
-        $('#' + side + '-topic-button').removeClass("btn-expanded");
-
-        setTimeout(function(){
-            $('#' + side + '-legend-button').hide();
-            $('#' + side + '-topic-button').hide();
-        }, 500);
-
-        $('#' + side + '-button').attr('src', 'img/buttons/'+ side +'-menu-icon.png');
-    }
-}
-
-$('#left-button').click(function() {
-    buttonExpand("left");
-});
-
-$('#right-button').click(function() {
-    buttonExpand("right");
-});
-
-var sliderOffset = 4;
 
 /*
 function getTransform() {
@@ -153,40 +164,48 @@ function adjustDataContainer(){
 function adjustDataContainer(){
     var nw = map.containerPointToLayerPoint([0, 0]),
     se = map.containerPointToLayerPoint(map.getSize()),
-    range = sliderOffset / $(window).width(),
-    clipX = nw.x + (se.x - nw.x) * range;
+    clipX = nw.x + (se.x - nw.x) * (sliderOffset / $(window).width());
 
-    $('#leftData').css("clip", 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)');
-    $('#rightData').css("clip", 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)');
+    if(!$('#left-pin').hasClass('pin-active')) $('#leftData').css("clip", 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)');
+    if(!$('#right-pin').hasClass('pin-active')) $('#rightData').css("clip", 'rect(' + [nw.y, se.x, se.y, clipX].join('px,') + 'px)');
 }
 
 map.on('move', adjustDataContainer);
 
+// REDUNDANCY, SEE IF WE CAN MAKE IT PERCENTAGES
 function generateButtonRules(){
-    if($(window).width() <= 768) return {buttonLimit: 80};
-    else if($(window).width() <= 1024) return {buttonLimit: 120};
-    else return {buttonLimit: 150};
+    if($(window).width() <= 768) return 80;
+    else if($(window).width() <= 1024) return 120;
+    return 150;
 }
-var sliderLimits = generateButtonRules();
+var sliderLimit = generateButtonRules();
+
+// function generateLabelRules(){
+	// if($(window).width() <= 400) return 160;
+    // else if($(window).width() <= 768) return 300;
+    // else if($(window).width() <= 1024) return 350;
+    // return 440;
+// }
+// var labelLimit = generateLabelRules();
 
 function offsetFunc(){
 
     adjustDataContainer();
 
     // SHOW BUTTON IF SIDE IS VISIBLE
-    if(sliderOffset >= sliderLimits.buttonLimit && !$('#left-button-block').is(':visible')){
-        $('#left-button-block').fadeIn();
+    if(sliderOffset >= sliderLimit && !$('#left-button').is(':visible')){
+        $('#left-button').fadeIn();
+        if(!$('#right-pin').hasClass('pin-active')) $('#left-pin').fadeIn();
     }
-    else if(sliderOffset < sliderLimits.buttonLimit && $('#left-button-block').is(':visible')){
-        buttonExpand("left", true);
-        $('#left-button-block').fadeOut();
+    else if(sliderOffset < sliderLimit && $('#left-button').is(':visible')){
+        $('#left-button, #left-pin').fadeOut();
     }
-    if(sliderOffset <= $(window).width() - sliderLimits.buttonLimit && !$('#right-button-block').is(':visible')){
-        $('#right-button-block').fadeIn();
+    if(sliderOffset <= $(window).width() - sliderLimit && !$('#right-button').is(':visible')){
+        $('#right-button').fadeIn();
+        if(!$('#left-pin').hasClass('pin-active')) $('#right-pin').fadeIn();
     }
-    else if(sliderOffset > $(window).width() - sliderLimits.buttonLimit && $('#right-button-block').is(':visible')){
-        buttonExpand("right", true);
-        $('#right-button-block').fadeOut();
+    else if(sliderOffset > $(window).width() - sliderLimit && $('#right-button').is(':visible')){
+        $('#right-button, #right-pin').fadeOut();
     }
 
     // SHOW ARROWS ON SIDE OF SLIDER
@@ -200,42 +219,47 @@ function offsetFunc(){
         $('#drag-left').fadeOut();
     }
     else if(sliderOffset / $(window).width() > 0.93 && !$('#drag-left').is(':visible')){
-        $('#drag-left').fadeIn();        
+        $('#drag-left').fadeIn();
     }
+	
+	// SHOW LABEL IF SIDE IS MORE THAN 1/3 VISIBLE
+	// if(sliderOffset >= labelLimit && !$('#dataset-label-left').is(':visible')){
+        // $('#dataset-label-left').fadeIn(300);
+    // }
+    // else if(sliderOffset < labelLimit && $('#dataset-label-left').is(':visible')){
+        // $('#dataset-label-left').fadeOut(300);
+    // }
+    // if(sliderOffset <= $(window).width() - labelLimit && !$('#dataset-label-right').is(':visible')){
+        // $('#dataset-label-right').fadeIn(300);
+    // }
+    // else if(sliderOffset > $(window).width() - labelLimit && $('#dataset-label-right').is(':visible')){
+        // $('#dataset-label-right').fadeOut(300);
+    // }
 }
 
 // DRAGGABLE SLIDER
 $('#slider-bar').on('mousedown touchstart', function(){
     $(this).addClass('dragging');
+
+    if(localStorage['currentPrompt'] == "slider") updatePrompts();
 });
 $('#slider-bar').on('mouseup touchend', function(){
     $(this).removeClass('dragging');
-    if(sliderOffset / $(window).width() < 0.07){
-        sliderOffset = 4;
+    if(sliderOffset / $(window).width() < 0.1){
+        sliderOffset = 0;
     }
-    else if(sliderOffset / $(window).width() > 0.93){
-        sliderOffset = $(window).width() - 4;       
+    else if(sliderOffset / $(window).width() > 0.90){
+        sliderOffset = $(window).width();
     }
-    
-	  if(sliderOffset >= sliderLimits.buttonLimit){
-        $('#left-button-block').fadeIn();
-    }
-    else if(sliderOffset < sliderLimits.buttonLimit){
-        buttonExpand("left", true);
-        $('#left-button-block').fadeOut();
-    }
-    if(sliderOffset <= $(window).width() - sliderLimits.buttonLimit){
-        $('#right-button-block').fadeIn();
-    }
-    else if(sliderOffset > $(window).width() - sliderLimits.buttonLimit){
-        buttonExpand("right", true);
-        $('#right-button-block').fadeOut();	
-		}
-	
-    $(this).offset({ left: sliderOffset - 25 });
-    adjustDataContainer();
+
+    $(this).offset({ left: sliderOffset + sliderLeft });
+    offsetFunc();
+
+    // add offset to localstorage
+    localStorage['sliderOffset'] = sliderOffset;
 });
 
+// CAN OPTIMISE, NO NEED FOR OFFSETFUNC WHEN PAST THRESHOLD
 $('body').on('mousemove touchmove', function(e){
 
     if(e.type == "touchmove") var out = e.originalEvent.touches[0];
@@ -245,19 +269,34 @@ $('body').on('mousemove touchmove', function(e){
 
         if(sliderOffset != out.pageX);{
 
-            if(sliderOffset < 4) sliderOffset = 4;
-            else if(sliderOffset > $(window).width() - 4) sliderOffset = $(window).width() - 4;
+            if(sliderOffset < 0) sliderOffset = 0;
+            else if(sliderOffset > $(window).width()) sliderOffset = $(window).width();
             else sliderOffset = out.pageX;
 
             offsetFunc();
-            $('#slider-bar').offset({
-                left: sliderOffset - 25
-            });
+            $('#slider-bar').offset({ left: sliderOffset + sliderLeft });
         }
     }
 
-    e.preventDefault();
+    // don't prevent default if choosing topic
+    if(!$('#map-select-layer').hasClass('menu-expanded')){
+        e.preventDefault();
+    }
 });
+
+// on startup, set slider if in localstorage
+var sliderOffset = (typeof localStorage['sliderOffset'] !== "undefined") ? parseInt(localStorage['sliderOffset']) : 0 ;
+if(sliderOffset > $(window).width()) sliderOffset = 0;
+sliderLeft = parseInt($('#slider-bar').css('left'), 10);
+
+$('#slider-bar').offset({ left: sliderOffset + sliderLeft });
+offsetFunc();
+
+// on startup, set dataset labels if in localstorage
+/*if (typeof localStorage['rightLayer'] !== "undefined"){
+	$('#dataset-label-right').fadeIn();
+	$('#dataset-label-right').text(datasetsArray[rightLayerData]);
+}*/
 
 // ADDRESS SEARCH
 var curLocData; //object for the current location data
@@ -278,6 +317,7 @@ function addrSearch() {
 
     // no API call if empty
     var inp = $("#search-input");
+    var query = "";
     $('#search-results .expanded-locations').empty();
 
     if(inp.val() == ""){
@@ -288,24 +328,32 @@ function addrSearch() {
     else {
         $('#search-results').show();
         $('#search-bar-empty').css("display", "inline-block");
+        //clean commas from query string to optimise processing on nominatim's end
+        query = inp.val().replace(", ", " ").replace(","," ");
     }
-
+    
+    // show loading
+    displayLoadingIcon();
+    
     //timer used so fast-typing doesn't trigger rapid requests
     clearTimeout(searchTimer);
-    searchTimer = setTimeout(function() {
+    searchTimer = setTimeout(function() {   
         $.ajax({
             //fetch from http://nominatim.openstreetmap.org/
-            url: 'http://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=gb&q=' + inp.val(),
+            url: 'http://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=gb&q=' + query,
             dataType: 'json',
             success: updateSearchResults
         });
     }, 250);
 }
 
+function displayLoadingIcon() {
+    $('#search-results .expanded-title').html('<div class="loading-icon"></div><span>Searching for locations...</span>');
+}
+
 function updateSearchResults(data){
-    if(typeof data === "undefined") {
-        return;
-    }
+    if(typeof data === "undefined") return;
+
     var items = [];
     var displayedResults = [];
 
@@ -317,18 +365,26 @@ function updateSearchResults(data){
     });
 
     $('#search-results .expanded-locations').empty();
+    
+    //remove loading icon and text
     if (items.length != 0) {
         $(items.join('')).appendTo('#search-results .expanded-locations');
+        //add new text
         $('#search-results .expanded-title').text("Search results");
     } else {
         $('#search-results .expanded-title').text("No results found");
     }
 }
 
-//  FAVOURITE LOCATION
-var savedLocations = [];    //holds loc data for all saved locs
-localStorage.setItem("savedLocations", JSON.stringify(savedLocations));
+// go to first search result if enter is pressed
+function enterPressed() {
+    if($('#search-results .expanded-locations li').length != 0) {
+        goToLocation($('#search-results .expanded-locations li').first());
+    }
+}
 
+//  FAVOURITE LOCATION
+var savedLocations = (typeof localStorage['savedLocations'] !== "undefined") ? JSON.parse(localStorage['savedLocations']) : [];    //holds loc data for all saved locs
 
 // add saved location
 function addSavedLocation(){
@@ -382,6 +438,23 @@ $('#saved-locations').on('click', 'li .favourite-delete', function(e) {
     e.stopPropagation();
 });
 
+// pan map on marker click
+$('#map-layer').on('click', '.leaflet-marker-icon', function(){
+    map.panTo(locationMarker.getLatLng());
+});
+
+function panToLocation(location) {
+  // set marker for location
+  if(typeof locationMarker === "undefined"){
+      locationMarker = L.marker(location).addTo(map);
+  }
+  else {
+      locationMarker.setLatLng(location);
+  }
+
+  map.panTo(location);
+}
+
 //pans map to location given by 'data'
 function goToLocation(data) {
     //update current location
@@ -393,20 +466,23 @@ function goToLocation(data) {
     };
 
     var location = new L.LatLng(curLocData.lat, curLocData.lng);
-    map.panTo(location);
+
+    panToLocation(location);
+
     $('#search-input').val($(data).text());
 
     //set zoom level based on type of location
-    //known outliers: tadley = administrative?
-    if(curLocData.type == "administrative") {  //country
+    if(curLocData.dispname == "England, United Kingdom" || curLocData.dispname == "Scotland, United Kingdom") {
         map.setZoom(8);
+    } else if(curLocData.type == "administrative") {  // country/county
+        map.setZoom(10);
     } else if(curLocData.type == "city") {
         map.setZoom(12);
     } else if(curLocData.type == "town") {
         map.setZoom(13);
-    } else if(curLocData.type == "village") {
+    } else if(curLocData.type == "village" || curLocData.type == "residential" || curLocData.type == "hamlet") {
         map.setZoom(14);
-    } else {
+    } else {    //unclassified, river, stream, 
         map.setZoom(13);
     }
     hideSearchBar();
@@ -416,6 +492,20 @@ function goToLocation(data) {
 //location is favourited
 $('#search-bar-favourite').on('click', function() {
     toggleFavourite();
+});
+
+//pan to location if geolocation was successful
+var geolocationSuccess = function(location) {
+  panToLocation(new L.LatLng(location.coords.latitude, location.coords.longitude));
+}
+
+function geolocationError() {
+  window.alert("Sorry, we couldn't find your location!");
+}
+
+//sets marker and pans to location on click
+$('#search-bar-location').on('click', function() {
+    navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
 });
 
 //adds/removes from savedLocations, updates icon and the ui
@@ -467,76 +557,186 @@ function toggleFavIcon() {
 }
 
 // empty search string
-$("#search-bar-empty").click(function(){
+$("#search-bar-empty").on('click', function(){
     $('#search-input').val("").focus();
     $('#search-results').hide();
     $("#search-bar-empty").hide();
 });
 
 var datasetsArray = {
-    "Flood warning areas" : "ea:flood_warning_areas",
-    "Flood alert areas" : "ea:flood_alert_areas",
-    "Nitrate-sensitive areas" : "ea:nitrate_sensitive_areas",
-    "Areas of outstanding natural beauty" : "ea:areasoutstgnaturalbeauty_eng",
-    "Agricultural land" : "ea:agri_land_class",
-    "Flood risk areas" : "ea:flood_risk_areas"
+    "Areas at risk of flooding" : {"type": "natural", "link" : "ea:flood_alert_areas", "description" : "Large expanses of floodplain that are at risk of low-impact flooding such as floodplain inundation, road flooding and farmland flooding.", "source" : "http://www.geostore.com/environment-agency/"},
+    "Historically flooded landfills" : {"type": "natural", "link" : "ea:landfill_in_hfm", "description" : "Areas representing landfills that have flooded in the past.", "source" : "Environment Agency"},
+    "Flood defences" : {"type": "natural", "link" : "ea:spatial_flood_defences", "description" : "Lines representing flood defences protecting against river floods or sea floods.", "source" : "Environment Agency"},
+    "Nitrate-sensitive areas" : {"type": "man", "link" : "ea:nitrate_sensitive_areas", "description" : "Nitrate sensitive areas are areas where the concentration of nitrates in drinking water sources is particularly high.", "source" : "http://www.geostore.com/environment-agency/"},
+    "Oil and gas wells" : {"type": "man", "link" : "decc_on_wells", "description" : "Oil and gas wells in onshore licence areas.", "source" : "https://www.gov.uk/oil-and-gas/licensing"},
+	"Discharge points" : {"type": "man", "link" : "outfall_discharge_points", "description" : "Points at which waste is discharged into bodies of water.", "source" : "http://www.geostore.com/environment-agency/"},
+	"Areas of outstanding natural beauty" : {"type": "recreation", "link" : "ea:areasoutstgnaturalbeauty_eng", "description" : "Areas of countryside designated for conservation due to their significant landscape value.", "source" : "http://www.geostore.com/environment-agency/"},
+    "Registered parks and gardens" : {"type": "recreation", "link" : "registered_parks_and_gardens", "description" : "Parks and Gardens as included on the Register of Historic Parks and Gardens.", "source" : "http://www.geostore.com/environment-agency/"},
+    "World Heritage Sites" : {"type": "recreation", "link" : "world_heritage_sites", "description" : "Properties in England with special cultural or physical significance, as inscribed by the World Heritage Committee of UNESCO.", "source" : "http://www.geostore.com/environment-agency/"}
 };
 
 // TOGGLE MAP TOPIC MENU
+var dataVal;
 var menuViewed;
-$('#right-topic-button, #left-topic-button').click(function() {
+$('#right-button, #left-button').on('click', function() {
 
     $('#map-select-layer #menu-options ul li.topic-selected').removeClass('topic-selected');
 
-    if($(this).attr("id") == "right-topic-button") { var dataVal = rightLayerData; menuViewed = 1; }
-    else { var dataVal = leftLayerData; menuViewed = 0; }
+    if($(this).attr("id") == "right-button") { dataVal = (typeof rightLayerData !== "undefined") ? rightLayerData.link : undefined; menuViewed = 1; }
+    else { dataVal = (typeof leftLayerData !== "undefined") ? leftLayerData.link : undefined; menuViewed = 0; }
 
-    $.each($('#map-select-layer #menu-options ul li'), function(key, val){
-        if(datasetsArray[$(val).text()] == dataVal){
-            $(val).addClass("topic-selected");
-            return false;
+    // add tick to current selected topic based on left/right select
+    $('#map-select-layer #menu-options ul li[data-link="'+dataVal+'"]').addClass('topic-selected');
+
+    $('#map-select-layer').addClass('menu-expanded');
+});
+
+$('#right-pin, #left-pin').on('click', function(){
+
+	// hide pin prompt if first time
+	if($('#pin-map-prompt').is(":visible")){
+		$('#pin-map-prompt').fadeOut();
+	}
+
+    // if pinning
+    if(!$(this).hasClass('pin-active')){
+
+        $(this).attr('src', 'img/buttons/active-pin-icon.png').addClass('pin-active');
+
+        if($(this).attr('id') == "right-pin"){
+            $('#left-pin').fadeOut();
+            $('#rightData').css('clip', 'auto');
+            if(typeof rightLayer !== "undefined") rightLayer.bringToFront();
         }
-    });
+        else {
+            $('#right-pin').fadeOut();
+            $('#leftData').css('clip', 'auto');
+            if(typeof leftLayer !== "undefined") leftLayer.bringToFront();
+        }
+        
+        if(localStorage['currentPrompt'] == "pin") updatePrompts();
+    }
+    // else unpinning
+    else {
+        $(this).attr('src', 'img/buttons/inactive-pin-icon.png').removeClass('pin-active');
 
-    $('#map-select-layer').show().animate({height: "100%"}, {duration: 750});
+        if($(this).attr('id') == "right-pin"){
+            if($('#left-button').is(':visible')) $('#left-pin').fadeIn();
+        }
+        else {
+            if($('#right-button').is(':visible')) $('#right-pin').fadeIn();
+        }
+        adjustDataContainer();
+    }
 });
 
 // SLIDE DOWN TOPIC MENU
 function hideTopicMenu(){
-    $('#map-select-layer').animate({height: "0px"}, {duration: 750, complete: function(){
-        $(this).hide();
-    }});
+    $('#map-select-layer').removeClass('menu-expanded');
 }
 
-$('#menu-icon').click(function() {
-    hideTopicMenu();
-});
+$('#menu-icon').on('click', hideTopicMenu);
+
+//if on a mobile device use the deviceready event, else trigger manually
+if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+    document.addEventListener("deviceready", onDeviceReady, false);
+} else {
+    onDeviceReady();
+}
+
+// enable the android backbutton and get current position
+function onDeviceReady() {
+    navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
+    document.addEventListener("backbutton", hideTopicMenu, false);
+}
 
 function renderDataSets(){
     $.each(datasetsArray, function(key, val){
-        $('#map-select-layer #menu-options ul').append('<li>' + key + '</li>');
-    });
+        $('#map-select-layer #menu-options #datasets-' + val['type'] + '').append('<li data-link="'+val['link']+'"><div class="dataset-title">' + key + '</div><img class="dataset-info" src="img/info-icon.png" alt="Info" /><div class="clearfix"></div><div class="dataset-description">' + val["description"] + '<br /><br />Source - ' + val["source"] + '</div></li>');
+   });
 }
 renderDataSets();
 
-$('#map-select-layer #menu-options ul').on("click", "li", function() {
-    if($(this).hasClass('topic-selected')){ hideTopicMenu(); return; }
-    $('.topic-selected').removeClass('topic-selected');
-    $(this).addClass('topic-selected');
+$('#map-select-layer #menu-options ul').on("click", "li", function(e) {
+	if($(e.target).hasClass('dataset-info')) {
+		if(!$(e.target).hasClass('description-expanded')){
+			$(e.target).addClass('description-expanded');
+			$(e.target).siblings('.dataset-description').slideDown(300);
+		}
+		else {
+			$('.description-expanded').removeClass('description-expanded');
+			$(e.target).siblings('.dataset-description').slideUp(300);
+		}
+	}
+	else {
+		if($(this).hasClass('topic-selected')){ hideTopicMenu(); return; }
 
-    if(menuViewed == 0){
-        leftLayerData = datasetsArray[$(this).text()];
-        map.removeLayer(leftLayer);
-        setLeftLayer(leftLayerData);
-        buttonExpand("left", true);
-    }
-    else {
-        rightLayerData = datasetsArray[$(this).text()];
-        map.removeLayer(rightLayer);
-        setRightLayer(rightLayerData);
-        buttonExpand("right", true);
-    }
+		$('.topic-selected').removeClass('topic-selected');
+		$(this).addClass('topic-selected');
 
-    hideTopicMenu();
-    adjustDataContainer();
+		$('.description-expanded').removeClass('description-expanded');
+		$('.dataset-description').slideUp(300);
+
+		if(menuViewed == 0){
+			leftLayerData = { link: datasetsArray[$(this).children('.dataset-title').text()]["link"], name: $(this).children('.dataset-title').text() };
+			if(typeof leftLayer !== "undefined") map.removeLayer(leftLayer);
+			setLeftLayer();
+			// update left dataset label
+			// if(!$('#dataset-label-left').is(':visible')){
+				// $('#dataset-label-left').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-left.png" alt="Prompt arrow" />');
+				// $('#dataset-label-left').fadeIn();
+			// }
+			// else $('#dataset-label-left').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-left.png" alt="Prompt arrow" />');
+            
+            if(localStorage['currentPrompt'] == "dataset2") updatePrompts();
+		}
+		else {
+			rightLayerData = { link: datasetsArray[$(this).children('.dataset-title').text()]["link"], name: $(this).children('.dataset-title').text() };
+			if(typeof rightLayer !== "undefined") map.removeLayer(rightLayer);
+			setRightLayer();
+			// update right dataset label
+			// if(!$('#dataset-label-right').is(':visible')){
+				// $('#dataset-label-right').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-right.png" alt="Prompt arrow" />');
+				// $('#dataset-label-right').fadeIn();
+			// }
+			// else $('#dataset-label-right').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-right.png" alt="Prompt arrow" />');
+            
+            if(localStorage['currentPrompt'] == "dataset1") updatePrompts();
+		}
+
+        hideTopicMenu();
+	}
 });
+
+/* IF FIRST TIME, SHOW PROMPTS */
+
+function updatePrompts(){
+    if(localStorage['currentPrompt'] == "done") return;
+
+    if(typeof localStorage['currentPrompt'] === "undefined"){
+        $('#slider-bar').hide();
+        $('#select-map-prompt-right').show();
+        localStorage['currentPrompt'] = "dataset1";
+    }
+    else if(localStorage['currentPrompt'] == "dataset1"){
+        $('#select-map-prompt-right').fadeOut();
+        $('#slider-bar').fadeIn();
+        $('#slide-prompt').fadeIn();
+        localStorage['currentPrompt'] = "slider"
+    }
+    else if(localStorage['currentPrompt'] == "slider"){
+        $('#slide-prompt').fadeOut();
+		$('#select-map-prompt-left').fadeIn();
+        localStorage['currentPrompt'] = "dataset2";
+    }
+    else if(localStorage['currentPrompt'] == "dataset2"){
+        $('#select-map-prompt-left').fadeOut();
+        $('#pin-map-prompt').fadeIn();
+        localStorage['currentPrompt'] = "pin";
+    }
+    else if(localStorage['currentPrompt'] == "pin"){
+        localStorage['currentPrompt'] = "done";
+    }
+}
+updatePrompts();
+
