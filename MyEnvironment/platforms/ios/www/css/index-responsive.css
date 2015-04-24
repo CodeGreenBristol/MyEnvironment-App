@@ -1,8 +1,78 @@
 /* Smartphones (portrait and landscape) ----------- */
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-width: 320px) and (max-width: 768px) {
+  #map-layer .leaflet-top.leaflet-right {
+    top: 80px !important;
+    right: 0px !important;
+  }
+  /* USER PROMPT STYLES */
+  .user-prompt {
+    font-size: 15px;
+  }
+  .user-prompt .prompt-arrow.arrow-left,
+  .user-prompt .prompt-arrow.arrow-right {
+    top: 5px;
+  }
+  .user-prompt#select-map-prompt-right {
+    right: 100px;
+    bottom: 27px;
+  }
+  .user-prompt#slide-prompt {
+    left: 75px;
+    margin-top: -19px;
+  }
+  .user-prompt#select-map-prompt-left {
+    left: 99px;
+    bottom: 27px;
+  }
+  .user-prompt#pin-map-prompt {
+    width: 120px;
+    right: 16px;
+    bottom: 164px;
+  }
+  .user-prompt#pin-map-prompt .prompt-arrow {
+    right: 15px;
+  }
+  .dataset-label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 10px;
+    width: 100px;
+  }
+  .dataset-label#dataset-label-right {
+    right: 97px;
+    bottom: 32px;
+  }
+  .dataset-label#dataset-label-right .prompt-arrow {
+    margin-top: -8px;
+    margin-right: 10px;
+    margin-left: 0px;
+  }
+  .dataset-label#dataset-label-left {
+    left: 97px;
+    bottom: 32px;
+  }
+  .dataset-label#dataset-label-left .prompt-arrow {
+    margin-top: -8px;
+    left: 14px;
+  }
+  /* SLIDER STYLES */
   #slider-bar {
-    background-image: url('../img/slider/slider-middle-small.png'), url('../img/slider/slider-bar-small.png');
+    width: 36px;
+    left: -18px;
+  }
+  #slider-bar #drag-right,
+  #slider-bar #drag-left {
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+  }
+  #slider-bar #drag-left {
+    margin-left: -40px;
+  }
+  #slider-bar #drag-right {
+    margin-left: 40px;
   }
   #ui-layer {
     /* SEARCH BAR STYLES */
@@ -16,46 +86,57 @@
   }
   #ui-layer #search-bar {
     margin: 25px 10px 0px;
-    padding: 10px 15px;
     background: #fff;
   }
+  #ui-layer #search-bar #search-icon {
+    padding: 15px;
+  }
   #ui-layer #search-bar #search-icon img {
-    width: 15px;
+    width: 20px;
     vertical-align: top;
-    margin-top: 3px;
-    margin-left: -2px;
+    margin-top: 1px;
+    margin-left: 0px;
   }
   #ui-layer #search-bar input {
-    font-size: 15px;
-    width: calc(100% - 120px);
-    /* 50px left margin, 130px for icons on right */
-  
-    margin-left: 25px;
+    font-size: 18px;
+    width: calc(100% - 150px);
+    margin-left: 30px;
+    padding: 15px;
+  }
+  #ui-layer #search-bar #search-bar-options li {
+    padding: 15px 6px;
   }
   #ui-layer #search-bar #search-bar-options li img {
-    width: 18px;
-    margin-top: 2px;
+    width: 22px;
+    margin-top: 1px;
   }
-  #ui-layer #search-bar #search-bar-options #search-bar-favourite,
-  #ui-layer #search-bar #search-bar-options #search-bar-location {
-    margin-left: 10px;
+  #ui-layer #search-bar #search-bar-options #search-bar-favourite {
+    padding-right: 15px;
   }
   #ui-layer #search-bar-expanded {
     margin: 0 10px;
-    top: 65px;
+    top: 79px;
   }
   #ui-layer #search-bar-expanded .expanded-section {
     margin-top: 10px;
   }
   #ui-layer #search-bar-expanded .expanded-section .expanded-title {
-    font-size: 15px;
-    padding: 10px 15px;
+    font-size: 18px;
+    padding: 15px;
+  }
+  #ui-layer #search-bar-expanded .expanded-section .expanded-title .loading-icon {
+    float: left;
+    height: 16px;
+    width: 16px;
+    margin-right: 10px;
+    margin-top: 5px;
+    background: rgba(255, 255, 255, 0.8) url('../img/search/spinner-small.gif') 50% 50% no-repeat;
   }
   #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
-    font-size: 15px;
+    font-size: 18px;
   }
   #ui-layer #search-bar-expanded .expanded-section .expanded-locations li {
-    padding: 10px 15px;
+    padding: 15px;
   }
   #ui-layer #search-bar-expanded .expanded-section#saved-locations .expanded-locations li div {
     width: calc(100% - 20px);
@@ -64,31 +145,24 @@
     margin-top: 5px;
     width: 12px;
   }
-  #ui-layer #left-button-block,
-  #ui-layer #right-button-block {
-    bottom: 12px;
-  }
-  #ui-layer #left-button-block img,
-  #ui-layer #right-button-block img {
+  #ui-layer #right-pin,
+  #ui-layer #left-pin {
+    bottom: 80px;
+    padding: 15px;
     width: 50px;
+    height: 50px;
   }
-  #ui-layer #left-button-block {
-    left: 15px;
+  #ui-layer #right-pin {
+    right: 8px;
   }
-  #ui-layer #right-button-block {
-    right: 15px;
+  #ui-layer #left-pin {
+    left: 8px;
   }
-  #ui-layer #left-button-block #left-legend-button,
-  #ui-layer #right-button-block #left-legend-button,
-  #ui-layer #left-button-block #right-legend-button,
-  #ui-layer #right-button-block #right-legend-button {
-    bottom: 62px;
-  }
-  #ui-layer #left-button-block #left-topic-button,
-  #ui-layer #right-button-block #left-topic-button,
-  #ui-layer #left-button-block #right-topic-button,
-  #ui-layer #right-button-block #right-topic-button {
-    bottom: 122px;
+  #ui-layer #left-button,
+  #ui-layer #right-button {
+    width: 65px;
+    height: 65px;
+    padding: 0px 15px 15px;
   }
   /* MAP SELECT LAYER STYLES */
   #map-select-layer #menu-header {
@@ -105,34 +179,43 @@
     font-size: 18px;
   }
   #map-select-layer #menu-options {
-    max-height: calc(100% - 103px - 24px);
-    padding: 12px 0px;
-  }
-  #map-select-layer #menu-options ul {
-    margin: 0px 12px;
-  }
-  #map-select-layer #menu-options ul li {
-    padding: 22px;
-    font-size: 26px;
-  }
-  #map-select-layer #menu-options ul .topic-selected {
-    background-size: 24px 20px;
-    background-position: calc(100% - 22px) 50%;
-  }
-  #map-select-layer #menu-options {
     max-height: calc(100% - 70px - 20px);
     padding: 10px 0px;
   }
+  #map-select-layer #menu-options .dataset-type-label {
+    font-size: 16px;
+    margin: 0px 15px 5px;
+  }
   #map-select-layer #menu-options ul {
-    margin: 0px 10px;
+    margin: 0px 10px 15px;
+  }
+  #map-select-layer #menu-options ul#datasets-recreation {
+    margin-bottom: 0;
   }
   #map-select-layer #menu-options ul li {
-    padding: 13px 15px;
+    padding: 15px;
+  }
+  #map-select-layer #menu-options ul li .dataset-title {
+    font-size: 18px;
+    width: calc(100% - 60px);
+  }
+  #map-select-layer #menu-options ul li .dataset-description {
     font-size: 15px;
   }
-  #map-select-layer #menu-options ul .topic-selected {
-    background-size: 16px 13px;
-    background-position: calc(100% - 15px) 50%;
+  #map-select-layer #menu-options ul li .dataset-info {
+    width: 20px;
+    height: 20px;
+    padding: 15px;
+    margin-top: -13px;
+    margin-right: -15px;
+    margin-bottom: -15px;
+  }
+  #map-select-layer #menu-options ul li.topic-selected {
+    background-size: 20px 16px;
+    background-position: right 50px top 20px;
+  }
+  #map-select-layer #menu-options ul li.topic-selected .dataset-title {
+    width: calc(100% - 75px);
   }
 }
 /* Smartphones (landscape) ----------- */
@@ -145,6 +228,37 @@
 }
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
+  #map-layer .leaflet-top.leaflet-right {
+    top: 100px !important;
+  }
+  /* USER PROMPT STYLES */
+  .user-prompt#select-map-prompt-right {
+    right: 118px;
+    bottom: 35px;
+  }
+  .user-prompt#select-map-prompt-left {
+    left: 118px;
+    bottom: 35px;
+  }
+  .user-prompt#slide-prompt {
+    left: 95px;
+    margin-top: -20px;
+  }
+  .user-prompt#pin-map-prompt {
+    right: 20px;
+    bottom: 198px;
+  }
+  .user-prompt#pin-map-prompt .prompt-arrow {
+    right: 25px;
+  }
+  .dataset-label#dataset-label-right {
+    right: 116px;
+    bottom: 38px;
+  }
+  .dataset-label#dataset-label-left {
+    left: 116px;
+    bottom: 38px;
+  }
   #ui-layer {
     /* SEARCH BAR STYLES */
   
@@ -153,6 +267,8 @@
   }
   #ui-layer #search-bar {
     margin-top: 30px;
+  }
+  #ui-layer #search-bar #search-icon {
     padding: 15px 22px;
   }
   #ui-layer #search-bar #search-icon img {
@@ -163,14 +279,18 @@
   #ui-layer #search-bar input {
     font-size: 26px;
     width: calc(100% - 200px);
+    padding: 15px 22px;
+    margin-left: 40px;
+  }
+  #ui-layer #search-bar #search-bar-options li {
+    padding: 15px 8px;
   }
   #ui-layer #search-bar #search-bar-options li img {
     width: 30px;
     margin-top: 3px;
   }
-  #ui-layer #search-bar #search-bar-options #search-bar-favourite,
-  #ui-layer #search-bar #search-bar-options #search-bar-location {
-    margin-left: 15px;
+  #ui-layer #search-bar #search-bar-options #search-bar-favourite {
+    padding-right: 15px;
   }
   #ui-layer #search-bar-expanded {
     margin: 0 15px;
@@ -180,37 +300,38 @@
     font-size: 26px;
     padding: 15px 22px;
   }
+  #ui-layer #search-bar-expanded .expanded-section .expanded-title .loading-icon {
+    float: left;
+    height: 24px;
+    width: 24px;
+    margin-right: 20px;
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.8) url('../img/search/spinner.gif') 50% 50% no-repeat;
+  }
   #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
     font-size: 26px;
   }
   #ui-layer #search-bar-expanded .expanded-section .expanded-locations li {
     padding: 15px 22px;
   }
-  #ui-layer #left-button-block,
-  #ui-layer #right-button-block {
-    bottom: 19px;
-  }
-  #ui-layer #left-button-block img,
-  #ui-layer #right-button-block img {
-    width: 75px;
-  }
-  #ui-layer #left-button-block {
-    left: 19px;
-  }
-  #ui-layer #right-button-block {
-    right: 19px;
-  }
-  #ui-layer #left-button-block #left-legend-button,
-  #ui-layer #right-button-block #left-legend-button,
-  #ui-layer #left-button-block #right-legend-button,
-  #ui-layer #right-button-block #right-legend-button {
+  #ui-layer #right-pin,
+  #ui-layer #left-pin {
     bottom: 95px;
+    padding: 20px;
+    width: 60px;
+    height: 60px;
   }
-  #ui-layer #left-button-block #left-topic-button,
-  #ui-layer #right-button-block #left-topic-button,
-  #ui-layer #left-button-block #right-topic-button,
-  #ui-layer #right-button-block #right-topic-button {
-    bottom: 185px;
+  #ui-layer #right-pin {
+    right: 8px;
+  }
+  #ui-layer #left-pin {
+    left: 8px;
+  }
+  #ui-layer #left-button,
+  #ui-layer #right-button {
+    padding: 0px 20px 20px;
+    width: 75px;
+    height: 75px;
   }
   /* MAP SELECT LAYER STYLES */
   #map-select-layer #menu-header #menu-icon {
@@ -227,16 +348,26 @@
     max-height: calc(100% - 103px - 24px);
     padding: 12px 0px;
   }
+  #map-select-layer #menu-options .dataset-type-label {
+    font-size: 22px;
+  }
   #map-select-layer #menu-options ul {
-    margin: 0px 12px;
+    margin: 0px 12px 15px;
+  }
+  #map-select-layer #menu-options ul#datasets-recreation {
+    margin-bottom: 0;
   }
   #map-select-layer #menu-options ul li {
     padding: 22px;
+  }
+  #map-select-layer #menu-options ul li .dataset-title {
     font-size: 26px;
   }
-  #map-select-layer #menu-options ul .topic-selected {
-    background-size: 24px 20px;
-    background-position: calc(100% - 22px) 50%;
+  #map-select-layer #menu-options ul li .dataset-description {
+    font-size: 18px;
+  }
+  #map-select-layer #menu-options ul li.topic-selected {
+    background-position: right 70px top 29px;
   }
 }
 /* iPads (landscape) ----------- */
