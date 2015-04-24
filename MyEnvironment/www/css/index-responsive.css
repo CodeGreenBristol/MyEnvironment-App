@@ -1,31 +1,29 @@
 /* Smartphones (portrait and landscape) ----------- */
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-width: 320px) and (max-width: 768px) {
+  #map-layer .leaflet-top.leaflet-right {
+    top: 80px !important;
+    right: 0px !important;
+  }
   /* USER PROMPT STYLES */
   .user-prompt {
     font-size: 15px;
+  }
+  .user-prompt .prompt-arrow.arrow-left,
+  .user-prompt .prompt-arrow.arrow-right {
+    top: 5px;
   }
   .user-prompt#select-map-prompt-right {
     right: 100px;
     bottom: 27px;
   }
-  .user-prompt#select-map-prompt-right .prompt-arrow {
-    margin-top: -3px;
-  }
   .user-prompt#slide-prompt {
     left: 75px;
     margin-top: -19px;
   }
-  .user-prompt#slide-prompt .prompt-arrow {
-    margin-top: -5px;
-  }
   .user-prompt#select-map-prompt-left {
     left: 99px;
     bottom: 27px;
-  }
-  .user-prompt#select-map-prompt-left .prompt-arrow {
-    margin-top: -5px;
-    margin-left: -134px;
   }
   .user-prompt#pin-map-prompt {
     width: 120px;
@@ -33,8 +31,7 @@
     bottom: 164px;
   }
   .user-prompt#pin-map-prompt .prompt-arrow {
-    margin-left: 45px;
-    margin-top: 27px;
+    right: 15px;
   }
   .dataset-label {
     overflow: hidden;
@@ -228,6 +225,9 @@
 }
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
+  #map-layer .leaflet-top.leaflet-right {
+    top: 100px !important;
+  }
   /* USER PROMPT STYLES */
   .user-prompt#select-map-prompt-right {
     right: 118px;
@@ -237,13 +237,8 @@
     left: 118px;
     bottom: 35px;
   }
-  .user-prompt#select-map-prompt-left .prompt-arrow {
-    margin-left: -171px;
-  }
   .user-prompt#slide-prompt {
     left: 95px;
-    /*height:34px;*/
-  
     margin-top: -20px;
   }
   .user-prompt#pin-map-prompt {
@@ -251,7 +246,7 @@
     bottom: 198px;
   }
   .user-prompt#pin-map-prompt .prompt-arrow {
-    margin-left: -44px;
+    right: 25px;
   }
   .dataset-label#dataset-label-right {
     right: 116px;

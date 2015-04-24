@@ -1,0 +1,26 @@
+# TO DO
+
+- finish dataset labels
+- finish loading indicator
+
+# DONE
+
+- scale indicator
+- fully responsive initial prompts
+- better structuring for prompts (only checked off if action actually performed)
+- source fixed
+- fix pinning
+- loading searches appearing too slow, should be on first type (currently on ajax beforesend)
+- faster button feedback
+
+# BUGS
+
+- make loading icon lighter
+- current location still showing as 'favourited' after deletion
+- saved location not being removed from local storage
+- on init left button/slider appearing momentarily
+
+# TIPS
+- Mike: no need to empty before filling e.g. with text/html
+- Mike: display loading immediately on search, before send
+- Anda: use left/right/top/bottom where appropriate rather than margin (prompts)

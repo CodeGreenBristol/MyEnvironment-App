@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>MyEnvironment</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <meta name="author" content="Licence to Code" />
         <meta name="description" content="" />
@@ -16,6 +16,7 @@
         <link rel="stylesheet" type="text/css" href="css/index-responsive.css">
     </head>
     <body>
+        <div id="dev-reset"></div>
         <div id="map-select-layer">
             <div id="menu-header">
                 <img id="menu-icon" src="img/back-white-icon.png" alt="Back icon" />
@@ -55,12 +56,14 @@
                     <ul class="expanded-locations"></ul>
                 </div>
             </div>
-            <div id="slide-prompt" class="user-prompt"><img class="prompt-arrow" src="img/prompt-arrow-left.png" alt="Prompt arrow" />Slide to compare maps</div>
-            <div id="select-map-prompt-right" class="user-prompt">Select a dataset<img class="prompt-arrow" src="img/prompt-arrow-right.png" alt="Prompt arrow" /></div>
-			<div id="select-map-prompt-left" class="user-prompt">Select a dataset<img class="prompt-arrow" src="img/prompt-arrow-left.png" alt="Prompt arrow" /></div>
-			<div id="pin-map-prompt" class="user-prompt">Pin this map to both sides of the slider<img class="prompt-arrow" src="img/prompt-arrow-down.png" alt="Prompt arrow" /></div>
-			<div id="dataset-label-right" class="dataset-label"></div>
+            <div id="slide-prompt" class="user-prompt"><img class="prompt-arrow arrow-left" src="img/prompt-arrow-left.png" alt="Prompt arrow" />Slide to compare maps</div>
+            <div id="select-map-prompt-right" class="user-prompt">Select a dataset<img class="prompt-arrow arrow-right" src="img/prompt-arrow-right.png" alt="Prompt arrow" /></div>
+			<div id="select-map-prompt-left" class="user-prompt">Select another dataset<img class="prompt-arrow arrow-left" src="img/prompt-arrow-left.png" alt="Prompt arrow" /></div>
+			<div id="pin-map-prompt" class="user-prompt">Pin this map to both sides of the slider<img class="prompt-arrow arrow-bottom-right" src="img/prompt-arrow-down.png" alt="Prompt arrow" /></div>
+			<!--
+            <div id="dataset-label-right" class="dataset-label"></div>
 			<div id="dataset-label-left" class="dataset-label"></div>
+            -->
             <img id="right-pin" src="img/buttons/inactive-pin-icon.png" alt="Right pin icon" />
             <img id="left-pin" src="img/buttons/inactive-pin-icon.png" alt="Left pin icon" />
             <img id="right-button" src="img/buttons/right-menu-icon.png" alt="Right menu icon" />
@@ -78,6 +81,7 @@
         <!-- CORDOVA -->
         <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
         <!-- PAGE JS -->
+        <script type="text/javascript" src="js/fastclick.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>

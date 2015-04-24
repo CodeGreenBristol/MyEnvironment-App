@@ -1,40 +1,41 @@
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-width : 320px) and (max-width : 768px) {
     
+    #map-layer {
+        .leaflet-top.leaflet-right {
+            top:80px !important;
+            right:0px !important;
+        }
+    }
+    
     /* USER PROMPT STYLES */
 
     .user-prompt {
         font-size:15px;
+        .prompt-arrow {
+            &.arrow-left, &.arrow-right {
+                top:5px;
+            }
+        }
         &#select-map-prompt-right {
             right:100px;
             bottom:27px;
-			.prompt-arrow {
-				margin-top:-3px;
-			}
         }
         &#slide-prompt {
             left:75px;
             margin-top:-19px;
-			.prompt-arrow {
-				margin-top:-5px;
-			}
         }
 		&#select-map-prompt-left {
             left:99px;
             bottom:27px;
-			.prompt-arrow {
-				margin-top:-5px;
-				margin-left:-134px;
-			}
         }
 		&#pin-map-prompt {
 			width:120px;
 			right:16px;
 			bottom:164px;
-			.prompt-arrow {
-				margin-left:45px;
-				margin-top:27px;
-			}
+            .prompt-arrow {
+                right:15px;
+            }
 		}
     }
 	.dataset-label {
@@ -246,6 +247,12 @@
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-width : 768px) and (max-width : 1024px) {
 
+    #map-layer {
+        .leaflet-top.leaflet-right {
+            top:100px !important;
+        }
+    }
+
     /* USER PROMPT STYLES */
 
     .user-prompt {
@@ -256,21 +263,17 @@
 		&#select-map-prompt-left {
             left:118px;
             bottom:35px;
-			.prompt-arrow {
-				margin-left:-171px;
-			}
         }
         &#slide-prompt {
             left:95px;
-            /*height:34px;*/
             margin-top:-20px;
         }
 		&#pin-map-prompt {
 			right:20px;
 			bottom:198px;
-			.prompt-arrow {
-				margin-left:-44px;
-			}
+            .prompt-arrow {
+                right:25px;
+            }
 		}
     }
 	
@@ -331,10 +334,7 @@
                         width:  24px;
                         margin-right: 20px;
                         margin-top: 10px;
-                        background: rgba( 255, 255, 255, .8 ) 
-                        url('../img/search/spinner.gif') 
-                        50% 50% 
-                        no-repeat;
+                        background: rgba( 255, 255, 255, .8 ) url('../img/search/spinner.gif') 50% 50% no-repeat;
                     }
 				}
 				.expanded-locations {

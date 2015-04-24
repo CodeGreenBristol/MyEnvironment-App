@@ -1,3 +1,13 @@
+// TEMPORARY - DEV REST
+$('#dev-reset').on('click', function(){
+    localStorage.clear();
+    alert("Storage cleared!");
+});
+
+// eliminate 300ms delay
+var attachFastClick = Origami.fastclick;
+attachFastClick(document.body);
+
 // MAP FUNCTIONS
 var map;
 
@@ -13,7 +23,7 @@ map = L.map('map-layer', {
 });
 
 //add scale indicator
-//L.control.scale({position: 'topright'}).addTo(map);
+L.control.scale({position: 'topright', 'imperial': false}).addTo(map);
 
 L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.concat(accToken), {
     reuseTiles: true,
@@ -21,15 +31,15 @@ L.tileLayer('http://{s}.tiles.mapbox.com/v4/mc13818.l2a71g35/{z}/{x}/{y}.png'.co
     unloadInvisibleTiles: false
 }).addTo(map);
 
-var rightLayerData = (typeof localStorage['rightLayer'] !== "undefined") ? localStorage['rightLayer'] : undefined;
-var leftLayerData = (typeof localStorage['leftLayer'] !== "undefined") ? localStorage['leftLayer'] : undefined;
+var rightLayerData = (typeof localStorage['rightLayer'] !== "undefined") ? JSON.parse(localStorage['rightLayer']) : undefined;
+var leftLayerData = (typeof localStorage['leftLayer'] !== "undefined") ? JSON.parse(localStorage['leftLayer']) : undefined;
 var rightLayer;
 var leftLayer;
 var locationMarker;
 
 function setRightLayer() {
     rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
-        layers: rightLayerData,
+        layers: rightLayerData.link,
         format: 'image/png8',
         transparent: true,
         tiled: true,
@@ -40,18 +50,20 @@ function setRightLayer() {
         unloadInvisibleTiles: false
     }).addTo(map);
     $(rightLayer._container).attr("id", "rightData");
-
+    
+    // loading events
+    rightLayer.on('loading', function(){ loadingEvent("right"); }).on('load', function(){ loadedEvent("right"); });
+    
     // add to localstorage
-    localStorage['rightLayer'] = rightLayerData;
+    localStorage['rightLayer'] = JSON.stringify(rightLayerData);
 
     adjustDataContainer();
 }
 if(typeof rightLayerData !== "undefined") setRightLayer();
 
-
 function setLeftLayer() {
     leftLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
-        layers: leftLayerData,
+        layers: leftLayerData.link,
         format: 'image/png8',
         transparent: true,
         tiled: true,
@@ -59,19 +71,29 @@ function setLeftLayer() {
         version: '1.1.0',
         reuseTiles: true,
         detectRetina: true,
-				unloadInvisibleTiles: false
+        unloadInvisibleTiles: false
     }).addTo(map);
     $(leftLayer._container).attr("id", "leftData");
-
+    
+    leftLayer.on('loading', function(){ loadingEvent("left"); }).on('load', function(){ loadedEvent("left"); });
+     
     // add to localstorage
-    localStorage['leftLayer'] = leftLayerData;
+    localStorage['leftLayer'] = JSON.stringify(leftLayerData);
 
     adjustDataContainer();
 }
 if(typeof leftLayerData !== "undefined") setLeftLayer();
 
+function loadingEvent(side){
+    
+}
+function loadedEvent(side){
+    
+}
+    
+
 // SEARCH BAR EXPAND
-$('#search-bar input').click(function(){
+$('#search-bar input').on('click', function(){
 
     // IF HIDDEN, SHOW
     if(!$('#search-bar-expanded').is(':visible')){
@@ -101,10 +123,10 @@ $('#search-bar input').keyup(function(e){
 });
 
 // CLOSE SEARCH BAR
-$('#search-icon').click(function(){
+$('#search-icon').on('click', function(){
     hideSearchBar();
 });
-$('html').click(function() {
+$('html').on('click', function() {
     hideSearchBar();
 });
 
@@ -119,7 +141,7 @@ function hideSearchBar() {
     }
 }
 
-$('#search-bar, #search-bar-expanded').click(function(e){
+$('#search-bar, #search-bar-expanded').on('click', function(e){
     e.stopPropagation();
 });
 
@@ -158,13 +180,13 @@ function generateButtonRules(){
 }
 var sliderLimit = generateButtonRules();
 
-function generateLabelRules(){
-	if($(window).width() <= 400) return 160;
-    else if($(window).width() <= 768) return 300;
-    else if($(window).width() <= 1024) return 350;
-    return 440;
-}
-var labelLimit = generateLabelRules();
+// function generateLabelRules(){
+	// if($(window).width() <= 400) return 160;
+    // else if($(window).width() <= 768) return 300;
+    // else if($(window).width() <= 1024) return 350;
+    // return 440;
+// }
+// var labelLimit = generateLabelRules();
 
 function offsetFunc(){
 
@@ -172,13 +194,15 @@ function offsetFunc(){
 
     // SHOW BUTTON IF SIDE IS VISIBLE
     if(sliderOffset >= sliderLimit && !$('#left-button').is(':visible')){
-        $('#left-button, #left-pin').fadeIn();
+        $('#left-button').fadeIn();
+        if(!$('#right-pin').hasClass('pin-active')) $('#left-pin').fadeIn();
     }
     else if(sliderOffset < sliderLimit && $('#left-button').is(':visible')){
         $('#left-button, #left-pin').fadeOut();
     }
     if(sliderOffset <= $(window).width() - sliderLimit && !$('#right-button').is(':visible')){
-        $('#right-button, #right-pin').fadeIn();
+        $('#right-button').fadeIn();
+        if(!$('#left-pin').hasClass('pin-active')) $('#right-pin').fadeIn();
     }
     else if(sliderOffset > $(window).width() - sliderLimit && $('#right-button').is(':visible')){
         $('#right-button, #right-pin').fadeOut();
@@ -199,30 +223,25 @@ function offsetFunc(){
     }
 	
 	// SHOW LABEL IF SIDE IS MORE THAN 1/3 VISIBLE
-	if(sliderOffset >= labelLimit && !$('#dataset-label-left').is(':visible')){
-        $('#dataset-label-left').fadeIn(300);
-    }
-    else if(sliderOffset < labelLimit && $('#dataset-label-left').is(':visible')){
-        $('#dataset-label-left').fadeOut(300);
-    }
-    if(sliderOffset <= $(window).width() - labelLimit && !$('#dataset-label-right').is(':visible')){
-        $('#dataset-label-right').fadeIn(300);
-    }
-    else if(sliderOffset > $(window).width() - labelLimit && $('#dataset-label-right').is(':visible')){
-        $('#dataset-label-right').fadeOut(300);
-    }
+	// if(sliderOffset >= labelLimit && !$('#dataset-label-left').is(':visible')){
+        // $('#dataset-label-left').fadeIn(300);
+    // }
+    // else if(sliderOffset < labelLimit && $('#dataset-label-left').is(':visible')){
+        // $('#dataset-label-left').fadeOut(300);
+    // }
+    // if(sliderOffset <= $(window).width() - labelLimit && !$('#dataset-label-right').is(':visible')){
+        // $('#dataset-label-right').fadeIn(300);
+    // }
+    // else if(sliderOffset > $(window).width() - labelLimit && $('#dataset-label-right').is(':visible')){
+        // $('#dataset-label-right').fadeOut(300);
+    // }
 }
 
 // DRAGGABLE SLIDER
 $('#slider-bar').on('mousedown touchstart', function(){
     $(this).addClass('dragging');
 
-    // hide prompt if first time
-    if($('#slide-prompt').is(":visible")){
-        $('#slide-prompt').fadeOut();
-		$('#select-map-prompt-left').fadeIn();
-        localStorage['userReturning'] = true;
-    }
+    if(localStorage['currentPrompt'] == "slider") updatePrompts();
 });
 $('#slider-bar').on('mouseup touchend', function(){
     $(this).removeClass('dragging');
@@ -312,36 +331,29 @@ function addrSearch() {
         //clean commas from query string to optimise processing on nominatim's end
         query = inp.val().replace(", ", " ").replace(","," ");
     }
-
+    
+    // show loading
+    displayLoadingIcon();
+    
     //timer used so fast-typing doesn't trigger rapid requests
     clearTimeout(searchTimer);
-    searchTimer = setTimeout(function() {
+    searchTimer = setTimeout(function() {   
         $.ajax({
             //fetch from http://nominatim.openstreetmap.org/
             url: 'http://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=gb&q=' + query,
             dataType: 'json',
-            beforeSend: displayLoadingIcon,
-            success: updateSearchResults,
-            error: function() {
-                console.log("Request failed.");
-            },
-            complete: function() {
-                console.log("Request complete.");
-            }         
+            success: updateSearchResults
         });
     }, 250);
 }
 
 function displayLoadingIcon() {
-    $('#search-results .expanded-title').empty();
-    $('#search-results .expanded-title').append('<div class="loading-icon"></div><span></span>');
-    $('#search-results .expanded-title span').text("Searching for locations...");
+    $('#search-results .expanded-title').html('<div class="loading-icon"></div><span>Searching for locations...</span>');
 }
 
 function updateSearchResults(data){
-    if(typeof data === "undefined") {
-        return;
-    }
+    if(typeof data === "undefined") return;
+
     var items = [];
     var displayedResults = [];
 
@@ -353,8 +365,8 @@ function updateSearchResults(data){
     });
 
     $('#search-results .expanded-locations').empty();
+    
     //remove loading icon and text
-    $('#search-results .expanded-title').empty();
     if (items.length != 0) {
         $(items.join('')).appendTo('#search-results .expanded-locations');
         //add new text
@@ -460,7 +472,6 @@ function goToLocation(data) {
     $('#search-input').val($(data).text());
 
     //set zoom level based on type of location
-    console.log(curLocData.type);
     if(curLocData.dispname == "England, United Kingdom" || curLocData.dispname == "Scotland, United Kingdom") {
         map.setZoom(8);
     } else if(curLocData.type == "administrative") {  // country/county
@@ -546,46 +557,33 @@ function toggleFavIcon() {
 }
 
 // empty search string
-$("#search-bar-empty").click(function(){
+$("#search-bar-empty").on('click', function(){
     $('#search-input').val("").focus();
     $('#search-results').hide();
     $("#search-bar-empty").hide();
 });
 
 var datasetsArray = {
-    "Areas at risk of flooding" : {"type": "natural", "link" : "ea:flood_alert_areas", "description" : "Large expanses of floodplain that are at risk of low-impact flooding such as floodplain inundation, road flooding and farmland flooding.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
-    "Historically flooded landfills" : {"type": "natural", "link" : "ea:landfill_in_hfm", "description" : "Areas representing landfills that have flooded in the past.", "source" : "[Source: Environment Agency]"},
-    "Flood defences" : {"type": "natural", "link" : "ea:spatial_flood_defences", "description" : "Lines representing flood defences protecting against river floods or sea floods.", "source" : "[Source: Environment Agency]"},
-    "Nitrate-sensitive areas" : {"type": "man", "link" : "ea:nitrate_sensitive_areas", "description" : "Nitrate sensitive areas are areas where the concentration of nitrates in drinking water sources is particularly high.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
-    "Oil and gas wells" : {"type": "man", "link" : "decc_on_wells", "description" : "Oil and gas wells in onshore licence areas.", "source" : "[Source: https://www.gov.uk/oil-and-gas/licensing]"},
-	"Outfall and discharge points" : {"type": "man", "link" : "outfall_discharge_points", "description" : "Points at which waste is discharged into bodies of water.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
-	"Areas of outstanding natural beauty" : {"type": "recreation", "link" : "ea:areasoutstgnaturalbeauty_eng", "description" : "Areas of countryside designated for conservation due to their significant landscape value.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
-    "Registered parks and gardens" : {"type": "recreation", "link" : "registered_parks_and_gardens", "description" : "Parks and Gardens as included on the Register of Historic Parks and Gardens.", "source" : "[Source: http://www.geostore.com/environment-agency/]"},
-    "World Heritage Sites" : {"type": "recreation", "link" : "world_heritage_sites", "description" : "Properties in England with special cultural or physical significance, as inscribed by the World Heritage Committee of UNESCO.", "source" : "[Source: http://www.geostore.com/environment-agency/]"}
+    "Areas at risk of flooding" : {"type": "natural", "link" : "ea:flood_alert_areas", "description" : "Large expanses of floodplain that are at risk of low-impact flooding such as floodplain inundation, road flooding and farmland flooding.", "source" : "http://www.geostore.com/environment-agency/"},
+    "Historically flooded landfills" : {"type": "natural", "link" : "ea:landfill_in_hfm", "description" : "Areas representing landfills that have flooded in the past.", "source" : "Environment Agency"},
+    "Flood defences" : {"type": "natural", "link" : "ea:spatial_flood_defences", "description" : "Lines representing flood defences protecting against river floods or sea floods.", "source" : "Environment Agency"},
+    "Nitrate-sensitive areas" : {"type": "man", "link" : "ea:nitrate_sensitive_areas", "description" : "Nitrate sensitive areas are areas where the concentration of nitrates in drinking water sources is particularly high.", "source" : "http://www.geostore.com/environment-agency/"},
+    "Oil and gas wells" : {"type": "man", "link" : "decc_on_wells", "description" : "Oil and gas wells in onshore licence areas.", "source" : "https://www.gov.uk/oil-and-gas/licensing"},
+	"Discharge points" : {"type": "man", "link" : "outfall_discharge_points", "description" : "Points at which waste is discharged into bodies of water.", "source" : "http://www.geostore.com/environment-agency/"},
+	"Areas of outstanding natural beauty" : {"type": "recreation", "link" : "ea:areasoutstgnaturalbeauty_eng", "description" : "Areas of countryside designated for conservation due to their significant landscape value.", "source" : "http://www.geostore.com/environment-agency/"},
+    "Registered parks and gardens" : {"type": "recreation", "link" : "registered_parks_and_gardens", "description" : "Parks and Gardens as included on the Register of Historic Parks and Gardens.", "source" : "http://www.geostore.com/environment-agency/"},
+    "World Heritage Sites" : {"type": "recreation", "link" : "world_heritage_sites", "description" : "Properties in England with special cultural or physical significance, as inscribed by the World Heritage Committee of UNESCO.", "source" : "http://www.geostore.com/environment-agency/"}
 };
 
 // TOGGLE MAP TOPIC MENU
 var dataVal;
 var menuViewed;
-$('#right-button, #left-button').click(function() {
-
-    // hide right button prompt if first time and show left prompt
-    if($('#select-map-prompt-right').is(":visible")){
-        $('#select-map-prompt-right').fadeOut();
-		$('#slider-bar').fadeIn();
-        $('#slide-prompt').fadeIn();
-    }
-	
-	// hide left button prompt if first time and show pin prompt
-    if($('#select-map-prompt-left').is(":visible")){
-        $('#select-map-prompt-left').fadeOut();
-        $('#pin-map-prompt').fadeIn();
-    }
+$('#right-button, #left-button').on('click', function() {
 
     $('#map-select-layer #menu-options ul li.topic-selected').removeClass('topic-selected');
 
-    if($(this).attr("id") == "right-button") { dataVal = rightLayerData; menuViewed = 1; }
-    else { dataVal = leftLayerData; menuViewed = 0; }
+    if($(this).attr("id") == "right-button") { dataVal = (typeof rightLayerData !== "undefined") ? rightLayerData.link : undefined; menuViewed = 1; }
+    else { dataVal = (typeof leftLayerData !== "undefined") ? leftLayerData.link : undefined; menuViewed = 0; }
 
     // add tick to current selected topic based on left/right select
     $('#map-select-layer #menu-options ul li[data-link="'+dataVal+'"]').addClass('topic-selected');
@@ -593,7 +591,7 @@ $('#right-button, #left-button').click(function() {
     $('#map-select-layer').addClass('menu-expanded');
 });
 
-$('#right-pin, #left-pin').click(function(){
+$('#right-pin, #left-pin').on('click', function(){
 
 	// hide pin prompt if first time
 	if($('#pin-map-prompt').is(":visible")){
@@ -615,16 +613,18 @@ $('#right-pin, #left-pin').click(function(){
             $('#leftData').css('clip', 'auto');
             if(typeof leftLayer !== "undefined") leftLayer.bringToFront();
         }
+        
+        if(localStorage['currentPrompt'] == "pin") updatePrompts();
     }
     // else unpinning
     else {
         $(this).attr('src', 'img/buttons/inactive-pin-icon.png').removeClass('pin-active');
 
         if($(this).attr('id') == "right-pin"){
-            $('#left-pin').fadeIn();
+            if($('#left-button').is(':visible')) $('#left-pin').fadeIn();
         }
         else {
-            $('#right-pin').fadeIn();
+            if($('#right-button').is(':visible')) $('#right-pin').fadeIn();
         }
         adjustDataContainer();
     }
@@ -635,7 +635,7 @@ function hideTopicMenu(){
     $('#map-select-layer').removeClass('menu-expanded');
 }
 
-$('#menu-icon').click(hideTopicMenu);
+$('#menu-icon').on('click', hideTopicMenu);
 
 //if on a mobile device use the deviceready event, else trigger manually
 if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
@@ -652,7 +652,7 @@ function onDeviceReady() {
 
 function renderDataSets(){
     $.each(datasetsArray, function(key, val){
-        $('#map-select-layer #menu-options #datasets-' + val['type'] + '').append('<li data-link="'+val['link']+'"><div class="dataset-title">' + key + '</div><img class="dataset-info" src="img/info-icon.png" alt="Info" /><div class="clearfix"></div><div class="dataset-description">' + val["description"] + '</div><div class="dataset-source">' + val["source"] + '</div></li>');
+        $('#map-select-layer #menu-options #datasets-' + val['type'] + '').append('<li data-link="'+val['link']+'"><div class="dataset-title">' + key + '</div><img class="dataset-info" src="img/info-icon.png" alt="Info" /><div class="clearfix"></div><div class="dataset-description">' + val["description"] + '<br /><br />Source - ' + val["source"] + '</div></li>');
    });
 }
 renderDataSets();
@@ -678,35 +678,65 @@ $('#map-select-layer #menu-options ul').on("click", "li", function(e) {
 		$('.dataset-description').slideUp(300);
 
 		if(menuViewed == 0){
-			leftLayerData = datasetsArray[$(this).children('.dataset-title').text()]["link"];
+			leftLayerData = { link: datasetsArray[$(this).children('.dataset-title').text()]["link"], name: $(this).children('.dataset-title').text() };
 			if(typeof leftLayer !== "undefined") map.removeLayer(leftLayer);
 			setLeftLayer();
 			// update left dataset label
-			if(!$('#dataset-label-left').is(':visible')){
-				$('#dataset-label-left').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-left.png" alt="Prompt arrow" />');
-				$('#dataset-label-left').fadeIn();
-			}
-			else $('#dataset-label-left').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-left.png" alt="Prompt arrow" />');
+			// if(!$('#dataset-label-left').is(':visible')){
+				// $('#dataset-label-left').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-left.png" alt="Prompt arrow" />');
+				// $('#dataset-label-left').fadeIn();
+			// }
+			// else $('#dataset-label-left').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-left.png" alt="Prompt arrow" />');
+            
+            if(localStorage['currentPrompt'] == "dataset2") updatePrompts();
 		}
 		else {
-			rightLayerData = datasetsArray[$(this).children('.dataset-title').text()]["link"];
+			rightLayerData = { link: datasetsArray[$(this).children('.dataset-title').text()]["link"], name: $(this).children('.dataset-title').text() };
 			if(typeof rightLayer !== "undefined") map.removeLayer(rightLayer);
 			setRightLayer();
 			// update right dataset label
-			if(!$('#dataset-label-right').is(':visible')){
-				$('#dataset-label-right').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-right.png" alt="Prompt arrow" />');
-				$('#dataset-label-right').fadeIn();
-			}
-			else $('#dataset-label-right').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-right.png" alt="Prompt arrow" />');
+			// if(!$('#dataset-label-right').is(':visible')){
+				// $('#dataset-label-right').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-right.png" alt="Prompt arrow" />');
+				// $('#dataset-label-right').fadeIn();
+			// }
+			// else $('#dataset-label-right').html($(this).children('.dataset-title').text()+'<img class="prompt-arrow" src="img/prompt-arrow-right.png" alt="Prompt arrow" />');
+            
+            if(localStorage['currentPrompt'] == "dataset1") updatePrompts();
 		}
 
-		hideTopicMenu();
+        hideTopicMenu();
 	}
 });
 
 /* IF FIRST TIME, SHOW PROMPTS */
 
-if(typeof localStorage['userReturning'] === "undefined"){
-	$('#slider-bar').hide();
-    $('#select-map-prompt-right').show();
+function updatePrompts(){
+    if(localStorage['currentPrompt'] == "done") return;
+
+    if(typeof localStorage['currentPrompt'] === "undefined"){
+        $('#slider-bar').hide();
+        $('#select-map-prompt-right').show();
+        localStorage['currentPrompt'] = "dataset1";
+    }
+    else if(localStorage['currentPrompt'] == "dataset1"){
+        $('#select-map-prompt-right').fadeOut();
+        $('#slider-bar').fadeIn();
+        $('#slide-prompt').fadeIn();
+        localStorage['currentPrompt'] = "slider"
+    }
+    else if(localStorage['currentPrompt'] == "slider"){
+        $('#slide-prompt').fadeOut();
+		$('#select-map-prompt-left').fadeIn();
+        localStorage['currentPrompt'] = "dataset2";
+    }
+    else if(localStorage['currentPrompt'] == "dataset2"){
+        $('#select-map-prompt-left').fadeOut();
+        $('#pin-map-prompt').fadeIn();
+        localStorage['currentPrompt'] = "pin";
+    }
+    else if(localStorage['currentPrompt'] == "pin"){
+        localStorage['currentPrompt'] = "done";
+    }
 }
+updatePrompts();
+
