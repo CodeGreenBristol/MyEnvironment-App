@@ -2,11 +2,11 @@
 
 - finish dataset labels
 - finish loading indicator
-- make loading icon lighter
 - change mobile header to white on menu select [Alex, Sam]
 
 # BUGS
 
+- make loading icon lighter
 - hide pin until dataset selected
 - current location still showing as 'favourited' after deletion
 - saved location not being removed from local storage

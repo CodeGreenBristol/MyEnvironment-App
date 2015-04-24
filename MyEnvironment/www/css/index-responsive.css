@@ -124,13 +124,9 @@
     font-size: 18px;
     padding: 15px;
   }
-  #ui-layer #search-bar-expanded .expanded-section .expanded-title .loading-icon {
-    float: left;
-    height: 16px;
-    width: 16px;
-    margin-right: 10px;
-    margin-top: 5px;
-    background: rgba(255, 255, 255, 0.8) url('../img/search/spinner-small.gif') 50% 50% no-repeat;
+  #ui-layer #search-bar-expanded .expanded-section .expanded-title #loading-icon {
+    width: 20px;
+    height: 20px;
   }
   #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
     font-size: 18px;
@@ -300,13 +296,9 @@
     font-size: 26px;
     padding: 15px 22px;
   }
-  #ui-layer #search-bar-expanded .expanded-section .expanded-title .loading-icon {
-    float: left;
+  #ui-layer #search-bar-expanded .expanded-section .expanded-title #loading-icon {
     height: 24px;
     width: 24px;
-    margin-right: 20px;
-    margin-top: 10px;
-    background: rgba(255, 255, 255, 0.8) url('../img/search/spinner.gif') 50% 50% no-repeat;
   }
   #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
     font-size: 26px;
