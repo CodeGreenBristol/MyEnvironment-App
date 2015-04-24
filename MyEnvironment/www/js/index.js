@@ -348,7 +348,7 @@ function addrSearch() {
 }
 
 function displayLoadingIcon() {
-    $('#search-results .expanded-title').html('<div class="loading-icon"></div><span>Searching for locations...</span>');
+    $('#search-results .expanded-title').html('<img id="loading-icon" src="img/search/loading.gif" alt="Loading icon"></div>Searching for locations...');
 }
 
 function updateSearchResults(data){

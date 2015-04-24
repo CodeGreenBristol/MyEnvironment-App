@@ -15,7 +15,7 @@
 
 # DONE
 
-- scale indicator
+- scale indicator + restyling
 - fully responsive initial prompts
 - better structuring for prompts (only checked off if action actually performed)
 - source fixed

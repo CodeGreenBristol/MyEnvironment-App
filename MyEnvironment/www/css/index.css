@@ -163,8 +163,9 @@ body {
   position: absolute;
   width: 37px;
   height: 38px;
-  top: 70px;
-  left: 30px;
+  top: 40px;
+  left: 0px;
+  padding: 30px;
 }
 #map-select-layer #menu-header #menu-title {
   padding-top: 63px;
@@ -321,13 +322,13 @@ body {
   font-size: 30px;
   padding: 20px 30px;
 }
-#ui-layer #search-bar-expanded .expanded-section .expanded-title .loading-icon {
-  float: left;
-  height: 24px;
-  width: 24px;
-  margin-right: 20px;
-  margin-top: 10px;
-  background: rgba(255, 255, 255, 0.8) url('../img/search/spinner.gif') 50% 50% no-repeat;
+#ui-layer #search-bar-expanded .expanded-section .expanded-title #loading-icon {
+  height: 20px;
+  width: 20px;
+  margin-right: 15px;
+  margin-top: 3px;
+  margin-bottom: -3px;
+  display: inline-block;
 }
 #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
   list-style-type: none;
