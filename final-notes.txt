@@ -3,8 +3,7 @@
 - finish dataset labels
 - finish loading indicator
 - make loading icon lighter
-- change mobile header to white on menu select
-- info button responsiveness
+- change mobile header to white on menu select [Alex, Sam]
 
 # BUGS
 
@@ -12,6 +11,7 @@
 - current location still showing as 'favourited' after deletion
 - saved location not being removed from local storage
 - on init left button/slider appearing momentarily
+- info button responsiveness
 
 # DONE
 

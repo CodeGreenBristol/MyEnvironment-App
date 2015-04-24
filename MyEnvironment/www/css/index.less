@@ -20,11 +20,16 @@ html, body {
     position:absolute;
 }
 
+/* LEAFLET OVERRIDES */
+
 #map-layer {
     .leaflet-top.leaflet-right {
         top:145px !important;
         right:5px !important;
         z-index:50 !important;
+    }
+    .leaflet-control-scale-line {
+        background:transparent !important;
     }
 }
 
