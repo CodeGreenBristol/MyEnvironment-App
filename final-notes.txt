@@ -9,6 +9,7 @@
 
 # DONE
 
+- search bar better toggling
 - hide pin until dataset selected
 - make loading icon lighter
 - finish loading indicator

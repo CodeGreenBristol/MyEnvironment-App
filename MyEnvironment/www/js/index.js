@@ -104,11 +104,9 @@ function loadedEvent(side){
         $('#outer-left-button').find('.dataset-loaded').show();
     }
 }
+ 
+function expandSearch(){
     
-
-// SEARCH BAR EXPAND
-$('#search-bar input').on('click', function(){
-
     // IF HIDDEN, SHOW
     if(!$('#search-bar-expanded').is(':visible')){
 
@@ -124,10 +122,16 @@ $('#search-bar input').on('click', function(){
             $(this).attr('src', 'img/search/left-arrow-icon.png').fadeIn();
         });
     }
+}
 
+// SEARCH BAR EXPAND
+$('#search-bar input').on('click', expandSearch);
+
+$('#search-bar input').bind("enter", function(){
+    if($('#search-results .expanded-locations li').length != 0) {
+        goToLocation($('#search-results .expanded-locations li').first());
+    }  
 });
-
-$('#search-bar input').bind("enter", enterPressed);
 
 $('#search-bar input').keyup(function(e){
     if(e.keyCode == 13) $(this).trigger("enter");
@@ -135,7 +139,8 @@ $('#search-bar input').keyup(function(e){
 
 // CLOSE SEARCH BAR
 $('#search-icon').on('click', function(){
-    hideSearchBar();
+    if(!$('#search-bar-expanded').is(':visible')) expandSearch();
+    else hideSearchBar();
 });
 $('html').on('click', function() {
     hideSearchBar();
@@ -408,13 +413,6 @@ function updateSearchResults(data){
     }
 }
 
-// go to first search result if enter is pressed
-function enterPressed() {
-    if($('#search-results .expanded-locations li').length != 0) {
-        goToLocation($('#search-results .expanded-locations li').first());
-    }
-}
-
 //  FAVOURITE LOCATION
 var savedLocations = (typeof localStorage['savedLocations'] !== "undefined") ? JSON.parse(localStorage['savedLocations']) : [];    //holds loc data for all saved locs
 
@@ -596,6 +594,7 @@ $("#search-bar-empty").on('click', function(){
     $('#search-input').val("").focus();
     $('#search-results').hide();
     $("#search-bar-empty").hide();
+    expandSearch();
 });
 
 var datasetsArray = {
