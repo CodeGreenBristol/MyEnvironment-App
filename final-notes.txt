@@ -4,6 +4,7 @@
 - finish loading indicator
 - make loading icon lighter
 - change mobile header to white on menu select
+- info button responsiveness
 
 # BUGS
 

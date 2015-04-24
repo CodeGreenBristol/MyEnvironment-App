@@ -197,7 +197,7 @@
   }
   #map-select-layer #menu-options ul li .dataset-title {
     font-size: 18px;
-    width: calc(100% - 40px);
+    width: calc(100% - 60px);
   }
   #map-select-layer #menu-options ul li .dataset-description {
     font-size: 15px;
@@ -205,7 +205,10 @@
   #map-select-layer #menu-options ul li .dataset-info {
     width: 20px;
     height: 20px;
-    margin-top: 4px;
+    padding: 15px;
+    margin-top: -13px;
+    margin-right: -15px;
+    margin-bottom: -15px;
   }
   #map-select-layer #menu-options ul li.topic-selected {
     background-size: 20px 16px;
