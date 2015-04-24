@@ -15,6 +15,7 @@
 
 # BUGS
 
+- hide pin until dataset selected
 - make loading icon lighter
 - current location still showing as 'favourited' after deletion
 - saved location not being removed from local storage
