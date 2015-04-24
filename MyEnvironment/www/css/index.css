@@ -381,18 +381,35 @@ body {
 #ui-layer #left-pin {
   left: 15px;
 }
-#ui-layer #left-button,
-#ui-layer #right-button {
+#ui-layer #outer-right-button,
+#ui-layer #outer-left-button {
   position: absolute;
   z-index: 100;
   bottom: 0;
   padding: 0px 25px 25px;
+}
+#ui-layer .inner-button {
   width: 100px;
   height: 100px;
+  background-color: #64b551;
+  border-radius: 50%;
+  position: relative;
 }
-#ui-layer #left-button {
+#ui-layer .inner-button img {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  top: 50%;
+  left: 50%;
+  margin-top: -23px;
+  margin-left: -23px;
+}
+#ui-layer .inner-button img.dataset-loading {
+  display: none;
+}
+#ui-layer #outer-left-button {
   left: 0px;
 }
-#ui-layer #right-button {
+#ui-layer #outer-right-button {
   right: 0px;
 }

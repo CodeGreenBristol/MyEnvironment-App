@@ -20,6 +20,8 @@ html, body {
     position:absolute;
 }
 
+@green: #64b551;
+
 /* LEAFLET OVERRIDES */
 
 #map-layer {
@@ -165,7 +167,7 @@ html, body {
     }
     #menu-header {
         width: 100%;
-        background-color: #64b551;
+        background-color: @green;
         padding-bottom:20px;
         box-sizing:border-box;
         #menu-icon {
@@ -392,19 +394,35 @@ html, body {
     #left-pin {
         left:15px;
     }
-    
-    #left-button, #right-button {
+    #outer-right-button, #outer-left-button {
         position:absolute;
         z-index:100;
         bottom:0;
         padding:0px 25px 25px;
+    }
+    .inner-button {
         width:100px;
         height:100px;
+        background-color:@green;
+        border-radius:50%;
+        position:relative;
+        img {
+            position:absolute;
+            width:46px;
+            height:46px;
+            top:50%;
+            left:50%;
+            margin-top:-23px;
+            margin-left:-23px;
+            &.dataset-loading {
+                display:none;
+            }
+        }
     }
-    #left-button {
+    #outer-left-button {
         left:0px;
     }
-    #right-button {
+    #outer-right-button {
         right:0px;
     }
 }

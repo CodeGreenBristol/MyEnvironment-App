@@ -85,10 +85,24 @@ function setLeftLayer() {
 if(typeof leftLayerData !== "undefined") setLeftLayer();
 
 function loadingEvent(side){
-    
+    if(side == "right"){
+        $('#outer-right-button').find('.dataset-loaded').hide();
+        $('#outer-right-button').find('.dataset-loading').show();
+    }
+    else {
+        $('#outer-left-button').find('.dataset-loaded').hide();
+        $('#outer-left-button').find('.dataset-loading').show();
+    }
 }
 function loadedEvent(side){
-    
+    if(side == "right"){
+        $('#outer-right-button').find('.dataset-loading').hide();
+        $('#outer-right-button').find('.dataset-loaded').show();
+    }
+    else {
+        $('#outer-left-button').find('.dataset-loading').hide();
+        $('#outer-left-button').find('.dataset-loaded').show();
+    }
 }
     
 
@@ -193,19 +207,19 @@ function offsetFunc(){
     adjustDataContainer();
 
     // SHOW BUTTON IF SIDE IS VISIBLE
-    if(sliderOffset >= sliderLimit && !$('#left-button').is(':visible')){
-        $('#left-button').fadeIn();
+    if(sliderOffset >= sliderLimit && !$('#outer-left-button').is(':visible')){
+        $('#outer-left-button').fadeIn();
         if(!$('#right-pin').hasClass('pin-active')) $('#left-pin').fadeIn();
     }
-    else if(sliderOffset < sliderLimit && $('#left-button').is(':visible')){
-        $('#left-button, #left-pin').fadeOut();
+    else if(sliderOffset < sliderLimit && $('#outer-left-button').is(':visible')){
+        $('#outer-left-button, #left-pin').fadeOut();
     }
-    if(sliderOffset <= $(window).width() - sliderLimit && !$('#right-button').is(':visible')){
-        $('#right-button').fadeIn();
+    if(sliderOffset <= $(window).width() - sliderLimit && !$('#outer-right-button').is(':visible')){
+        $('#outer-right-button').fadeIn();
         if(!$('#left-pin').hasClass('pin-active')) $('#right-pin').fadeIn();
     }
-    else if(sliderOffset > $(window).width() - sliderLimit && $('#right-button').is(':visible')){
-        $('#right-button, #right-pin').fadeOut();
+    else if(sliderOffset > $(window).width() - sliderLimit && $('#outer-right-button').is(':visible')){
+        $('#outer-right-button, #right-pin').fadeOut();
     }
 
     // SHOW ARROWS ON SIDE OF SLIDER
@@ -578,11 +592,11 @@ var datasetsArray = {
 // TOGGLE MAP TOPIC MENU
 var dataVal;
 var menuViewed;
-$('#right-button, #left-button').on('click', function() {
+$('#outer-right-button, #outer-left-button').on('click', function() {
 
     $('#map-select-layer #menu-options ul li.topic-selected').removeClass('topic-selected');
 
-    if($(this).attr("id") == "right-button") { dataVal = (typeof rightLayerData !== "undefined") ? rightLayerData.link : undefined; menuViewed = 1; }
+    if($(this).attr("id") == "outer-right-button") { dataVal = (typeof rightLayerData !== "undefined") ? rightLayerData.link : undefined; menuViewed = 1; }
     else { dataVal = (typeof leftLayerData !== "undefined") ? leftLayerData.link : undefined; menuViewed = 0; }
 
     // add tick to current selected topic based on left/right select
@@ -621,10 +635,10 @@ $('#right-pin, #left-pin').on('click', function(){
         $(this).attr('src', 'img/buttons/inactive-pin-icon.png').removeClass('pin-active');
 
         if($(this).attr('id') == "right-pin"){
-            if($('#left-button').is(':visible')) $('#left-pin').fadeIn();
+            if($('#outer-left-button').is(':visible')) $('#left-pin').fadeIn();
         }
         else {
-            if($('#right-button').is(':visible')) $('#right-pin').fadeIn();
+            if($('#outer-right-button').is(':visible')) $('#right-pin').fadeIn();
         }
         adjustDataContainer();
     }
