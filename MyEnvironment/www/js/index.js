@@ -282,10 +282,10 @@ $('#slider-bar').on('mousedown touchstart', function(){
 });
 $('#slider-bar').on('mouseup touchend', function(){
     $(this).removeClass('dragging');
-    if(sliderOffset / $(window).width() < 0.1){
+    if(sliderOffset / $(window).width() <= 0.5){
         sliderOffset = 0;
     }
-    else if(sliderOffset / $(window).width() > 0.90){
+    else if(sliderOffset / $(window).width() > 0.5){
         sliderOffset = $(window).width();
     }
 
