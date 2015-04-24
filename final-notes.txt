@@ -1,22 +1,22 @@
 # TO DO
 
 - finish dataset labels
-- finish loading indicator
 - change mobile header to white on menu select [Alex, Sam]
 
 # BUGS
 
-- make loading icon lighter
 - hide pin until dataset selected
 - current location still showing as 'favourited' after deletion
 - saved location not being removed from local storage
 - on init left button/slider appearing momentarily
-- info button responsiveness
 
 # DONE
 
+- make loading icon lighter
+- finish loading indicator
 - scale indicator + restyling
 - fully responsive initial prompts
+- info button responsiveness
 - better structuring for prompts (only checked off if action actually performed)
 - source fixed
 - fix pinning
