@@ -5,8 +5,6 @@
 
 # BUGS
 
-- current location still showing as 'favourited' after deletion
-- saved location not being removed from local storage
 - on init left button/slider appearing momentarily
 
 # DONE
@@ -22,6 +20,8 @@
 - fix pinning
 - loading searches appearing too slow, should be on first type (currently on ajax beforesend)
 - faster button feedback
+- current location still showing as 'favourited' after deletion
+- saved location not being removed from local storage
 
 # TIPS
 - Mike: no need to empty before filling e.g. with text/html

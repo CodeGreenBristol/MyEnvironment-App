@@ -130,10 +130,7 @@ $('#search-bar input').on('click', function(){
 $('#search-bar input').bind("enter", enterPressed);
 
 $('#search-bar input').keyup(function(e){
-    if(e.keyCode == 13)
-    {
-      $(this).trigger("enter");
-    }
+    if(e.keyCode == 13) $(this).trigger("enter");
 });
 
 // CLOSE SEARCH BAR
@@ -470,6 +467,9 @@ $('#saved-locations').on('click', 'li .favourite-delete', function(e) {
     var index = savedLocIndex($(this).text());
     savedLocations.splice(index, 1);
     removeSavedLocation(index);
+    toggleFavIcon();
+    localStorage["savedLocations"] = JSON.stringify(savedLocations);
+    
     e.stopPropagation();
 });
 
