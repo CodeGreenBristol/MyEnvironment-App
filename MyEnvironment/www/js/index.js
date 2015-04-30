@@ -618,7 +618,9 @@ $('#outer-right-button, #outer-left-button').on('click', function() {
 
     if($(this).attr("id") == "outer-right-button") { dataVal = (typeof rightLayerData !== "undefined") ? rightLayerData.link : undefined; menuViewed = 1; }
     else { dataVal = (typeof leftLayerData !== "undefined") ? leftLayerData.link : undefined; menuViewed = 0; }
-
+	
+	window.analytics.trackView(dataVal);
+	
     // add tick to current selected topic based on left/right select
     $('#map-select-layer #menu-options ul li[data-link="'+dataVal+'"]').addClass('topic-selected');
 
@@ -675,6 +677,7 @@ if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
 
 // enable the android backbutton and get current position
 function onDeviceReady() {
+	window.analytics.startTrackerWithId('UA-61968992-6');
     navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
     document.addEventListener("backbutton", hideTopicMenu, false);
 }
