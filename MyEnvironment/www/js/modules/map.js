@@ -99,9 +99,9 @@ var map = {
         (!buttons.isPinned('right')) ? map._rightLayer.container.css("clip", 'rect(' + nw.y + "px, " + se.x + "px, " + se.y + "px, " + clipX + 'px)') : map._rightLayer.container.css('clip', 'auto');
     },
         
-    panToLocation: function(location) {
-    
-        this.getMap().panTo(location);
+    panToLocation: function(location, zoom) {
+
+        (zoom !== undefined) ? this.getMap().setView(location, zoom) : this.getMap().panTo(location);
         
         // set marker for location
         (this._locationMarker === undefined) ? this._locationMarker = L.marker(location, {icon: this._markerIcon}).addTo(this.getMap()) : this._locationMarker.setLatLng(location); 

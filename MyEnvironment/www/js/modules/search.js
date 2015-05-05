@@ -182,15 +182,15 @@ var search = {
         this._searchInput.val(currentLocation.name);
 
         //set zoom level based on type of location
-        if(currentLocation.name == "England, United Kingdom" || currentLocation.name == "Scotland, United Kingdom") map.getMap().setZoom(8);
-        else if(currentLocation.type == "administrative") map.getMap().setZoom(10);
-        else if(currentLocation.type == "city") map.getMap().setZoom(12);
-        else if(currentLocation.type == "town") map.getMap().setZoom(13);
-        else if(currentLocation.type == "village" || currentLocation.type == "residential" || currentLocation.type == "hamlet") map.getMap().setZoom(14);
-        else map.getMap().setZoom(13);
+        if(currentLocation.name == "England, United Kingdom" || currentLocation.name == "Scotland, United Kingdom") var newZoom = 8;
+        else if(currentLocation.type == "administrative") var newZoom = 10;
+        else if(currentLocation.type == "city") var newZoom = 12;
+        else if(currentLocation.type == "village" || currentLocation.type == "residential" || currentLocation.type == "hamlet") var newZoom = 14;
+        else var newZoom = 13;
         
-        this.collapseSearch();
-        map.panToLocation(new L.LatLng(currentLocation.lat, currentLocation.lng));
+        map.panToLocation(new L.LatLng(currentLocation.lat, currentLocation.lng), newZoom);
+        
+        this.collapseSearch();       
         (this.isSaved(currentLocation)) ? this.setFavouriteIcon(true) : this.setFavouriteIcon(false);
     },
     
