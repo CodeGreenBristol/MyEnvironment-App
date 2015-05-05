@@ -42,7 +42,7 @@ var datasetMenu = {
         });
         
         $.each(this._datasets, function(key, val){
-            dataContainers[parseInt(val.type, 10) - 1].append('<li data-name="' + val.name + '"><div class="dataset-title">' + val.title + '</div><img class="dataset-info" src="img/info-icon.png" alt="Info" /><div class="clearfix"></div><div class="dataset-description">' + val.description + '<br /><br />Source - ' + val.sourceName + '</div></li>');
+            dataContainers[parseInt(val.type, 10) - 1].append('<li data-name="' + val.name + '"><div class="dataset-title">' + val.title + '</div><img class="dataset-info" src="img/info-icon.png" alt="Info" /><div class="clearfix"></div><div class="dataset-description">' + val.description + '<br /><br />Source - <a href="' + val.sourceURL + '" target="_blank">' + val.sourceName + '</a></div></li>');
         });
     },
     
