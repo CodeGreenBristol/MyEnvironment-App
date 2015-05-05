@@ -125,6 +125,11 @@ var map = {
     
     setLayerName: function(layer, name){
         (layer == "left") ? this._leftLayer.data = name : this._rightLayer.data = name;
+		if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)){
+			window.analytics.trackView(this.getLayerName('left') + 'AND' + this.getLayerName('right'));
+		} else {
+			ga('send', 'pageview', this.getLayerName('left') + 'AND' + this.getLayerName('right'));
+		}
     },
     
     isLayerDefined: function(layer){
