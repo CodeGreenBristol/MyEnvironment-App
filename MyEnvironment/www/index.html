@@ -16,6 +16,21 @@
         <link rel="stylesheet" type="text/css" href="css/index-responsive.css">
     </head>
     <body>
+        <div id="tutorial-layer">
+            <div id="image">
+                <img src="img/tutorial/tutorial-image0.png">
+            </div>
+            <div id="description-text"></div>
+            <div id="start-button">
+                <div>Let's go!</div>
+            </div>
+            <div id="circles">
+                <img src="img/tutorial/bubble-full.png">
+                <img src="img/tutorial/bubble-empty.png">
+                <img src="img/tutorial/bubble-empty.png">
+                <img src="img/tutorial/bubble-empty.png">
+            </div>
+        </div>
         <div id="map-select-layer">
             <div id="dev-reset"></div>
             <div id="menu-header">
@@ -84,8 +99,10 @@
         <script type="text/javascript" src="js/modules/datasetMenu.js"></script>
         <script type="text/javascript" src="js/modules/buttons.js"></script> 
         <script type="text/javascript" src="js/modules/slider.js"></script>
-        <script type="text/javascript" src="js/modules/map.js"></script> 
-        <script type="text/javascript">  
+        <script type="text/javascript" src="js/modules/map.js"></script>
+        <script type="text/javascript" src="js/modules/tutorial.js"></script> 
+        <script type="text/javascript">
+            tutorial.init();
             map.init();
             slider.init();
             buttons.init();
