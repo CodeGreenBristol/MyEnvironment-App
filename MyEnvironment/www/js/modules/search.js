@@ -288,6 +288,8 @@ var search = {
         var _this = this;
 		if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)){
 			window.analytics.startTrackerWithId('UA-61968992-6');
+		} else {
+			 ga('create', 'UA-61968992-6', 'auto');
 		}
         navigator.geolocation.getCurrentPosition(function(){ _this.geolocationSuccess(); }, function(){ /* _this.geolocationError(); */ });
         document.addEventListener("backbutton", function(){ _this.collapseSearch(); }, false);
