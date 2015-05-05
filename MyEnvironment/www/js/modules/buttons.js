@@ -6,6 +6,8 @@ var buttons = {
     _rightSelectDiv: $('#outer-right-button'),
     _rightPinDiv: $('#right-pin'),
     
+    _pinDivs: $('#left-pin, #right-pin'),
+    
     init: function(){
         
         var _this = this;

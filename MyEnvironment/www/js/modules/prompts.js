@@ -7,6 +7,7 @@ function Prompt(ID, arrowPos, text) {
 var prompts = {
 
     _containerDiv: $('.user-prompt'),
+    _pulseDiv: undefined,
     
     /* set prompts */
     
@@ -22,14 +23,18 @@ var prompts = {
         
     },
     
-    switchPrompt: function(newPrompt){
+    switchPrompt: function(newPrompt, pulseDiv){
         
         var _this = this;
         this.setCurrentPrompt(newPrompt.ID);
-        
+       
+        if(_this._pulseDiv !== undefined) _this._pulseDiv.removeClass('pulse');
         this._containerDiv.fadeOut(400, function(){
                  
             if(newPrompt.ID == "done") return;
+            
+            _this._pulseDiv = pulseDiv;
+            _this._pulseDiv.addClass('pulse');
             
             if(newPrompt.arrowPos == "right") var imgName = "right";
             else if(newPrompt.arrowPos == "bottom-right" || newPrompt.arrowPos == "bottom-left") var imgName = "down";
@@ -49,8 +54,8 @@ var prompts = {
     },
     
     hideCurrentPrompt: function(){
-        if(prompts.getCurrentPrompt() == "pin-map-prompt-left") this.switchPrompt(this._pinMapRight);
-        else if(prompts.getCurrentPrompt() == "pin-map-prompt-right") this.switchPrompt(this._pinMapLeft);
+        if(prompts.getCurrentPrompt() == "pin-map-prompt-left") this.switchPrompt(this._pinMapRight, buttons._pinDivs);
+        else if(prompts.getCurrentPrompt() == "pin-map-prompt-right") this.switchPrompt(this._pinMapLeft, buttons._pinDivs);
         else this._containerDiv.fadeOut();
     },
     
@@ -63,10 +68,10 @@ var prompts = {
         var currentPrompt = this.getCurrentPrompt();
         if(currentPrompt == "done") return;
 
-        if(currentPrompt === undefined) this.switchPrompt(this._selectMapRight);
-        else if(currentPrompt == "select-map-prompt-right") this.switchPrompt(this._slidePrompt);
-        else if(currentPrompt == "slide-prompt") this.switchPrompt(this._selectMapLeft);
-        else if(currentPrompt == "select-map-prompt-left") this.switchPrompt(this._pinMapLeft);
+        if(currentPrompt === undefined) this.switchPrompt(this._selectMapRight, buttons._rightSelectDiv);
+        else if(currentPrompt == "select-map-prompt-right") this.switchPrompt(this._slidePrompt, slider._rightArrowDiv);
+        else if(currentPrompt == "slide-prompt") this.switchPrompt(this._selectMapLeft, buttons._leftSelectDiv);
+        else if(currentPrompt == "select-map-prompt-left") this.switchPrompt(this._pinMapLeft, buttons._pinDivs);
         else if(currentPrompt == "pin-map-prompt-right" || currentPrompt == "pin-map-prompt-left") this.switchPrompt(new Prompt("done"));
 
     }

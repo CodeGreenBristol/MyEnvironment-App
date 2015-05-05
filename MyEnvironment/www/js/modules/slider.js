@@ -6,6 +6,8 @@ var slider = {
     _sliderLeft: parseInt($('#slider-bar').css('left'), 10),
     _rightArrowDiv: $('#drag-right'),
     _leftArrowDiv: $('#drag-left'),
+    _previousOffset: this.offset,
+    _direction: undefined,
     
     init: function(){        
         this.setOffset(this.offset);
@@ -36,6 +38,7 @@ var slider = {
 
                 // set offset + override since dragging
                 slider.setOffset(out.pageX, true);
+                slider.setDirection(out.pageX);
             }
 
             // don't prevent default if on dataset menu
@@ -59,7 +62,11 @@ var slider = {
         
         // if not dragging
         if(!draggingOverride) {
-            val = (val / $(window).width() <= 0.5) ? 0 : $(window).width();
+        
+            var sliderOffset = val / $(window).width();
+            if(sliderOffset <= 0.1) val = 0;
+            else if(sliderOffset >= 0.9) val = $(window).width();
+            else val = (this.getDirection() == "left") ? 0 : $(window).width();
             
             // update storage       
             localStorage['sliderOffset'] = val;
@@ -74,6 +81,15 @@ var slider = {
         
         this.adjustArrows();
         buttons.adjustButtons();
+    },
+    
+    setDirection: function(val){
+        this._direction = (val > this._previousOffset) ? "right" : "left";
+        this._previousOffset = val;
+    },
+    
+    getDirection: function(){
+        return this._direction;
     },
     
     showSlider: function(){
