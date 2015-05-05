@@ -286,6 +286,9 @@ var search = {
     // enable the android backbutton and get current position
     onDeviceReady: function() {
         var _this = this;
+		if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)){
+			window.analytics.startTrackerWithId('UA-61968992-6');
+		}
         navigator.geolocation.getCurrentPosition(function(){ _this.geolocationSuccess(); }, function(){ /* _this.geolocationError(); */ });
         document.addEventListener("backbutton", function(){ _this.collapseSearch(); }, false);
     }  
