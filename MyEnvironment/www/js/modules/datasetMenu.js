@@ -98,8 +98,7 @@ var datasetMenu = {
             dataset.addClass('topic-selected');
 
             $('.description-expanded').removeClass('description-expanded').slideUp(300);
-
-            if(map.isLayerDefined(this._currentMenu)) map.getMap().removeLayer(map.getLayer(this._currentMenu));
+     
             map.setLayerName(this._currentMenu, dataset.attr('data-name'));  
             map.setLayer(this._currentMenu);
             

@@ -61,6 +61,8 @@ var map = {
         var _this = this;
         var layer = (side == "right") ? this._rightLayer : this._leftLayer;
         
+        if(this.getLayer(side)) this.getMap().removeLayer(this.getLayer(side));
+        
         layer.obj = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms", {
             layers: layer.data,
             format: 'image/png8',
