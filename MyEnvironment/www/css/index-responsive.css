@@ -25,12 +25,21 @@
     left: 99px;
     bottom: 27px;
   }
-  .user-prompt#pin-map-prompt {
-    right: 16px;
+  .user-prompt#pin-map-prompt-right,
+  .user-prompt#pin-map-prompt-left {
     bottom: 164px;
   }
-  .user-prompt#pin-map-prompt .prompt-arrow {
+  .user-prompt#pin-map-prompt-right {
+    right: 16px;
+  }
+  .user-prompt#pin-map-prompt-right .prompt-arrow {
     right: 15px;
+  }
+  .user-prompt#pin-map-prompt-left {
+    left: 16px;
+  }
+  .user-prompt#pin-map-prompt-left .prompt-arrow {
+    left: 15px;
   }
   .dataset-label {
     overflow: hidden;
@@ -247,12 +256,21 @@
     left: 95px;
     margin-top: -20px;
   }
-  .user-prompt#pin-map-prompt {
-    right: 20px;
+  .user-prompt#pin-map-prompt-right,
+  .user-prompt#pin-map-prompt-left {
     bottom: 198px;
   }
-  .user-prompt#pin-map-prompt .prompt-arrow {
+  .user-prompt#pin-map-prompt-right {
+    right: 20px;
+  }
+  .user-prompt#pin-map-prompt-right .prompt-arrow {
     right: 25px;
+  }
+  .user-prompt#pin-map-prompt-left {
+    left: 20px;
+  }
+  .user-prompt#pin-map-prompt-left .prompt-arrow {
+    left: 25px;
   }
   .dataset-label#dataset-label-right {
     right: 116px;

@@ -2,9 +2,15 @@
 
 - finish dataset labels
 - change mobile header to white on menu select [Alex, Sam]
+- allow toggle of other pin since slider snaps
 
 # BUGS
 
+- postcode bug
+- hide search frame on geolocation whilst in search
+- collapse expanded description on map select exit
+- loading gif not working
+- pin prompt + pin showing when slider is fully to right
 - on init left button/slider appearing momentarily
 
 # DONE

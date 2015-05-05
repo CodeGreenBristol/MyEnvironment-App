@@ -36,6 +36,11 @@ var leftLayerData = (typeof localStorage['leftLayer'] !== "undefined") ? JSON.pa
 var rightLayer;
 var leftLayer;
 var locationMarker;
+var markerIcon = L.icon({
+    iconUrl: 'img/marker-icon.png', // also retina
+    iconSize: [25, 41],
+    iconAnchor: [12, 40]
+});
 
 function setRightLayer() {
     rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
@@ -479,7 +484,7 @@ $('#map-layer').on('click', '.leaflet-marker-icon', function(){
 function panToLocation(location) {
   // set marker for location
   if(typeof locationMarker === "undefined"){
-      locationMarker = L.marker(location).addTo(map);
+      locationMarker = L.marker(location, {icon: markerIcon}).addTo(map);
   }
   else {
       locationMarker.setLatLng(location);
