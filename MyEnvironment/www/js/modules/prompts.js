@@ -19,7 +19,7 @@ var prompts = {
     
     init: function(){
         
-        this.promptCallback();
+        this.promptCallback(true);
         
     },
     
@@ -63,16 +63,25 @@ var prompts = {
         this._containerDiv.fadeIn();
     },
     
-    promptCallback: function(){
+    promptCallback: function(switchOverride){
     
         var currentPrompt = this.getCurrentPrompt();
         if(currentPrompt == "done") return;
 
-        if(currentPrompt === undefined) this.switchPrompt(this._selectMapRight, buttons._rightSelectDiv);
-        else if(currentPrompt == "select-map-prompt-right") this.switchPrompt(this._slidePrompt, slider._rightArrowDiv);
-        else if(currentPrompt == "slide-prompt") this.switchPrompt(this._selectMapLeft, buttons._leftSelectDiv);
-        else if(currentPrompt == "select-map-prompt-left") this.switchPrompt(this._pinMapLeft, buttons._pinDivs);
-        else if(currentPrompt == "pin-map-prompt-right" || currentPrompt == "pin-map-prompt-left") this.switchPrompt(new Prompt("done"));
-
+        if(switchOverride){
+            if(currentPrompt === undefined) this.switchPrompt(this._selectMapRight, buttons._rightSelectDiv);
+            else if(currentPrompt == "select-map-prompt-right") this.switchPrompt(this._selectMapRight, buttons._rightSelectDiv);
+            else if(currentPrompt == "slide-prompt") this.switchPrompt(this._slidePrompt, slider._rightArrowDiv);
+            else if(currentPrompt == "select-map-prompt-left") this.switchPrompt(this._selectMapLeft, buttons._leftSelectDiv);
+            else if(currentPrompt == "pin-map-prompt-right") this.switchPrompt(this._pinMapRight, buttons._pinDivs);
+            else if(currentPrompt == "pin-map-prompt-left") this.switchPrompt(this._pinMapLeft, buttons._pinDivs);
+        }
+        else {
+            if(currentPrompt === undefined) this.switchPrompt(this._selectMapRight, buttons._rightSelectDiv);
+            else if(currentPrompt == "select-map-prompt-right") this.switchPrompt(this._slidePrompt, slider._rightArrowDiv);
+            else if(currentPrompt == "slide-prompt") this.switchPrompt(this._selectMapLeft, buttons._leftSelectDiv);
+            else if(currentPrompt == "select-map-prompt-left") this.switchPrompt(this._pinMapLeft, buttons._pinDivs);
+            else if(currentPrompt == "pin-map-prompt-right" || currentPrompt == "pin-map-prompt-left") this.switchPrompt(new Prompt("done"));
+        }
     }
 }
