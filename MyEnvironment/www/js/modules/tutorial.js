@@ -11,19 +11,10 @@ var tutorial = {
     _offsetStart: 0,
 
     _descriptions: [
-        "Welcome to MyEnvironment! Click/swipe to get started",
+        "Welcome to MyEnvironment! Swipe to get started",
         "Explore a variety of environmental datasets",
         "Slide to compare datasets side by side",
-        "Search and favourite locations that are important to you",
         "Overlay datasets to reveal hidden connections"
-    ],
-    
-    _buttonText: [
-        "Let's go!",
-        "Got it!",
-        "Cool!",
-        "Awesome!",
-        "Let's get started!"
     ],
     
     init: function() {
@@ -67,10 +58,9 @@ var tutorial = {
         
         this._containerDivInner.fadeOut(400, function(){
             _this._tutorialImg.attr('src', 'img/tutorial/tutorial-' + currentPage + '.png');
-            _this._tutorialDescription.text(_this._descriptions[currentPage]);
-            _this._tutorialButton.html(_this._buttonText[currentPage] + '<img src="img/tutorial/forward-white-icon.png" alt="Next" />');
+            _this._tutorialDescription.text(_this._descriptions[currentPage]);       
             _this.updateDots();
-            
+            if(currentPage == 3) { _this._tutorialButton.css('display', 'inline-block'); _this._tutorialDescription.parent().removeClass('no-button'); }
             _this._containerDivInner.fadeIn();
         });
     },
@@ -102,7 +92,7 @@ var tutorial = {
     
     nextPage: function(){       
         var currentPage = this.getCurrentPage();
-        if(currentPage < 4){
+        if(currentPage < 3){
             this.setCurrentPage(currentPage + 1);
             this.switchTutorial();
         }
