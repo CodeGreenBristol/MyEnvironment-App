@@ -127,8 +127,14 @@ var map = {
         (layer == "left") ? this._leftLayer.data = name : this._rightLayer.data = name;
         
         // send to analytics
-		// - ERROR (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ? window.analytics.trackView(this.getLayerName('left') + 'AND' + this.getLayerName('right')) : ga('send', 'pageview', this.getLayerName('left') + 'AND' + this.getLayerName('right'));
-    },
+		
+		if (window.analytics !== undefined){
+			window.analytics.trackView(this.getLayerName('left') + 'AND' + this.getLayerName('right'))
+		} else {
+			ga('send', 'screenview', this.getLayerName('left') + 'AND' + this.getLayerName('right'));
+		} 
+	
+	},
     
     isLayerDefined: function(layer){
         return (layer == "left") ? this._leftLayer.data !== undefined : this._rightLayer.data !== undefined;
