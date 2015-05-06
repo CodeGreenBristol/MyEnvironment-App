@@ -492,6 +492,7 @@ body {
   background: #fff;
   font-family: "Open Sans", sans-serif;
   z-index: 10000;
+  display: none;
 }
 #tutorial-layer #tutorial-layer-inner {
   text-align: center;
