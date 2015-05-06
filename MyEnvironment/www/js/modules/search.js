@@ -291,6 +291,11 @@ var search = {
         document.addEventListener("backbutton", function(){ _this.collapseSearch(); }, false);
         
         // analytics
-        (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ? window.analytics.startTrackerWithId('UA-61968992-6') : ga('create', 'UA-61968992-6', 'auto');
+        var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf( 'file://' ) === -1;
+		if ( app ) {
+			window.analytics.startTrackerWithId('UA-61968992-6');
+		} else {
+			ga('create', 'UA-61968992-6', 'auto');
+		} 
     }  
 }
