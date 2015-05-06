@@ -17,18 +17,17 @@
     </head>
     <body>
         <div id="tutorial-layer">
-            <div id="image">
-                <img src="img/tutorial/tutorial-image0.png">
-            </div>
-            <div id="description-text"></div>
-            <div id="start-button">
-                <div>Let's go!</div>
-            </div>
-            <div id="circles">
-                <img src="img/tutorial/bubble-full.png">
-                <img src="img/tutorial/bubble-empty.png">
-                <img src="img/tutorial/bubble-empty.png">
-                <img src="img/tutorial/bubble-empty.png">
+            <div id="tutorial-layer-inner">
+                <img id="tutorial-main-img" src="img/tutorial/tutorial-0.png">
+                <div id="tutorial-description"><div>Search for and favourite locations that are important to you</div></div>
+                <div id="tutorial-button"><span>Let's go!</span><img src="img/tutorial/forward-white-icon.png" alt="Next" /></div>
+                <ul id="tutorial-state">
+                    <li class="tutorial-state-full"></li>
+                    <li class="tutorial-state-empty"></li>
+                    <li class="tutorial-state-empty"></li>
+                    <li class="tutorial-state-empty"></li>
+                    <li class="tutorial-state-empty"></li>
+                </ul>
             </div>
         </div>
         <div id="map-select-layer">
@@ -96,7 +95,7 @@
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
             
             tutorial.init();
             map.init();
