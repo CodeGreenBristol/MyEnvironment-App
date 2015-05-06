@@ -291,8 +291,7 @@ var search = {
         document.addEventListener("backbutton", function(){ _this.collapseSearch(); }, false);
         
         // analytics
-        var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf( 'file://' ) === -1;
-		if ( app ) {
+        if (window.analytics !== undefined){
 			window.analytics.startTrackerWithId('UA-61968992-6');
 		} else {
 			ga('create', 'UA-61968992-6', 'auto');

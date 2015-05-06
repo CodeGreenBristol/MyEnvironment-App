@@ -44,7 +44,7 @@ var tutorial = {
             var offsetDiff = endOffset - _this._offsetStart;
             
             // ignore if less than 50% of width
-            if(Math.abs(offsetDiff / $(window).width()) < 0.5) return;
+            if(Math.abs(offsetDiff / $(window).width()) < 0.2) return;
             
             // check direction
             (offsetDiff < 0) ? _this.nextPage() : _this.prevPage();

@@ -128,8 +128,7 @@ var map = {
         
         // send to analytics
 		
-		var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && document.URL.indexOf( 'file://' ) === -1;;
-		if ( app ) {
+		if (window.analytics !== undefined){
 			window.analytics.trackView(this.getLayerName('left') + 'AND' + this.getLayerName('right'))
 		} else {
 			ga('send', 'screenview', this.getLayerName('left') + 'AND' + this.getLayerName('right'));
