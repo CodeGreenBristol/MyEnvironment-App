@@ -2,9 +2,9 @@ var tutorial = {
     
     _containerDiv: $('#tutorial-layer'),
     _containerDivInner: $('#tutorial-layer-inner'),
-    _tutorialImg: $('#image img'),
+    _tutorialImg: $('#tutorial-img-div img'),
     _tutorialDescription: $('#tutorial-description div'),
-    _tutorialButton: $('#tutorial-button span'),
+    _tutorialButton: $('#tutorial-button'),
     _tutorialState: $('#tutorial-state'),
 
     _currentPage: 0,
@@ -29,7 +29,7 @@ var tutorial = {
     init: function() {
     
         // if done, don't show
-        if(localStorage['tutorial'] == "done") return;
+        if(localStorage['tutorial'] == "done") { this.hideTutorial(true); return; }
         
         var _this = this;
         
@@ -68,7 +68,7 @@ var tutorial = {
         this._containerDivInner.fadeOut(400, function(){
             _this._tutorialImg.attr('src', 'img/tutorial/tutorial-' + currentPage + '.png');
             _this._tutorialDescription.text(_this._descriptions[currentPage]);
-            _this._tutorialButton.text(_this._buttonText[currentPage]);
+            _this._tutorialButton.html(_this._buttonText[currentPage] + '<img src="img/tutorial/forward-white-icon.png" alt="Next" />');
             _this.updateDots();
             
             _this._containerDivInner.fadeIn();
@@ -86,9 +86,10 @@ var tutorial = {
         this._containerDiv.show();
     },
     
-    hideTutorial: function() {
+    hideTutorial: function(fast) {
+    
         localStorage['tutorial'] = "done";
-        this._containerDiv.fadeOut(1000);
+        (fast !== undefined) ? this._containerDiv.hide() : this._containerDiv.fadeOut(1000);
     },
     
     getCurrentPage: function(){

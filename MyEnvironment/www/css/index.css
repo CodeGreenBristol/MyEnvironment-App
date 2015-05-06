@@ -229,7 +229,7 @@ body {
 #map-select-layer #menu-options ul {
   margin: 0px 15px 20px;
   background-color: #fff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
   list-style-type: none;
 }
 #map-select-layer #menu-options ul#datasets-recreation {
@@ -304,7 +304,7 @@ body {
   box-sizing: border-box;
 }
 #ui-layer #search-bar {
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
   margin: 50px 15px 0px;
   z-index: 110;
   background: #fff;
@@ -372,7 +372,7 @@ body {
 }
 #ui-layer #search-bar-expanded .expanded-section {
   background: #fff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
   margin-top: 15px;
 }
 #ui-layer #search-bar-expanded .expanded-section .expanded-title {
@@ -492,25 +492,30 @@ body {
   background: #fff;
   font-family: "Open Sans", sans-serif;
   z-index: 10000;
-  display: none;
 }
 #tutorial-layer #tutorial-layer-inner {
   text-align: center;
   height: 568px;
   width: 320px;
   box-sizing: border-box;
-  padding: 30px;
+  padding: 30px 0px;
   position: absolute;
   top: 50%;
   left: 50%;
   margin-left: -160px;
   margin-top: -284px;
 }
-#tutorial-layer #tutorial-main-img {
-  width: 260px;
+#tutorial-layer #tutorial-img-div {
+  width: 100%;
+  height: 260px;
+  position: relative;
+}
+#tutorial-layer #tutorial-img-div img {
+  height: 100%;
 }
 #tutorial-layer #tutorial-description {
   font-weight: 300;
+  width: 260px;
   font-size: 20px;
   margin: 30px auto;
   height: 80px;
@@ -551,52 +556,4 @@ body {
 }
 #tutorial-layer #tutorial-state li.tutorial-state-full {
   background-image: url('../img/tutorial/bubble-full.png');
-}
-#tutorial-layer #image {
-  height: 50%;
-  display: flex;
-  text-align: center;
-  align-items: flex-end;
-  justify-content: center;
-}
-#tutorial-layer #image img {
-  height: 70%;
-  border: 1px solid #fff;
-  width: auto;
-}
-#tutorial-layer #description-text {
-  height: 30%;
-  box-sizing: border-box;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 15px;
-}
-#tutorial-layer #start-button {
-  height: 15%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#tutorial-layer #start-button div {
-  width: 150px;
-  height: 40px;
-  border: 2px solid #424242;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 600;
-  visibility: hidden;
-}
-#tutorial-layer #circles {
-  height: 5%;
-  display: flex;
-  justify-content: center;
-}
-#tutorial-layer #circles img {
-  height: 8px;
-  width: auto;
-  padding: 0 10px;
 }

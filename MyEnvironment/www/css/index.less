@@ -228,7 +228,7 @@ html, body {
         ul {
             margin:0px 15px 20px;
             background-color: #fff;
-            box-shadow:0px 0px 10px rgba(0, 0, 0, .2);
+            box-shadow:0px 0px 5px rgba(0, 0, 0, .1);
             list-style-type: none;
             &#datasets-recreation {
                 margin-bottom:0;
@@ -305,7 +305,7 @@ html, body {
         box-sizing:border-box;        
     }
     #search-bar {
-        box-shadow:0px 0px 10px rgba(0, 0, 0, .2);
+        box-shadow:0px 0px 5px rgba(0, 0, 0, .1);
         margin:50px 15px 0px;
         z-index:110;     
         background:#fff;
@@ -376,7 +376,7 @@ html, body {
         font-family:"Open Sans", sans-serif;
         .expanded-section {
             background:#fff;
-            box-shadow:0px 0px 10px rgba(0, 0, 0, .2);
+            box-shadow:0px 0px 5px rgba(0, 0, 0, .1);
             margin-top:15px;
             .expanded-title {
                 font-weight:300;
@@ -500,24 +500,29 @@ html, body {
     background: #fff;
     font-family:"Open Sans", sans-serif;
     z-index:10000; 
-    display:none;
     #tutorial-layer-inner {
         text-align:center;
         height:568px;
         width:320px;
         box-sizing:border-box;
-        padding:30px;
+        padding:30px 0px;
         position:absolute;
         top:50%;
         left:50%;
         margin-left:-160px;
         margin-top:-284px;
     }
-    #tutorial-main-img {
-        width:260px;
+    #tutorial-img-div {
+        width:100%;
+        height:260px;
+        position:relative;
+        img {
+            height:100%;
+        }
     }
     #tutorial-description {
         font-weight:300;
+        width:260px;
         font-size:20px;
         margin:30px auto;
         height:80px;
@@ -557,56 +562,6 @@ html, body {
             &.tutorial-state-full {
                 background-image:url('../img/tutorial/bubble-full.png');
             }
-        }
-    }
-    
-    #image {
-        height: 50%;
-        display: flex;
-        text-align: center;
-        align-items: flex-end;
-        justify-content: center;
-        img {
-            height: 70%;
-            border: 1px solid #fff;
-            width: auto;
-        }
-    }
-    #description-text {
-        height: 30%;
-        box-sizing: border-box;
-        padding: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        font-size: 15px;
-    }
-    
-    #start-button {
-        height: 15%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        div {
-            width: 150px;
-            height: 40px;
-            border: 2px solid #424242;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 600;
-            visibility: hidden;
-        }
-    }
-    #circles {
-        height: 5%;
-        display: flex;
-        justify-content: center;
-        img {
-            height: 8px;
-            width: auto;
-            padding: 0 10px;
         }
     }
 }

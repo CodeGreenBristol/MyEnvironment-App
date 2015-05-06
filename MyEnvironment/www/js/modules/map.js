@@ -127,7 +127,7 @@ var map = {
         (layer == "left") ? this._leftLayer.data = name : this._rightLayer.data = name;
         
         // send to analytics
-		(navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ? window.analytics.trackView(this.getLayerName('left') + 'AND' + this.getLayerName('right')) : ga('send', 'pageview', this.getLayerName('left') + 'AND' + this.getLayerName('right'));
+		// - ERROR (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) ? window.analytics.trackView(this.getLayerName('left') + 'AND' + this.getLayerName('right')) : ga('send', 'pageview', this.getLayerName('left') + 'AND' + this.getLayerName('right'));
     },
     
     isLayerDefined: function(layer){
