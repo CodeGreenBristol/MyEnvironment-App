@@ -60,6 +60,7 @@ var slider = {
     
     setOffset: function(val, draggingOverride){ 
         
+        /* 1035 */
         // if not dragging
         if(!draggingOverride) {
         
@@ -71,7 +72,7 @@ var slider = {
             // update storage       
             localStorage['sliderOffset'] = val;
         }
-    
+ 
         // update slider position
         this._containerDiv.offset({ left: val + this._sliderLeft });
         
