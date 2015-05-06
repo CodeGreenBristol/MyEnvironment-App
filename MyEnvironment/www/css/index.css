@@ -525,9 +525,6 @@ body {
   display: table-cell;
   vertical-align: middle;
 }
-#tutorial-layer #tutorial-description.no-button {
-  margin-bottom: 107px;
-}
 #tutorial-layer #tutorial-button {
   background: #64b551;
   display: inline-block;
@@ -535,7 +532,6 @@ body {
   color: #fff;
   font-size: 20px;
   margin-bottom: 30px;
-  display: none;
 }
 #tutorial-layer #tutorial-button img {
   vertical-align: top;
