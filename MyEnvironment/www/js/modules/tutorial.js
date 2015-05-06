@@ -43,8 +43,8 @@ var tutorial = {
             var endOffset = (e.type == "touchend") ? e.originalEvent.changedTouches[0].pageX : e.pageX;
             var offsetDiff = endOffset - _this._offsetStart;
             
-            // ignore if less than 50% of width
-            if(Math.abs(offsetDiff / $(window).width()) < 0.2) return;
+            // ignore if less than 30% of width
+            if(Math.abs(offsetDiff / $(window).width()) < 0.3) return;
             
             // check direction
             (offsetDiff < 0) ? _this.nextPage() : _this.prevPage();
