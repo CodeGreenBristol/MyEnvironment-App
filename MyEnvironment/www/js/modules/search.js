@@ -294,7 +294,7 @@ var search = {
         if (window.analytics !== undefined){
 			window.analytics.startTrackerWithId('UA-61968992-6');
 		} else {
-			ga('create', 'UA-61968992-6', 'auto');
+			ga('create', 'UA-61968992-7', 'auto');
 		}
     }
 }

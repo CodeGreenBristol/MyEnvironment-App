@@ -131,7 +131,7 @@ var map = {
 		if (window.analytics !== undefined){
 			window.analytics.trackView(this.getLayerName('left') + 'AND' + this.getLayerName('right'))
 		} else {
-			ga('send', 'screenview', this.getLayerName('left') + 'AND' + this.getLayerName('right'));
+			ga('send', 'pageview', this.getLayerName('left') + 'AND' + this.getLayerName('right'));
 		} 
 	
 	},
