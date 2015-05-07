@@ -61,6 +61,7 @@ var tutorial = {
             _this._tutorialDescription.text(_this._descriptions[currentPage]);       
             _this.updateDots();
             if(currentPage == 3) { _this._tutorialButton.css('display', 'inline-block'); _this._tutorialDescription.parent().removeClass('no-button'); }
+            else { _this._tutorialButton.hide(); _this._tutorialDescription.parent().addClass('no-button'); }
             _this._containerDivInner.fadeIn();
         });
     },
