@@ -1,7 +1,7 @@
 LicenceToCode-App
 =============
 
-SPE project, Environment Agency [BETA]
+SPE project, Environment Agency [FINAL RELEASE]
 
 The is the source code for the mobile app.
 
