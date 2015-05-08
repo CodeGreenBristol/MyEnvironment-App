@@ -65,8 +65,8 @@ var slider = {
         if(!draggingOverride) {
         
             var sliderOffset = val / $(window).width();
-            if(sliderOffset <= 0.1) val = 0;
-            else if(sliderOffset >= 0.9) val = $(window).width();
+            if(sliderOffset <= 0.2) val = 0;
+            else if(sliderOffset >= 0.8) val = $(window).width();
             else val = (this.getDirection() == "left") ? 0 : $(window).width();
             
             // update storage       

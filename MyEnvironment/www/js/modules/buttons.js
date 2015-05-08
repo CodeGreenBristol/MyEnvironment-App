@@ -22,9 +22,10 @@ var buttons = {
     
     adjustButtons: function(){
         
-        var offsetPercentage = slider.offset / $(window).width();
+        // var offsetPercentage = slider.offset / $(window).width();
         
-        if(offsetPercentage >= 0.07){
+        // if(offsetPercentage >= 0.2){
+        if(slider.offset >= 100){
             this._leftSelectDiv.fadeIn();
             if(this.checkStatus("left-pin")) this._leftPinDiv.fadeIn();
             
@@ -37,7 +38,8 @@ var buttons = {
             if(prompts.getCurrentPrompt() == "select-map-prompt-left" || prompts.getCurrentPrompt() == "pin-map-prompt-left") prompts.hideCurrentPrompt();
         }
         
-        if(offsetPercentage <= 0.93){
+        if(slider.offset <= $(window).width() - 100){
+        // if(offsetPercentage <= 0.8){
             this._rightSelectDiv.fadeIn();
             if(this.checkStatus("right-pin")) this._rightPinDiv.fadeIn();
             
@@ -74,14 +76,14 @@ var buttons = {
         // if pinning
         if(!this.isPinned(side)){
         
-            thisButton.attr('src', 'img/buttons/active-pin-icon.png').addClass('pin-active');
-            otherButton.attr('src', 'img/buttons/inactive-pin-icon.png').removeClass('pin-active');
+            thisButton.attr('src', 'img/buttons/active-pin-icon-' + side + '.png').addClass('pin-active');
+            otherButton.attr('src', 'img/buttons/inactive-pin-icon-' + side + '.png').removeClass('pin-active');
             map.getLayer((side == "right") ? "left" : "right").bringToFront();
             
             if(prompts.getCurrentPrompt() == "pin-map-prompt-right" || prompts.getCurrentPrompt() == "pin-map-prompt-left") prompts.promptCallback();
         }
         // else unpinning
-        else thisButton.attr('src', 'img/buttons/inactive-pin-icon.png').removeClass('pin-active');
+        else thisButton.attr('src', 'img/buttons/inactive-pin-icon-' + side + '.png').removeClass('pin-active');
         
         map.adjustClip();
         

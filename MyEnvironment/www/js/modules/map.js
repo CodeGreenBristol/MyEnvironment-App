@@ -97,8 +97,8 @@ var map = {
         var se = mapObj.containerPointToLayerPoint(mapObj.getSize());
         var clipX = nw.x + (se.x - nw.x) * (slider.offset / $(window).width());
         
-        (!buttons.isPinned('left')) ? map._leftLayer.container.css("clip", 'rect(' + nw.y + "px, " + clipX + "px, " + se.y + "px, " + nw.x + 'px)') : map._leftLayer.container.css('clip', 'auto');
-        (!buttons.isPinned('right')) ? map._rightLayer.container.css("clip", 'rect(' + nw.y + "px, " + se.x + "px, " + se.y + "px, " + clipX + 'px)') : map._rightLayer.container.css('clip', 'auto');
+        (!buttons.isPinned('right')) ? map._leftLayer.container.css("clip", 'rect(' + nw.y + "px, " + clipX + "px, " + se.y + "px, " + nw.x + 'px)') : map._leftLayer.container.css('clip', 'auto');
+        (!buttons.isPinned('left')) ? map._rightLayer.container.css("clip", 'rect(' + nw.y + "px, " + se.x + "px, " + se.y + "px, " + clipX + 'px)') : map._rightLayer.container.css('clip', 'auto');
     },
         
     panToLocation: function(location, zoom) {
