@@ -8,6 +8,9 @@
         Licence to Code
     </author>
     <content src="index.html" />
+    <platform name="wp8">
+        <preference name="fullscreen" value="true"/>
+    </platform>
     <preference name="permissions" value="none" />
     <preference name="phonegap-version" value="3.5.0" />
     <preference name="orientation" value="default" />
