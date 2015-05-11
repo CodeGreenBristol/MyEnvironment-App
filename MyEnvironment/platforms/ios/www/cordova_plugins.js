@@ -1,10 +1,10 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
-        "file": "plugins/com.telerik.plugins.wkwebview/www/wkwebview.js",
-        "id": "com.telerik.plugins.wkwebview.wkwebview",
+        "file": "plugins/cordova-plugin-google-analytics/www/analytics.js",
+        "id": "cordova-plugin-google-analytics.UniversalAnalytics",
         "clobbers": [
-            "wkwebview"
+            "analytics"
         ]
     },
     {
@@ -39,7 +39,8 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "com.telerik.plugins.wkwebview": "0.3.5",
+    "com.google.playservices": "19.0.0",
+    "cordova-plugin-google-analytics": "0.7.2",
     "org.apache.cordova.geolocation": "0.3.12"
 }
 // BOTTOM OF METADATA

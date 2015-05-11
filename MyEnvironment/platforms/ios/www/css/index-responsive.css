@@ -25,13 +25,21 @@
     left: 99px;
     bottom: 27px;
   }
-  .user-prompt#pin-map-prompt {
-    width: 120px;
-    right: 16px;
+  .user-prompt#pin-map-prompt-right,
+  .user-prompt#pin-map-prompt-left {
     bottom: 164px;
   }
-  .user-prompt#pin-map-prompt .prompt-arrow {
+  .user-prompt#pin-map-prompt-right {
+    right: 16px;
+  }
+  .user-prompt#pin-map-prompt-right .prompt-arrow {
     right: 15px;
+  }
+  .user-prompt#pin-map-prompt-left {
+    left: 16px;
+  }
+  .user-prompt#pin-map-prompt-left .prompt-arrow {
+    left: 15px;
   }
   .dataset-label {
     overflow: hidden;
@@ -124,13 +132,9 @@
     font-size: 18px;
     padding: 15px;
   }
-  #ui-layer #search-bar-expanded .expanded-section .expanded-title .loading-icon {
-    float: left;
-    height: 16px;
-    width: 16px;
-    margin-right: 10px;
-    margin-top: 5px;
-    background: rgba(255, 255, 255, 0.8) url('../img/search/spinner-small.gif') 50% 50% no-repeat;
+  #ui-layer #search-bar-expanded .expanded-section .expanded-title #loading-icon {
+    width: 20px;
+    height: 20px;
   }
   #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
     font-size: 18px;
@@ -158,11 +162,19 @@
   #ui-layer #left-pin {
     left: 8px;
   }
-  #ui-layer #left-button,
-  #ui-layer #right-button {
+  #ui-layer #outer-left-button,
+  #ui-layer #outer-right-button {
+    padding: 0px 15px 15px;
+  }
+  #ui-layer .inner-button {
     width: 65px;
     height: 65px;
-    padding: 0px 15px 15px;
+  }
+  #ui-layer .inner-button img {
+    width: 30px;
+    height: 30px;
+    margin-left: -15px;
+    margin-top: -15px;
   }
   /* MAP SELECT LAYER STYLES */
   #map-select-layer #menu-header {
@@ -171,8 +183,8 @@
   #map-select-layer #menu-header #menu-icon {
     width: 19px;
     height: 19px;
-    top: 35px;
-    left: 15px;
+    top: 20px;
+    padding: 15px;
   }
   #map-select-layer #menu-header #menu-title {
     padding-top: 31px;
@@ -244,12 +256,21 @@
     left: 95px;
     margin-top: -20px;
   }
-  .user-prompt#pin-map-prompt {
-    right: 20px;
+  .user-prompt#pin-map-prompt-right,
+  .user-prompt#pin-map-prompt-left {
     bottom: 198px;
   }
-  .user-prompt#pin-map-prompt .prompt-arrow {
+  .user-prompt#pin-map-prompt-right {
+    right: 20px;
+  }
+  .user-prompt#pin-map-prompt-right .prompt-arrow {
     right: 25px;
+  }
+  .user-prompt#pin-map-prompt-left {
+    left: 20px;
+  }
+  .user-prompt#pin-map-prompt-left .prompt-arrow {
+    left: 25px;
   }
   .dataset-label#dataset-label-right {
     right: 116px;
@@ -300,13 +321,9 @@
     font-size: 26px;
     padding: 15px 22px;
   }
-  #ui-layer #search-bar-expanded .expanded-section .expanded-title .loading-icon {
-    float: left;
+  #ui-layer #search-bar-expanded .expanded-section .expanded-title #loading-icon {
     height: 24px;
     width: 24px;
-    margin-right: 20px;
-    margin-top: 10px;
-    background: rgba(255, 255, 255, 0.8) url('../img/search/spinner.gif') 50% 50% no-repeat;
   }
   #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
     font-size: 26px;
@@ -327,18 +344,26 @@
   #ui-layer #left-pin {
     left: 8px;
   }
-  #ui-layer #left-button,
-  #ui-layer #right-button {
+  #ui-layer #outer-left-button,
+  #ui-layer #outer-right-button {
     padding: 0px 20px 20px;
+  }
+  #ui-layer .inner-button {
     width: 75px;
     height: 75px;
+  }
+  #ui-layer .inner-button img {
+    width: 34px;
+    height: 34px;
+    margin-left: -17px;
+    margin-top: -17px;
   }
   /* MAP SELECT LAYER STYLES */
   #map-select-layer #menu-header #menu-icon {
     width: 27px;
     height: 27px;
-    top: 49px;
-    left: 22px;
+    top: 27px;
+    padding: 22px;
   }
   #map-select-layer #menu-header #menu-title {
     padding-top: 47px;

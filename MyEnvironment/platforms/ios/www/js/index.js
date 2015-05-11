@@ -36,6 +36,11 @@ var leftLayerData = (typeof localStorage['leftLayer'] !== "undefined") ? JSON.pa
 var rightLayer;
 var leftLayer;
 var locationMarker;
+var markerIcon = L.icon({
+    iconUrl: 'img/marker-icon.png', // also retina
+    iconSize: [25, 41],
+    iconAnchor: [12, 40]
+});
 
 function setRightLayer() {
     rightLayer = L.tileLayer.wms("http://54.154.15.47/geoserver/ea/wms",{
@@ -85,16 +90,28 @@ function setLeftLayer() {
 if(typeof leftLayerData !== "undefined") setLeftLayer();
 
 function loadingEvent(side){
-    
+    if(side == "right"){
+        $('#outer-right-button').find('.dataset-loaded').hide();
+        $('#outer-right-button').find('.dataset-loading').show();
+    }
+    else {
+        $('#outer-left-button').find('.dataset-loaded').hide();
+        $('#outer-left-button').find('.dataset-loading').show();
+    }
 }
 function loadedEvent(side){
-    
+    if(side == "right"){
+        $('#outer-right-button').find('.dataset-loading').hide();
+        $('#outer-right-button').find('.dataset-loaded').show();
+    }
+    else {
+        $('#outer-left-button').find('.dataset-loading').hide();
+        $('#outer-left-button').find('.dataset-loaded').show();
+    }
 }
+ 
+function expandSearch(){
     
-
-// SEARCH BAR EXPAND
-$('#search-bar input').on('click', function(){
-
     // IF HIDDEN, SHOW
     if(!$('#search-bar-expanded').is(':visible')){
 
@@ -110,21 +127,25 @@ $('#search-bar input').on('click', function(){
             $(this).attr('src', 'img/search/left-arrow-icon.png').fadeIn();
         });
     }
+}
 
+// SEARCH BAR EXPAND
+$('#search-bar input').on('click', expandSearch);
+
+$('#search-bar input').bind("enter", function(){
+    if($('#search-results .expanded-locations li').length != 0) {
+        goToLocation($('#search-results .expanded-locations li').first());
+    }  
 });
 
-$('#search-bar input').bind("enter", enterPressed);
-
 $('#search-bar input').keyup(function(e){
-    if(e.keyCode == 13)
-    {
-      $(this).trigger("enter");
-    }
+    if(e.keyCode == 13) $(this).trigger("enter");
 });
 
 // CLOSE SEARCH BAR
 $('#search-icon').on('click', function(){
-    hideSearchBar();
+    if(!$('#search-bar-expanded').is(':visible')) expandSearch();
+    else hideSearchBar();
 });
 $('html').on('click', function() {
     hideSearchBar();
@@ -188,24 +209,45 @@ var sliderLimit = generateButtonRules();
 // }
 // var labelLimit = generateLabelRules();
 
+function adjustPinning(){
+    
+    if(localStorage['currentPrompt'] != "done" && localStorage['currentPrompt'] != "pin") {
+        $('#left-pin').hide();
+        $('#right-pin').hide();
+        return;
+    }
+    
+    if(typeof leftLayerData === "undefined") $('#left-pin').hide();
+    else $('#left-pin').show();
+    
+    if(typeof rightLayerData === "undefined") $('#right-pin').hide();
+    else $('#right-pin').show();
+}
+adjustPinning();
+
 function offsetFunc(){
 
     adjustDataContainer();
 
     // SHOW BUTTON IF SIDE IS VISIBLE
-    if(sliderOffset >= sliderLimit && !$('#left-button').is(':visible')){
-        $('#left-button').fadeIn();
-        if(!$('#right-pin').hasClass('pin-active')) $('#left-pin').fadeIn();
+    if(sliderOffset >= sliderLimit && !$('#outer-left-button').is(':visible')){
+        $('#outer-left-button').fadeIn();
+        if(localStorage['currentPrompt'] == "dataset2") $('#select-map-prompt-left').fadeIn();
+        if(!$('#right-pin').hasClass('pin-active') && typeof leftLayerData !== "undefined" && (localStorage['currentPrompt'] == "done" || localStorage['currentPrompt'] == "pin")) $('#left-pin').fadeIn();
     }
-    else if(sliderOffset < sliderLimit && $('#left-button').is(':visible')){
-        $('#left-button, #left-pin').fadeOut();
+    else if(sliderOffset < sliderLimit && $('#outer-left-button').is(':visible')){
+        $('#outer-left-button, #left-pin').fadeOut();
+        if(localStorage['currentPrompt'] == "dataset2") $('#select-map-prompt-left').fadeOut();
     }
-    if(sliderOffset <= $(window).width() - sliderLimit && !$('#right-button').is(':visible')){
-        $('#right-button').fadeIn();
-        if(!$('#left-pin').hasClass('pin-active')) $('#right-pin').fadeIn();
+    
+    if(sliderOffset <= $(window).width() - sliderLimit && !$('#outer-right-button').is(':visible')){
+        $('#outer-right-button').fadeIn();
+        if(localStorage['currentPrompt'] == "pin") $('#pin-map-prompt').fadeIn();
+        if(!$('#left-pin').hasClass('pin-active') && typeof rightLayerData !== "undefined" && (localStorage['currentPrompt'] == "done" || localStorage['currentPrompt'] == "pin")) $('#right-pin').fadeIn();
     }
-    else if(sliderOffset > $(window).width() - sliderLimit && $('#right-button').is(':visible')){
-        $('#right-button, #right-pin').fadeOut();
+    else if(sliderOffset > $(window).width() - sliderLimit && $('#outer-right-button').is(':visible')){
+        if(localStorage['currentPrompt'] == "pin") $('#pin-map-prompt').fadeOut();
+        $('#outer-right-button, #right-pin').fadeOut();
     }
 
     // SHOW ARROWS ON SIDE OF SLIDER
@@ -245,10 +287,10 @@ $('#slider-bar').on('mousedown touchstart', function(){
 });
 $('#slider-bar').on('mouseup touchend', function(){
     $(this).removeClass('dragging');
-    if(sliderOffset / $(window).width() < 0.1){
+    if(sliderOffset / $(window).width() <= 0.5){
         sliderOffset = 0;
     }
-    else if(sliderOffset / $(window).width() > 0.90){
+    else if(sliderOffset / $(window).width() > 0.5){
         sliderOffset = $(window).width();
     }
 
@@ -348,7 +390,7 @@ function addrSearch() {
 }
 
 function displayLoadingIcon() {
-    $('#search-results .expanded-title').html('<div class="loading-icon"></div><span>Searching for locations...</span>');
+    $('#search-results .expanded-title').html('<img id="loading-icon" src="img/search/loading.gif" alt="Loading icon"></div>Searching for locations...');
 }
 
 function updateSearchResults(data){
@@ -373,13 +415,6 @@ function updateSearchResults(data){
         $('#search-results .expanded-title').text("Search results");
     } else {
         $('#search-results .expanded-title').text("No results found");
-    }
-}
-
-// go to first search result if enter is pressed
-function enterPressed() {
-    if($('#search-results .expanded-locations li').length != 0) {
-        goToLocation($('#search-results .expanded-locations li').first());
     }
 }
 
@@ -435,6 +470,9 @@ $('#saved-locations').on('click', 'li .favourite-delete', function(e) {
     var index = savedLocIndex($(this).text());
     savedLocations.splice(index, 1);
     removeSavedLocation(index);
+    toggleFavIcon();
+    localStorage["savedLocations"] = JSON.stringify(savedLocations);
+    
     e.stopPropagation();
 });
 
@@ -446,7 +484,7 @@ $('#map-layer').on('click', '.leaflet-marker-icon', function(){
 function panToLocation(location) {
   // set marker for location
   if(typeof locationMarker === "undefined"){
-      locationMarker = L.marker(location).addTo(map);
+      locationMarker = L.marker(location, {icon: markerIcon}).addTo(map);
   }
   else {
       locationMarker.setLatLng(location);
@@ -561,6 +599,7 @@ $("#search-bar-empty").on('click', function(){
     $('#search-input').val("").focus();
     $('#search-results').hide();
     $("#search-bar-empty").hide();
+    expandSearch();
 });
 
 var datasetsArray = {
@@ -578,13 +617,15 @@ var datasetsArray = {
 // TOGGLE MAP TOPIC MENU
 var dataVal;
 var menuViewed;
-$('#right-button, #left-button').on('click', function() {
+$('#outer-right-button, #outer-left-button').on('click', function() {
 
     $('#map-select-layer #menu-options ul li.topic-selected').removeClass('topic-selected');
 
-    if($(this).attr("id") == "right-button") { dataVal = (typeof rightLayerData !== "undefined") ? rightLayerData.link : undefined; menuViewed = 1; }
+    if($(this).attr("id") == "outer-right-button") { dataVal = (typeof rightLayerData !== "undefined") ? rightLayerData.link : undefined; menuViewed = 1; }
     else { dataVal = (typeof leftLayerData !== "undefined") ? leftLayerData.link : undefined; menuViewed = 0; }
-
+	
+	window.analytics.trackView(dataVal);
+	
     // add tick to current selected topic based on left/right select
     $('#map-select-layer #menu-options ul li[data-link="'+dataVal+'"]').addClass('topic-selected');
 
@@ -592,11 +633,6 @@ $('#right-button, #left-button').on('click', function() {
 });
 
 $('#right-pin, #left-pin').on('click', function(){
-
-	// hide pin prompt if first time
-	if($('#pin-map-prompt').is(":visible")){
-		$('#pin-map-prompt').fadeOut();
-	}
 
     // if pinning
     if(!$(this).hasClass('pin-active')){
@@ -621,10 +657,10 @@ $('#right-pin, #left-pin').on('click', function(){
         $(this).attr('src', 'img/buttons/inactive-pin-icon.png').removeClass('pin-active');
 
         if($(this).attr('id') == "right-pin"){
-            if($('#left-button').is(':visible')) $('#left-pin').fadeIn();
+            if($('#outer-left-button').is(':visible')) $('#left-pin').fadeIn();
         }
         else {
-            if($('#right-button').is(':visible')) $('#right-pin').fadeIn();
+            if($('#outer-right-button').is(':visible')) $('#right-pin').fadeIn();
         }
         adjustDataContainer();
     }
@@ -646,6 +682,7 @@ if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
 
 // enable the android backbutton and get current position
 function onDeviceReady() {
+	window.analytics.startTrackerWithId('UA-61968992-6');
     navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError);
     document.addEventListener("backbutton", hideTopicMenu, false);
 }
@@ -703,7 +740,7 @@ $('#map-select-layer #menu-options ul').on("click", "li", function(e) {
             
             if(localStorage['currentPrompt'] == "dataset1") updatePrompts();
 		}
-
+        adjustPinning();
         hideTopicMenu();
 	}
 });
@@ -735,6 +772,7 @@ function updatePrompts(){
         localStorage['currentPrompt'] = "pin";
     }
     else if(localStorage['currentPrompt'] == "pin"){
+        $('#pin-map-prompt').fadeOut();
         localStorage['currentPrompt'] = "done";
     }
 }
