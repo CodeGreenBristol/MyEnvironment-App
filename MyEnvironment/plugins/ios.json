@@ -7,21 +7,34 @@
         "files": {
             "framework": {
                 "parents": {
-                    "WebKit.framework": [
+                    "WebKit.framework": [],
+                    "libz.dylib": [
                         {
-                            "xml": "false",
+                            "xml": false,
                             "count": 1
                         }
                     ],
-                    "libz.dylib": [
+                    "SystemConfiguration.framework": [
                         {
-                            "xml": "false",
+                            "xml": false,
+                            "count": 1
+                        }
+                    ],
+                    "CoreData.framework": [
+                        {
+                            "xml": false,
+                            "count": 1
+                        }
+                    ],
+                    "libsqlite3.0.dylib": [
+                        {
+                            "xml": false,
                             "count": 1
                         }
                     ],
                     "CoreLocation.framework": [
                         {
-                            "xml": "false",
+                            "xml": false,
                             "count": 1
                         }
                     ]
@@ -31,7 +44,7 @@
                 "parents": {
                     "/*": [
                         {
-                            "xml": "<feature name=\"WKWebViewPolyfill\"><param name=\"ios-package\" value=\"WKWebViewPolyfill\" /></feature>",
+                            "xml": "<feature name=\"UniversalAnalytics\"><param name=\"ios-package\" value=\"UniversalAnalyticsPlugin\" /></feature>",
                             "count": 1
                         },
                         {
@@ -54,7 +67,10 @@
         }
     },
     "installed_plugins": {
-        "com.telerik.plugins.wkwebview": {
+        "com.google.playservices": {
+            "PACKAGE_NAME": "licencetocode.myenvironment"
+        },
+        "cordova-plugin-google-analytics": {
             "PACKAGE_NAME": "licencetocode.myenvironment"
         },
         "org.apache.cordova.geolocation": {

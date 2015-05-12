@@ -11,6 +11,9 @@ body {
   height: 100%;
   overflow: hidden;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -ms-content-zooming: none;
+  -ms-touch-action: none;
+  backface-visibility: hidden;
 }
 #ui-layer,
 #map-layer,
@@ -40,6 +43,38 @@ body {
   clear: both;
 }
 /* USER PROMPT STYLES */
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+  50% {
+    -webkit-transform: scale(1.2, 1.2);
+    transform: scale(1.2, 1.2);
+  }
+  100% {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+}
+@keyframes pulse {
+  0% {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+  50% {
+    -webkit-transform: scale(1.2, 1.2);
+    transform: scale(1.2, 1.2);
+  }
+  100% {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+}
+.pulse {
+  -webkit-animation: pulse 1s linear infinite;
+  animation: pulse 1s linear infinite;
+}
 .user-prompt {
   position: absolute;
   font-family: "Open Sans", sans-serif;
@@ -67,6 +102,10 @@ body {
   bottom: -15px;
   right: 35px;
 }
+.user-prompt .prompt-arrow.arrow-bottom-left {
+  bottom: -15px;
+  left: 35px;
+}
 .user-prompt#select-map-prompt-right {
   right: 150px;
   bottom: 50px;
@@ -80,9 +119,16 @@ body {
   left: 152px;
   bottom: 50px;
 }
-.user-prompt#pin-map-prompt {
-  right: 25px;
+.user-prompt#pin-map-prompt-right,
+.user-prompt#pin-map-prompt-left {
+  max-width: 200px;
   bottom: 242px;
+}
+.user-prompt#pin-map-prompt-right {
+  right: 25px;
+}
+.user-prompt#pin-map-prompt-left {
+  left: 25px;
 }
 .dataset-label {
   position: absolute;
@@ -120,8 +166,9 @@ body {
   z-index: 75;
   width: 50px;
   left: -25px;
-  position: absolute;
+  position: fixed;
   height: 100%;
+  display: none;
   background-image: url('../img/slider/slider-middle.png'), url('../img/slider/slider-bar.png');
   background-repeat: no-repeat, repeat-y;
   background-position: center, center;
@@ -148,6 +195,7 @@ body {
   background-color: #eee;
   height: 100%;
   bottom: -100%;
+  -webkit-transform: translatez(0);
   transition: all .75s ease;
 }
 #map-select-layer.menu-expanded {
@@ -163,8 +211,9 @@ body {
   position: absolute;
   width: 37px;
   height: 38px;
-  top: 70px;
-  left: 30px;
+  top: 40px;
+  left: 0px;
+  padding: 30px;
 }
 #map-select-layer #menu-header #menu-title {
   padding-top: 63px;
@@ -190,7 +239,7 @@ body {
 #map-select-layer #menu-options ul {
   margin: 0px 15px 20px;
   background-color: #fff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
   list-style-type: none;
 }
 #map-select-layer #menu-options ul#datasets-recreation {
@@ -220,6 +269,7 @@ body {
   margin-top: -26px;
   margin-bottom: -30px;
   float: right;
+  opacity: .5;
 }
 #map-select-layer #menu-options ul li .dataset-description {
   color: #666;
@@ -227,6 +277,12 @@ body {
   font-weight: 300;
   font-size: 20px;
   display: none;
+}
+#map-select-layer #menu-options ul li .dataset-description a {
+  color: #666;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 2px solid #666;
 }
 #map-select-layer #menu-options ul li.topic-selected {
   background: url('../img/tick-icon.png') no-repeat;
@@ -258,7 +314,7 @@ body {
   box-sizing: border-box;
 }
 #ui-layer #search-bar {
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
   margin: 50px 15px 0px;
   z-index: 110;
   background: #fff;
@@ -284,6 +340,7 @@ body {
   outline: none;
   padding: 20px 30px;
   box-sizing: border-box;
+  text-overflow: ellipsis;
 }
 #ui-layer #search-bar #search-bar-options {
   list-style-type: none;
@@ -300,6 +357,18 @@ body {
 #ui-layer #search-bar #search-bar-options #search-bar-favourite {
   padding-right: 20px;
 }
+#ui-layer #search-bar #search-bar-options #search-bar-favourite:not(.favourite-toggled) #favourite-enabled {
+  display: none;
+}
+#ui-layer #search-bar #search-bar-options #search-bar-favourite:not(.favourite-toggled) #favourite-disabled {
+  display: inline-block;
+}
+#ui-layer #search-bar #search-bar-options #search-bar-favourite.favourite-toggled #favourite-enabled {
+  display: inline-block;
+}
+#ui-layer #search-bar #search-bar-options #search-bar-favourite.favourite-toggled #favourite-disabled {
+  display: none;
+}
 #ui-layer #search-bar #search-bar-options #search-bar-empty {
   display: none;
 }
@@ -313,7 +382,7 @@ body {
 }
 #ui-layer #search-bar-expanded .expanded-section {
   background: #fff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
   margin-top: 15px;
 }
 #ui-layer #search-bar-expanded .expanded-section .expanded-title {
@@ -321,13 +390,13 @@ body {
   font-size: 30px;
   padding: 20px 30px;
 }
-#ui-layer #search-bar-expanded .expanded-section .expanded-title .loading-icon {
-  float: left;
-  height: 24px;
-  width: 24px;
-  margin-right: 20px;
-  margin-top: 10px;
-  background: rgba(255, 255, 255, 0.8) url('../img/search/spinner.gif') 50% 50% no-repeat;
+#ui-layer #search-bar-expanded .expanded-section .expanded-title #loading-icon {
+  height: 28px;
+  width: 28px;
+  margin-right: 15px;
+  margin-top: 3px;
+  margin-bottom: -3px;
+  display: inline-block;
 }
 #ui-layer #search-bar-expanded .expanded-section .expanded-locations {
   list-style-type: none;
@@ -373,6 +442,7 @@ body {
   padding: 25px;
   width: 70px;
   height: 70px;
+  display: none;
 }
 #ui-layer #right-pin {
   right: 15px;
@@ -380,18 +450,121 @@ body {
 #ui-layer #left-pin {
   left: 15px;
 }
-#ui-layer #left-button,
-#ui-layer #right-button {
+#ui-layer #outer-right-button,
+#ui-layer #outer-left-button {
   position: absolute;
   z-index: 100;
   bottom: 0;
   padding: 0px 25px 25px;
+}
+#ui-layer #outer-right-button:not(.button-loading) .inner-button .dataset-loading,
+#ui-layer #outer-left-button:not(.button-loading) .inner-button .dataset-loading {
+  display: none;
+}
+#ui-layer #outer-right-button:not(.button-loading) .inner-button .dataset-loaded,
+#ui-layer #outer-left-button:not(.button-loading) .inner-button .dataset-loaded {
+  display: block;
+}
+#ui-layer #outer-right-button.button-loading .inner-button .dataset-loading,
+#ui-layer #outer-left-button.button-loading .inner-button .dataset-loading {
+  display: block;
+}
+#ui-layer #outer-right-button.button-loading .inner-button .dataset-loaded,
+#ui-layer #outer-left-button.button-loading .inner-button .dataset-loaded {
+  display: none;
+}
+#ui-layer .inner-button {
   width: 100px;
   height: 100px;
+  background-color: #64b551;
+  border-radius: 50%;
+  position: relative;
 }
-#ui-layer #left-button {
+#ui-layer .inner-button img {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  top: 50%;
+  left: 50%;
+  margin-top: -23px;
+  margin-left: -23px;
+}
+#ui-layer #outer-left-button {
   left: 0px;
 }
-#ui-layer #right-button {
+#ui-layer #outer-right-button {
   right: 0px;
+}
+/* TUTORIAL LAYER STYLES */
+#tutorial-layer {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  font-family: "Open Sans", sans-serif;
+  z-index: 10000;
+}
+#tutorial-layer #tutorial-layer-inner {
+  text-align: center;
+  height: 568px;
+  width: 320px;
+  box-sizing: border-box;
+  padding: 60px 30px 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -160px;
+  margin-top: -284px;
+}
+#tutorial-layer #tutorial-img-div {
+  height: 230px;
+}
+#tutorial-layer #tutorial-img-div img {
+  height: 100%;
+}
+#tutorial-layer #tutorial-description {
+  font-weight: 300;
+  font-size: 20px;
+  margin: 30px auto 25px;
+  height: 80px;
+  display: table;
+}
+#tutorial-layer #tutorial-description div {
+  display: table-cell;
+  vertical-align: middle;
+}
+#tutorial-layer #tutorial-description.no-button {
+  margin-bottom: 102px;
+}
+#tutorial-layer #tutorial-button {
+  background: #64b551;
+  display: inline-block;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 20px;
+  margin-bottom: 35px;
+  display: none;
+}
+#tutorial-layer #tutorial-button img {
+  vertical-align: top;
+  width: 18px;
+  margin-top: 4px;
+  margin-left: 10px;
+}
+#tutorial-layer #tutorial-state {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+#tutorial-layer #tutorial-state li {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+#tutorial-layer #tutorial-state li.tutorial-state-empty {
+  background-image: url('../img/tutorial/bubble-empty.png');
+}
+#tutorial-layer #tutorial-state li.tutorial-state-full {
+  background-image: url('../img/tutorial/bubble-full.png');
 }

@@ -285,7 +285,7 @@ var search = {
 
     // enable the android backbutton and get current position
     onDeviceReady: function() {
-        var _this = this;
+        var _this = search;
 
         navigator.geolocation.getCurrentPosition(function(pos){ _this.geolocationSuccess(pos); }, function(){  _this.geolocationError();  });
         document.addEventListener("backbutton", function(){ _this.collapseSearch(); }, false);

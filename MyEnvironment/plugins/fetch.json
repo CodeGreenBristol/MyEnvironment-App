@@ -1,0 +1,21 @@
+{
+    "com.google.playservices": {
+        "source": {
+            "type": "registry",
+            "id": "com.google.playservices@19.0.0"
+        }
+    },
+    "cordova-plugin-google-analytics": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/danwilson/google-analytics-plugin.git",
+            "subdir": "."
+        }
+    },
+    "org.apache.cordova.geolocation": {
+        "source": {
+            "type": "local",
+            "path": "/Users/samcordingley/.plugman/cache/org.apache.cordova.geolocation/0.3.12/package"
+        }
+    }
+}

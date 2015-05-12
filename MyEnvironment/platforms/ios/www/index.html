@@ -9,27 +9,33 @@
         <meta name="keywords" content="" />
         <link rel="shortcut icon" type="image/png" href="" />
         <!--LEAFLET CSS-->
-        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+        <link rel="stylesheet" type="text/css" href="css/leaflet-0.8.css" />
         <!-- PAGE CSS -->
         <link rel="stylesheet" type="text/css" href="css/fonts.css">
         <link rel="stylesheet" type="text/css" href="css/index.css">
         <link rel="stylesheet" type="text/css" href="css/index-responsive.css">
     </head>
     <body>
+        <div id="tutorial-layer">
+            <div id="tutorial-layer-inner">
+                <div id="tutorial-img-div"><img src="img/tutorial/tutorial-0.png" /></div>
+                <div id="tutorial-description" class="no-button"><div>Search for and favourite locations that are important to you</div></div>
+                <div id="tutorial-button">Let's go!<img src="img/tutorial/forward-white-icon.png" alt="Next" /></div>
+                <ul id="tutorial-state">
+                    <li class="tutorial-state-full"></li>
+                    <li class="tutorial-state-empty"></li>
+                    <li class="tutorial-state-empty"></li>
+                    <li class="tutorial-state-empty"></li>
+                </ul>
+            </div>
+        </div>
         <div id="map-select-layer">
             <div id="dev-reset"></div>
             <div id="menu-header">
                 <img id="menu-icon" src="img/back-white-icon.png" alt="Back icon" />
                 <div id="menu-title">Choose a topic</div>
             </div>
-            <div id="menu-options">
-                <div class="dataset-type-label">Natural hazards</div>
-                <ul id="datasets-natural"></ul>
-                <div class="dataset-type-label">Man-made hazards</div>
-                <ul id="datasets-man"></ul>
-                <div class="dataset-type-label">Recreational</div>
-                <ul id="datasets-recreation"></ul>
-            </div>
+            <div id="menu-options"></div>
         </div>
         <div id="ui-layer">
             <div id="search-mask"></div>
@@ -39,16 +45,13 @@
                 <ul id="search-bar-options">
                     <li id="search-bar-empty"><img src="img/search/empty-search-icon.png" alt="Empty search icon" /></li>
                     <li id="search-bar-location"><img src="img/search/location-icon.png" alt="Location icon" /></li>
-                    <li id="search-bar-favourite"><img src="img/search/favourite-empty-icon.png" alt="Favourite icon" /></li>
+                    <li id="search-bar-favourite"><img id="favourite-enabled" src="img/search/favourite-icon.png" alt="Favourite icon" /><img id="favourite-disabled" src="img/search/favourite-empty-icon.png" alt="Favourite icon" /></li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
             <div id="search-bar-expanded">
                 <div class="expanded-section" id="search-results">
-                    <div class="expanded-title">
-                        <div class="loading-icon"></div>
-                        <span>Search results</span>
-                    </div>
+                    <div class="expanded-title"><div class="loading-icon"></div><span>Search results</span></div>
                     <ul class="expanded-locations"></ul>
                 </div>
                 <div class="expanded-section" id="saved-locations">
@@ -56,18 +59,13 @@
                     <ul class="expanded-locations"></ul>
                 </div>
             </div>
-            <div id="slide-prompt" class="user-prompt"><img class="prompt-arrow arrow-left" src="img/prompt-arrow-left.png" alt="Prompt arrow" />Slide to compare maps</div>
-            <div id="select-map-prompt-right" class="user-prompt">Select a dataset<img class="prompt-arrow arrow-right" src="img/prompt-arrow-right.png" alt="Prompt arrow" /></div>
-			<div id="select-map-prompt-left" class="user-prompt">Select another dataset<img class="prompt-arrow arrow-left" src="img/prompt-arrow-left.png" alt="Prompt arrow" /></div>
-			<div id="pin-map-prompt" class="user-prompt">Pin this map to both sides of the slider<img class="prompt-arrow arrow-bottom-right" src="img/prompt-arrow-down.png" alt="Prompt arrow" /></div>
-			<!--
-            <div id="dataset-label-right" class="dataset-label"></div>
-			<div id="dataset-label-left" class="dataset-label"></div>
-            -->
-            <img id="right-pin" src="img/buttons/inactive-pin-icon.png" alt="Right pin icon" />
-            <img id="left-pin" src="img/buttons/inactive-pin-icon.png" alt="Left pin icon" />
-            <img id="right-button" src="img/buttons/right-menu-icon.png" alt="Right menu icon" />
-            <img id="left-button" src="img/buttons/left-menu-icon.png" alt="Left menu icon" />
+            
+            <div class="user-prompt"></div>
+
+            <img id="right-pin" src="img/buttons/inactive-pin-icon-right.png" alt="Right pin icon" />
+            <img id="left-pin" src="img/buttons/inactive-pin-icon-left.png" alt="Left pin icon" />
+            <div id="outer-right-button"><div class="inner-button"><img class="dataset-loading" src="img/buttons/loading.GIF" alt="Loading icon" /><img class="dataset-loaded" src="img/buttons/layer-icon.png" alt="Layer icon" /></div></div>
+            <div id="outer-left-button"><div class="inner-button"><img class="dataset-loading" src="img/buttons/loading.GIF" alt="Loading icon" /><img class="dataset-loaded" src="img/buttons/layer-icon.png" alt="Layer icon" /></div></div>
         </div>
         <div id="slider-bar">
             <img id="drag-right" src="img/slider/right-slider-arrow.png" alt="Drag right" />
@@ -75,13 +73,47 @@
         </div>
         <div id="map-layer"></div>
         <!-- JQUERY -->
-        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <!-- LEAFLET JS -->
-         <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <script type="text/javascript" src="js/leaflet-0.8.min.js"></script>
         <!-- CORDOVA -->
         <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
         <!-- PAGE JS -->
         <script type="text/javascript" src="js/fastclick.min.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/modules/prompts.js"></script>
+        <script type="text/javascript" src="js/modules/search.js"></script>
+        <script type="text/javascript" src="js/modules/datasetMenu.js"></script>
+        <script type="text/javascript" src="js/modules/buttons.js"></script> 
+        <script type="text/javascript" src="js/modules/slider.js"></script>
+        <script type="text/javascript" src="js/modules/map.js"></script>
+        <script type="text/javascript" src="js/modules/tutorial.js"></script> 
+        <script type="text/javascript">
+               		
+            // google analytics		
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){		
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),		
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)		
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+            
+            tutorial.init();
+            map.init();
+            slider.init();
+            buttons.init();
+            datasetMenu.init();
+            search.init();
+            prompts.init();
+
+            // eliminate 300ms delay
+            var attachFastClick = Origami.fastclick;
+            attachFastClick(document.body);
+
+            // TEMPORARY - DEV REST
+            $('#dev-reset').on('click', function(){
+                localStorage.clear();
+                alert("Storage cleared!");
+            });
+
+        </script>
+        
     </body>
 </html>
