@@ -112,7 +112,16 @@
                 localStorage.clear();
                 alert("Storage cleared!");
             });
-
+            
+            // auto slider
+            /*
+            var randomDestination = parseInt(Math.random() * $(window).width(), 10); 
+            setInterval(function(){
+                if(slider.offset + 1 < randomDestination) slider.setOffset(slider.offset + 2, true);
+                else if(slider.offset - 1> randomDestination) slider.setOffset(slider.offset - 2, true);
+                else randomDestination = parseInt(Math.random() * $(window).width(), 10); 
+            }, 1);
+            */
         </script>
     </body>
 </html>
