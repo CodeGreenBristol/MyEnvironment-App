@@ -77,7 +77,7 @@ var buttons = {
         if(!this.isPinned(side)){
         
             thisButton.attr('src', 'img/buttons/active-pin-icon-' + side + '.png').addClass('pin-active');
-            otherButton.attr('src', 'img/buttons/inactive-pin-icon-' + side + '.png').removeClass('pin-active');
+            otherButton.attr('src', 'img/buttons/inactive-pin-icon-' + ((side == "right") ? "left" : "right") + '.png').removeClass('pin-active');
             map.getLayer((side == "right") ? "left" : "right").bringToFront();
             
             if(prompts.getCurrentPrompt() == "pin-map-prompt-right" || prompts.getCurrentPrompt() == "pin-map-prompt-left") prompts.promptCallback();

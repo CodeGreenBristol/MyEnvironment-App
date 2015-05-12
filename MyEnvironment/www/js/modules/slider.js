@@ -3,7 +3,7 @@ var slider = {
     offset: (localStorage['sliderOffset'] !== undefined) ? parseInt(localStorage['sliderOffset'], 10) : 0,    
     _containerDiv: $('#slider-bar'),
     _containerID: $('#slider-bar').attr('id'),
-    _sliderLeft: parseInt($('#slider-bar').css('left'), 10),
+    _sliderLeft: - $('#slider-bar').width() / 2,
     _rightArrowDiv: $('#drag-right'),
     _leftArrowDiv: $('#drag-left'),
     _previousOffset: this.offset,
@@ -44,6 +44,13 @@ var slider = {
             // don't prevent default if on dataset menu
             if(!datasetMenu.isExpanded()) e.preventDefault();
         });
+        
+        // resize/orientation change      
+        $(window).resize(function(){
+            slider._sliderLeft = - slider._containerDiv.width() / 2;
+            slider.setOffset(0);
+        });
+        
     },
     
     adjustArrows: function(){

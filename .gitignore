@@ -2,6 +2,7 @@
 *.pem
 *.zip
 *.pdf
+dev/
 
 # ANDROID / ECLIPSE
 
