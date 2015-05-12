@@ -46,6 +46,9 @@
     <gap:plugin name="org.apache.cordova.network-information" />
     <gap:plugin name="org.apache.cordova.splashscreen" />
     <gap:plugin name="org.apache.cordova.vibration" />
+    <platform name="android">
+      <icon src="icon-android.png" />
+    </platform>
     <icon src="icon.png" />
 
     <access origin="*" />
